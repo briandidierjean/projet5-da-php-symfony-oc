@@ -1,0 +1,18 @@
+{
+    "name": "brian/projet5-openclassrooms-da-php-symfony",
+    "description": "5th projects from the OpenClassrooms PHP/Symfony DA.",
+    "authors": [
+        {
+            "name": "Brian Didierjean",
+            "email": "contact@briandidierjean.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+        }
+    },
+    "require": {},
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.5"
+    }
+}
