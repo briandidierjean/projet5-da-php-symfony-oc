@@ -43,7 +43,7 @@ class HTTPRequest
      * 
      * @param string $key GET key
      * 
-     * @return mixed
+     * @return string
      */
     public function getGet($key)
     {
@@ -67,7 +67,7 @@ class HTTPRequest
      * 
      * @param string $key POST key
      * 
-     * @return mixed
+     * @return string
      */
     public function getPost($key)
     {
@@ -91,7 +91,7 @@ class HTTPRequest
      * 
      * @param string $key COOKIE key
      * 
-     * @return mixed
+     * @return string
      */
     public function getCookie($key)
     {
