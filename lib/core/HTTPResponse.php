@@ -6,8 +6,6 @@ namespace Core;
  */
 class HTTPResponse extends ApplicationComponent
 {
-    protected $page;
-
     /**
      * This method set a header to be sent to the client.
      *
@@ -34,13 +32,15 @@ class HTTPResponse extends ApplicationComponent
     }
 
     /**
-     * This method send the generated page to the client.
+     * This method takes a HTML page and sends it the the client.
+     * 
+     * @param string $page HTML page to be sent
      *
      * @return null
      */
-    public function send()
+    public function send($page)
     {
-        exit($this->page->getGeneratedPage());
+        exit($page);
     }
 
     /**
@@ -68,17 +68,5 @@ class HTTPResponse extends ApplicationComponent
         $httponly = true
     ) {
         setcookie($name, $value, $expire, $path, $domain, $secure, $httponly);
-    }
-
-    /**
-     * This method sets the page attribute.
-     * 
-     * @param Page $page Page to be set.
-     * 
-     * @return null
-     */
-    public function setPage(Page $page)
-    {
-        $this->page = $page;
     }
 }
