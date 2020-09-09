@@ -3,10 +3,11 @@ namespace Core;
 
 abstract class Controller extends ApplicationComponent
 {
-    protected $module = '';
-    protected $action = '';
-    protected $view = '';
-    protected $page = null;
+    protected $module;
+    protected $action;
+    protected $view;
+    protected $page;
+    protected $managers;
 
     public function __constrcut(Application $app, $module, $action)
     {
@@ -15,7 +16,8 @@ abstract class Controller extends ApplicationComponent
         $this->setModule($module);
         $this->setAction($action);
         $this->setView($action);
-        $this->setPage(new Page($app));
+        $this->page = new Page($app);
+        $this->managers = new Managers('PDO', PDOFactory::getMysqlConnexion());
     }
 
     /**
@@ -77,6 +79,16 @@ abstract class Controller extends ApplicationComponent
     }
 
     /**
+     * This method returns the managers attribute.
+     * 
+     * @return Managers
+     */
+    public function getManagers()
+    {
+        return $this->managers;
+    }
+
+    /**
      * This method set the module attribute.
      *
      * @param string $module Module to be set
@@ -115,20 +127,6 @@ abstract class Controller extends ApplicationComponent
     {
         if (!is_string($view) || empty($view)) {
             throw new \Exception('La vue n\'est pas valide');
-        }
-    }
-
-    /**
-     * This method set the page attribute.
-     * 
-     * @param Page $page Page to be set
-     * 
-     * @return null
-     */
-    public function setPage($page)
-    {
-        if (!($page instanceof Page)) {
-            throw new \Exception('La page n\'est pas valide');
         }
     }
 }
