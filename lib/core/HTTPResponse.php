@@ -71,7 +71,7 @@ class HTTPResponse
     }
 
     /**
-     * This method set the page.
+     * This method sets the page attribute.
      * 
      * @param Page $page Page to be set.
      * 
