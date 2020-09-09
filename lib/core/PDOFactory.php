@@ -3,6 +3,11 @@ namespace Core;
 
 class PDOFactory
 {
+    /**
+     * This methods return a PDO object representing a MySQL connexion.
+     * 
+     * @return PDO
+     */
     public static function getMysqlConnexion()
     {
         $config = yaml_parse_file(__DIR__.'/config/database.yaml');
