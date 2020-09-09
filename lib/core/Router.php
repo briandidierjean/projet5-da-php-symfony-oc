@@ -45,7 +45,7 @@ class Router
                 }
                 return $route;
             }
-            throw new Exception('Aucune route ne correspond à l\'URL');
+            throw new \Exception('Aucune route ne correspond à l\'URL');
         }
     }
 }
