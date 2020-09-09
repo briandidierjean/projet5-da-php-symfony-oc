@@ -6,6 +6,7 @@ abstract class Controller extends ApplicationComponent
     protected $module;
     protected $action;
     protected $view;
+    protected $page;
     protected $managers;
 
     public function __constrcut(Application $app, $module, $action)
@@ -67,8 +68,18 @@ abstract class Controller extends ApplicationComponent
     }
 
     /**
+     * This method returns the page attribute.
+     *
+     * @return mixed
+     */
+    public function getPage()
+    {
+        return $this->page;
+    }
+
+    /**
      * This method returns the managers attribute.
-     * 
+     *
      * @return Managers
      */
     public function getManagers()
@@ -92,9 +103,9 @@ abstract class Controller extends ApplicationComponent
 
     /**
      * This method set the action attribute.
-     * 
+     *
      * @param string $action Action to be set
-     * 
+     *
      * @return null
      */
     public function setAction($action)
@@ -106,9 +117,9 @@ abstract class Controller extends ApplicationComponent
 
     /**
      * This method set the view attribute.
-     * 
+     *
      * @param string $view View to be set
-     * 
+     *
      * @return null
      */
     public function setView($view)
