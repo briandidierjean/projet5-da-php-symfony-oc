@@ -4,7 +4,7 @@ namespace Core;
 /**
  * This class represent a http request.
  */
-class HTTPRequest
+class HTTPRequest extends ApplicationComponent
 {
     /**
      * This method return the URL used by the client.

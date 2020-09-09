@@ -4,7 +4,7 @@ namespace Core;
 /**
  * This class represent a http response.
  */
-class HTTPResponse
+class HTTPResponse extends ApplicationComponent
 {
     protected $page;
 
