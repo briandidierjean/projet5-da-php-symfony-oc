@@ -6,7 +6,6 @@ abstract class Controller extends ApplicationComponent
     protected $module;
     protected $action;
     protected $view;
-    protected $page;
     protected $managers;
 
     public function __constrcut(Application $app, $module, $action)
@@ -16,7 +15,6 @@ abstract class Controller extends ApplicationComponent
         $this->setModule($module);
         $this->setAction($action);
         $this->setView($action);
-        $this->page = new Page($app);
         $this->managers = new Managers('PDO', PDOFactory::getMysqlConnexion());
     }
 
@@ -66,16 +64,6 @@ abstract class Controller extends ApplicationComponent
     public function getView()
     {
         return $this->view;
-    }
-
-    /**
-     * This method returns the page attribute.
-     *
-     * @return Page
-     */
-    public function getPage()
-    {
-        return $this->page;
     }
 
     /**
