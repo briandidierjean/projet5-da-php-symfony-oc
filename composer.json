@@ -9,7 +9,8 @@
     ],
     "autoload": {
         "psr-4": {
-            "Core\\": "lib/core/"
+            "Core\\": "lib/Core/",
+            "App\\": "App/"
         }
     },
     "require": {},
