@@ -9,7 +9,7 @@ class FrontOfficeApllication extends Applicaiton
     {
         parent::__construct();
 
-        $this->name = 'Front Office';
+        $this->name = 'FrontOffice';
     }
 
     /**
