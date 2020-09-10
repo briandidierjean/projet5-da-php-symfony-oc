@@ -28,7 +28,7 @@ class Form
     }
 
     /**
-     * This method creates a view representing a field.
+     * This method creates a view representing the form.
      *
      * @return string
      */
