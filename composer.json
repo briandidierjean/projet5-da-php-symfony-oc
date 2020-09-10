@@ -9,10 +9,13 @@
     ],
     "autoload": {
         "psr-4": {
-            "Core\\": "lib/core/"
+            "Core\\": "lib/Core/",
+            "App\\": "App/"
         }
     },
-    "require": {},
+    "require": {
+        "twig/twig": "^3.0"
+    },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.5"
     }

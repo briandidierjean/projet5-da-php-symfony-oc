@@ -14,6 +14,12 @@ abstract class Application
         $this->name = '';
     }
 
+    /**
+     * This methods run the application. It takes a HTTP request
+     * and returns a HTTP Response.
+     * 
+     * @return null
+     */
     abstract public function run();
 
     /**
