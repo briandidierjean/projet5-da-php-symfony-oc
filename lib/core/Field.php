@@ -105,20 +105,6 @@ abstract class Field
     }
 
     /**
-     * This method set the label attribute.
-     *
-     * @param string $label Label to be set
-     *
-     * @return null
-     */
-    public function setLabel($label)
-    {
-        if (is_string($label)) {
-            $this->label = $label;
-        }
-    }
-
-    /**
      * This method set the name attribute.
      *
      * @param string $name name to be set
@@ -153,7 +139,7 @@ abstract class Field
      *
      * @return null
      */
-    public function setvVlidators(array $validators)
+    public function setvValidators(array $validators)
     {
         foreach ($validators as $validator) {
             if ($validator instanceof Validator
