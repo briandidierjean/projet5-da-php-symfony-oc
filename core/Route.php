@@ -4,15 +4,15 @@ namespace Core;
 class Route
 {
     protected $url;
-    protected $module;
+    protected $controller;
     protected $action;
     protected $vars = [];
     protected $varsNames;
 
-    public function __construct($url, $module, $action, array $varsNames)
+    public function __construct($url, $controller, $action, array $varsNames)
     {
         $this->setURL($url);
-        $this->setModule($module);
+        $this->setcontroller($controller);
         $this->setAction($action);
         $this->setVarsNames($varsNames);
     }
@@ -46,13 +46,13 @@ class Route
     }
 
     /**
-     * This method return the module attribute.
+     * This method return the controller attribute.
      *
      * @return string
      */
-    public function getModule()
+    public function getController()
     {
-        return $this->module;
+        return $this->controller;
     }
 
     /**
@@ -90,7 +90,7 @@ class Route
      *
      * @param string $url The URL to be set
      *
-     * @return null
+     * @return void
      */
     public function setUrl($url)
     {
@@ -100,16 +100,16 @@ class Route
     }
     
     /**
-     * This method set the module attribute.
+     * This method set the controller attribute.
      *
-     * @param string $module The module to be set
+     * @param string $controller The controller to be set
      *
-     * @return null
+     * @return void
      */
-    public function setModule($module)
+    public function setController($controller)
     {
-        if (is_string($module)) {
-            $this->module = $module;
+        if (is_string($controller)) {
+            $this->controller = $controller;
         }
     }
 
@@ -118,7 +118,7 @@ class Route
      *
      * @param string $action The action to be set
      *
-     * @return null
+     * @return void
      */
     public function setAction($action)
     {
@@ -132,7 +132,7 @@ class Route
      *
      * @param array $vars The vars attribute to be set
      *
-     * @return null
+     * @return void
      */
     public function setVars(array $vars)
     {
@@ -144,7 +144,7 @@ class Route
      *
      * @param array $varsNames The varsNames attribute to be set
      *
-     * @return null
+     * @return void
      */
     public function setVarsNames(array $varsNames)
     {

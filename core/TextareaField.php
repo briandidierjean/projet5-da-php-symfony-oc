@@ -39,33 +39,7 @@ class TextareaField extends Field
         return $field.'</textarea>';
     }
 
-    /**
-     * This method return the cols attribute.
-     * 
-     * @return int
-     */
-    public function getCols()
-    {
-        return $this->cols;
-    }
-
-    /**
-     * This method return the rows attribute.
-     * 
-     * @return int
-     */
-    public function getRows()
-    {
-        return $this->rows;
-    }
-
-    /**
-     * This method sets the cols attribute.
-     * 
-     * @param int $cols Cols number to be set
-     * 
-     * @return null
-     */
+    // SETTERS
     public function setCols($cols)
     {
         $cols = (int) $cols;
@@ -74,13 +48,6 @@ class TextareaField extends Field
         }
     }
 
-    /**
-     * This method sets the rows attribute.
-     * 
-     * @param int $rows rows number to be set
-     * 
-     * @return null
-     */
     public function setRows($rows)
     {
         $rows = (int) $rows;

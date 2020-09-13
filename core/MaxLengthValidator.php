@@ -25,28 +25,15 @@ class MaxLengthValidator extends Validator
         return strlen($value) <= $this->maxLength;
     }
 
-    /**
-     * This method returns the maxLength attribute.
-     * 
-     * @return int
-     */
-    public function getMaxLength()
-    {
-        return $this->maxLength;
-    }
-
-    /**
-     * This method sets the maxLength attribute.
-     * 
-     * @param int $maxLength Maximum length to be validated
-     * 
-     * @return null
-     */
+    // SETTERS
     public function setMaxLength($maxLength)
     {
         $maxLength = (int) $maxLength;
-        if ($maxLength > 0) {
-            $this->maxLength = $maxLength;
+        if (!$maxLength > 0) {
+            throw new \Exception(
+                'La longueur maximale doit être un nombre supérieur à 0'
+            );
         }
+        $this->maxLength = $maxLength;
     }
 }

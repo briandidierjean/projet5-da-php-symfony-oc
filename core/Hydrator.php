@@ -8,7 +8,7 @@ trait Hydrator
      *
      * @param array $data Data to be hydrated
      *
-     * @return null
+     * @return void
      */
     public function hydrate($data)
     {

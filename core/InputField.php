@@ -33,33 +33,7 @@ class InputField extends Field
         return $field .= '>';
     }
 
-    /**
-     * This method returns the type attribute.
-     * 
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * This method returns the maxLength attribute.
-     * 
-     * @return int
-     */
-    public function getMaxLength()
-    {
-        return $this->maxLength;
-    }
-
-    /**
-     * This method sets the type attribute.
-     * 
-     * @param string $type Type to be set
-     * 
-     * @return null
-     */
+    // SETTERS
     public function setType($type)
     {
         if (is_string($type)) {
@@ -67,13 +41,6 @@ class InputField extends Field
         }
     }
 
-    /** 
-     * This method sets the maxLength attribute.
-     * 
-     * @param int $maxLength Maximum length to be set
-     * 
-     * @return null
-     */
     public function setMaxLength($maxLength)
     {
         $this->maxLength = (int) $maxLength;
