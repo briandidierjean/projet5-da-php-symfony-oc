@@ -74,36 +74,14 @@
 			<div class="row">
 				<div
 					class="col-lg-8 mx-auto">
-					<!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19.-->
-					<form>
-          {{ form }}
-						<!--<div class="control-group">
-							<div class="form-group floating-label-form-group controls mb-0 pb-2">
-								<label>Nom</label>
-								<input class="form-control" id="name" type="text" placeholder="Nom" required="required" data-validation-required-message="Veuillez renseigner votre nom."/>
-								<p class="help-block text-danger"></p>
-							</div>
-						</div>
-						<div class="control-group">
-							<div class="form-group floating-label-form-group controls mb-0 pb-2">
-								<label>E-mail</label>
-								<input class="form-control" id="email" type="email" placeholder="Email" required="required" data-validation-required-message="Veuillez renseigner votre adresse e-mail"/>
-								<p class="help-block text-danger"></p>
-							</div>
-						</div>
-						<div class="control-group">
-							<div class="form-group floating-label-form-group controls mb-0 pb-2">
-								<label>Message</label>
-								<textarea class="form-control" id="message" rows="5" placeholder="Message" required="required" data-validation-required-message="Veuillez renseigner votre message"></textarea>
-								<p class="help-block text-danger"></p>
-							</div>
-						</div>
+					<form method="post" action="/">
+          {{ form | raw }}
 						<br/>
 						<div id="success"></div>
 						<div class="form-group">
 							<button class="btn btn-primary btn-xl" type="submit">Envoyer</button>
 						</div>
-					</form>-->
+					</form>
 				</div>
 			</div>
 		</div>

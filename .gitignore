@@ -1,2 +1,3 @@
 /vendor/
-/lib/core/config/database.yaml
+/config/database.yaml
+/config/mail.yaml

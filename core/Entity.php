@@ -3,7 +3,7 @@ namespace Core;
 
 abstract class Entity
 {
-    use Hydratator;
+    use Hydrator;
 
     protected $id;
 

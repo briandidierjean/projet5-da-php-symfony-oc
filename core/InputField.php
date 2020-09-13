@@ -1,10 +1,9 @@
 <?php
-namespace InputField;
+namespace Core;
 
 class InputField extends Field
 {
     protected $type;
-    protected $maxLength;
 
     /**
      * This method builds an HTML input field.
@@ -13,14 +12,15 @@ class InputField extends Field
      */
     public function build()
     {
-        $field = '';
+        $field = '<div class="control-group">
+        <div class="form-group floating-label-form-group controls mb-0 pb-2">';
 
-        if (!empty($this->errorMsg)) {
-            $field .= $this->errorMsg.'<br>';
+        $field .= '<label>'.$this->label.'</label><input class="form-control"
+                  type="'.$this->type.'" name="'.$this->name.'"';
+        
+        if (!empty($this->placeholder)) {
+            $field .= ' placeholder="'.($this->placeholder).'"';
         }
-
-        $field .= '<label>'.$this->label.'</label><input type="'.
-                  $this->type.'" name="'.$this->name.'"';
 
         if (!empty($this->value)) {
             $field .= ' value="'.htmlspecialchars($this->value).'"';
@@ -30,7 +30,16 @@ class InputField extends Field
             $field .= ' maxlength="'.$this->maxLength.'"';
         }
 
-        return $field .= '>';
+        if (!empty($this->required) && $this->required == true) {
+            $field .= ' required';
+        }
+
+        $field .= '>';
+
+        if (!empty($this->errorMsg)) {
+            $field .= '<div class="invalid-feedback">'.$this->errorMsg.'</div>';
+        }
+        return $field .= '</div>';
     }
 
     // SETTERS
@@ -39,10 +48,5 @@ class InputField extends Field
         if (is_string($type)) {
             $this->type = $type;
         }
-    }
-
-    public function setMaxLength($maxLength)
-    {
-        $this->maxLength = (int) $maxLength;
     }
 }

@@ -1,13 +1,13 @@
 <?php
-namespace Message;
+namespace App\Model\Entity;
 
 use \Core\Entity;
 
 class Message extends Entity
 {
     protected $name;
-    protected $emailAddress;
-    protected $content;
+    protected $email;
+    protected $message;
 
     /**
      * This method checks if a message is valid.
@@ -18,8 +18,8 @@ class Message extends Entity
     {
         return !(
             empty($this->name) ||
-            empty($this->emailAddress) ||
-            empty($this->content)
+            empty($this->email) ||
+            empty($this->message)
         );
     }
 
@@ -29,14 +29,14 @@ class Message extends Entity
         return $this->name;
     }
 
-    public function getEmailAddress()
+    public function getEmail()
     {
-        return $this->emailAddress;
+        return $this->email;
     }
 
-    public function getContent()
+    public function getMessage()
     {
-        return $this->content;
+        return $this->message;
     }
 
     // SETTERS
@@ -47,17 +47,17 @@ class Message extends Entity
         }
     }
 
-    public function setEmailAddress($emailAddress)
+    public function setEmail($email)
     {
-        if (is_string($emailAddress)) {
-            $this->emailAddress = $emailAddress;
+        if (is_string($email)) {
+            $this->email = $email;
         }
     }
 
-    public function setContent($content)
+    public function setMessage($message)
     {
-        if (is_string($content)) {
-            $this->content = $content;
+        if (is_string($message)) {
+            $this->message = $message;
         }
     }
 }

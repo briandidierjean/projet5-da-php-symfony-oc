@@ -10,8 +10,8 @@ class Application
 
     public function __construct()
     {
-        $this->httpRequest = new HTTPRequest);
-        $this->httpRequest = new HTTPRequest);
+        $this->httpRequest = new HTTPRequest;
+        $this->httpResponse = new HTTPResponse;
     }
 
     /**
