@@ -13,14 +13,15 @@ class TextareaField extends Field
      */
     public function build()
     {
-        $field = '';
-
-        if (!empty($this->errorMsg)) {
-            $field .= $this->errorMsg.'<br>';
-        }
+        $field = '<div class="control-group">
+        <div class="form-group floating-label-form-group controls mb-0 pb-2">';
 
         $field .= '<label>'.$this->label.
-                  '</label><textarea name="'.$this->name.'"';
+                  '</label><textarea class="form-control" name="'.$this->name.'"';
+
+        if (!empty($this->placeholder)) {
+            $field .= ' placeholder="'.($this->placeholder).'"';
+        }
 
         if (!empty($this->cols)) {
             $field .= ' cols="'.$this->cols.'"';
@@ -30,13 +31,26 @@ class TextareaField extends Field
             $field .= ' rows="'.$this->rows.'"';
         }
 
+        if (!empty($this->maxLength)) {
+            $field .= ' maxlength="'.$this->maxLength.'"';
+        }
+
+        if (!empty($this->required) && $this->required == true) {
+            $field .= ' required';
+        }
+
         $field .= '>';
 
-        if (!emtpy($this->value)) {
+        if (!empty($this->value)) {
             $field .= htmlspecialchars($this->value);
         }
 
-        return $field.'</textarea>';
+        $field .='</textarea>';
+
+        if (!empty($this->errorMsg)) {
+            $field .= '<div class="invalid-feedback">'.$this->errorMsg.'</div>';
+        }
+        return $field .= '</div>';
     }
 
     // SETTERS

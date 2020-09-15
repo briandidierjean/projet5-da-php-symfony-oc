@@ -11,7 +11,10 @@
         "psr-4": {
             "Core\\": "core/",
             "App\\": "src/",
-            "App\\Controller\\": "src/controllers"
+            "App\\Controller\\": "src/controllers/",
+            "App\\Model\\Entity\\": "src/model/entities/",
+            "App\\Model\\Manager\\": "src/model/managers/",
+            "App\\FormBuilder\\": "src/formBuilders/"
         }
     },
     "require": {

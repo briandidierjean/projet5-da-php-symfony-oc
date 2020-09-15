@@ -16,4 +16,10 @@ abstract class FormBuilder
      * @return void
      */
     abstract public function build();
+
+    // GETTERS
+    public function getForm()
+    {
+        return $this->form;
+    }
 }

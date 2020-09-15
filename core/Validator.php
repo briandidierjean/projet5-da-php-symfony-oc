@@ -1,5 +1,5 @@
 <?php
-namespace Validator;
+namespace Core;
 
 abstract class Validator
 {
@@ -13,9 +13,11 @@ abstract class Validator
     /**
      * This methods checks if a form field is validated by the validator.
      * 
-     * @return void
+     * @param strong $value Value to be validated
+     * 
+     * @return bool
      */
-    abstract public function isValid();
+    abstract public function isValid($value);
 
     // GETTERS
     public function getErrorMsg()

@@ -9,6 +9,8 @@ abstract class Field
     protected $name;
     protected $value;
     protected $placeholder;
+    protected $required;
+    protected $maxLength;
     protected $errorMsg;
     protected $validators = [];
 
@@ -64,6 +66,16 @@ abstract class Field
         return $this->placeholder;
     }
 
+    public function getRequired()
+    {
+        return $this->required;
+    }
+
+    public function getMaxLength()
+    {
+        return $this->maxLength;
+    }
+
     public function getValidators()
     {
         return $this->validators;
@@ -94,6 +106,18 @@ abstract class Field
         if (is_string($placeholder)) {
             $this->placeholder = $placeholder;
         }
+    }
+
+    public function setRequired($required)
+    {
+        if (is_bool($required)) {
+            $this->required = $required;
+        }
+    }
+
+    public function setMaxLength($maxLength)
+    {
+        $this->maxLength = (int) $maxLength;
     }
 
     public function setValidators(array $validators)

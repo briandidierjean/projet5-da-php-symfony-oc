@@ -20,7 +20,7 @@ class Form
      */
     public function addField(Field $field)
     {
-        $attributeGetter = 'get' . $field->getName();
+        $attributeGetter = 'get'.$field->getName();
         $field->setValue($this->entity->$attributeGetter());
 
         $this->fields[] = $field;
