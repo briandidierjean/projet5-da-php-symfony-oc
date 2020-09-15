@@ -8,7 +8,7 @@ class Form
 
     public function __construct(Entity $entity)
     {
-        $this->setEntity($entity);
+        $this->entity = $entity;
     }
 
     /**
@@ -20,7 +20,7 @@ class Form
      */
     public function addField(Field $field)
     {
-        $attributeGetter = 'get' . $field->getName();
+        $attributeGetter = 'get'.$field->getName();
         $field->setValue($this->entity->$attributeGetter());
 
         $this->fields[] = $field;
@@ -57,37 +57,5 @@ class Form
 
             return true;
         }
-    }
-
-    /**
-     * This methods returns the entity attribute.
-     * 
-     * @return Entity
-     */
-    public function getEntity()
-    {
-        return $this->entity;
-    }
-
-    /**
-     * This methods returns the fields attribute.
-     * 
-     * @return array
-     */
-    public function getFields()
-    {
-        return $this->fields;
-    }
-
-    /**
-     * This methods set the entity attribute.
-     * 
-     * @param Entity $entity The entity to be set
-     * 
-     * @return null
-     */
-    public function setEntity(Entity $entity)
-    {
-        $this->entity = $entity;
     }
 }

@@ -1,6 +1,8 @@
 <?php
 namespace Core;
 
+use Symfony\Component\Yaml\Yaml;
+
 class PDOFactory
 {
     /**
@@ -10,7 +12,7 @@ class PDOFactory
      */
     public static function getMysqlConnexion()
     {
-        $config = yaml_parse_file(__DIR__.'/config/database.yaml');
+        $config = Yaml::parseFile(__DIR__.'/../config/database.yaml');
 
         $db = new \PDO(
             'mysql:host='.$config['host'].';

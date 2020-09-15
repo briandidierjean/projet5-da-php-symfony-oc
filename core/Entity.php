@@ -3,7 +3,7 @@ namespace Core;
 
 abstract class Entity
 {
-    use Hydratator;
+    use Hydrator;
 
     protected $id;
 
@@ -24,23 +24,13 @@ abstract class Entity
         return empty($this->id);
     }
 
-    /**
-     * This method return the id attribute.
-     * 
-     * @return int
-     */
+    // GETTERS
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * This method set the id attribute.
-     * 
-     * @param int $id ID to be set
-     * 
-     * @return null
-     */
+    // SETTERS
     public function setId($id)
     {
         $this->id = (int) $id;

@@ -1,10 +1,7 @@
 <?php
 namespace Core;
 
-/**
- * This class represent a http request.
- */
-class HTTPRequest extends ApplicationComponent
+class HTTPRequest
 {
     /**
      * This method return the URL used by the client.

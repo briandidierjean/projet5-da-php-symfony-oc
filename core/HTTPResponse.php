@@ -1,17 +1,14 @@
 <?php
 namespace Core;
 
-/**
- * This class represent a http response.
- */
-class HTTPResponse extends ApplicationComponent
+class HTTPResponse
 {
     /**
      * This method set a header to be sent to the client.
      *
      * @param string $header Header to be sent
      *
-     * @return null
+     * @return void
      */
     public function setHeader($header)
     {
@@ -23,7 +20,7 @@ class HTTPResponse extends ApplicationComponent
      *
      * @param string $location Location to be redirected
      *
-     * @return null
+     * @return void
      */
     public function redirect($location)
     {
@@ -36,7 +33,7 @@ class HTTPResponse extends ApplicationComponent
      * 
      * @param string $page HTML page to be sent
      *
-     * @return null
+     * @return void
      */
     public function send($page)
     {
@@ -56,7 +53,7 @@ class HTTPResponse extends ApplicationComponent
      * @param bool   $httponly When true the cookie will ba made accessible only
      *                         through the HTTP protocol.
      * 
-     * @return null
+     * @return void
      */
     public function setCookie(
         $name,

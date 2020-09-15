@@ -10,7 +10,7 @@ class Router
      *
      * @param Route $route Route to be added to the list.
      *
-     * @return null
+     * @return void
      */
     public function addRoute(Route $route)
     {

@@ -9,10 +9,18 @@
     ],
     "autoload": {
         "psr-4": {
-            "Core\\": "lib/core/"
+            "Core\\": "core/",
+            "App\\": "src/",
+            "App\\Controller\\": "src/controllers/",
+            "App\\Model\\Entity\\": "src/model/entities/",
+            "App\\Model\\Manager\\": "src/model/managers/",
+            "App\\FormBuilder\\": "src/formBuilders/"
         }
     },
-    "require": {},
+    "require": {
+        "twig/twig": "^3.0",
+        "symfony/yaml": "^5.1"
+    },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.5"
     }
