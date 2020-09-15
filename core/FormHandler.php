@@ -1,6 +1,8 @@
 <?php
 namespace Core;
 
+use Symfony\Component\Yaml\Yaml;
+
 class FormHandler
 {
     protected $form;
@@ -20,6 +22,8 @@ class FormHandler
     /**
      * This method checks if a POST parameter is found,
      * and save form data to database.
+     * 
+     * @param Manager $manager Manager to use
      * 
      * @return bool
      */
@@ -44,10 +48,14 @@ class FormHandler
     {
         if ($this->httpRequest->getMethod() == 'POST' && $this->form->isValid()) {
 
-            $to = 'briandidierjean@outlook.com';
+            $mails = Yaml::parseFile(
+                __DIR__.'/../config/mail.yaml'
+            );
+
+            $to = $mails['receiptAddress'];
             $subject = 'Website Contact Form: '.$this->entity->getName();
             $body = $this->entity->getMessage();
-            $header = 'From: noreply@briandidierjean.com';
+            $header = 'From: '.$mails['sendingAddress'];
             $header .= 'Reply-To:'.$this->entity->getEmail();
 
             mail($to, $subject, $body, $header);
