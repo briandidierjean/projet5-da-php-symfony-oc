@@ -2,7 +2,7 @@
 namespace Model\Manager;
 
 use \Core\Manager;
-use \Core\Entity;
+use \App\Model\Entity\User;
 
 abstract class UserManager extends Manager
 {
