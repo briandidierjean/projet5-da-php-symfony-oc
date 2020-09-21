@@ -25,27 +25,6 @@ class User extends Entity
         );
     }
 
-    /**
-     * This method authenticate a use by creating a session
-     * variable.
-     * 
-     * @return void
-     */
-    public function authenticate()
-    {
-        $_SESSION['auth'] = true;
-    }
-
-    /**
-     * This method checks if a user is authenticated.
-     * 
-     * @return bool
-     */
-    public function isAuthenticated()
-    {
-        return isset($_SESSION['auth']) && $_SESSION['auth'] == true;
-    }
-
     // GETTERS
     public function getRole()
     {

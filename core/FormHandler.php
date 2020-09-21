@@ -43,14 +43,14 @@ class FormHandler
      * and get entity from database.
      * 
      * @param Manager $manager Manager to use
-     * @param mixed $attribute Attribute to use
+     * @param mixed $attr Attribute to use
      * 
      * @return mixed
      */
-    public function getProcess(Manager $manager, $attribute)
+    public function getProcess(Manager $manager, $attr)
     {
         if ($this->httpRequest->getMethod() == 'POST' && $this->form->isValid()) {
-            return $entity = $manager->get($this->entity->get.ucfirst($attribute));
+            return $entity = $manager->get($this->entity->get.ucfirst($attr));
         }
 
         return false;

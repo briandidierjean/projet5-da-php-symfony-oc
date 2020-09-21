@@ -13,10 +13,11 @@ class HomeController extends Controller
      * This method show the home page with the contact form.
      * 
      * @param HTTPRequest $httpRequest HTTP request to be passed.
+     * @param HTTPResponse $httpResponse HTTP response to be passed.
      * 
      * @return void
      */
-    public function index(HTTPRequest $httpRequest)
+    public function index(HTTPRequest $httpRequest, HTTPResponse $httpResponse)
     {
         if ($httpRequest->getMethod() == 'POST') {
             $message = new Message(
@@ -48,5 +49,7 @@ class HomeController extends Controller
             'home/index.html.twig',
             ['form' => $form->createView()]
         );
+
+        $httpResponse->send($this->page);
     }
 }

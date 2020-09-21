@@ -41,10 +41,23 @@ class HTTPResponse
     }
 
     /**
+     * This method set a session.
+     * 
+     * @param string $key SESSION key to be set
+     * @param mixed $value SESSION value to be set
+     * 
+     * @return void
+     */
+    public function setSession($key, $value)
+    {
+        $_SESSION[$key] = $value;
+    }
+
+    /**
      * This method set a secure cookie.
      *
      * @param string $name     Name of the cookie
-     * @param string $value    Value of the cookie
+     * @param mixed  $value    Value of the cookie
      * @param int    $expire   Expiration timestamp of the cookie
      * @param mixed  $path     Path where the cookie must be saved
      * @param mixed  $domain   The (sub)domain that the cookie is available to.
@@ -57,7 +70,7 @@ class HTTPResponse
      */
     public function setCookie(
         $name,
-        $value = '',
+        $value,
         $expire = 0,
         $path = null,
         $domain = null,

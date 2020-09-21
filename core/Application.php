@@ -24,8 +24,6 @@ class Application
     {
         $controller = $this->getController();
         $controller->execute();
-
-        $this->httpResponse->send($controller->getPage());
     }
 
     /**

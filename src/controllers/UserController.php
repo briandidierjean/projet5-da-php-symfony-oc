@@ -10,10 +10,11 @@ class UserController extends Controller
      * This method signs in a user.
      * 
      * @param HTTPRequest $httpRequest HTTP request to be sent.
+     * @param HTTPResponse $httpResponse HTTP response to be sent.
      * 
      * @return void
      */
-    public function signIn(HTTPRequest $httpRequest)
+    public function signIn(HTTPRequest $httpRequest, HTTPResponse $httpResponse)
     {
         if ($httpRequest->getMethod() == 'POST') {
             $user = new User(
@@ -33,16 +34,15 @@ class UserController extends Controller
 
         $formHandler = new FormHandler($form, $user, $httpRequest);
 
-        $userDatabase = $formHandler->getProcess($this->managers->getManagerOf('User'));
+        $response = $formHandler->getProcess($this->managers->getManagerOf('User'));
 
-        if ($userDatabase) {
-            if (!password_verify($user->getPassword(), $userDatabase->getPassword())) {
+        if ($response) {
+            if (!password_verify($user->getPassword(), $response->getPassword())) {
                 throw new \Exception('Mot de passe incorrect');
             }
 
-            $user->authenticate();
-
-            $this->app->getHttpResponse()->redirect('/');
+            $httpResponse->setSession('user', $response);
+            $httpResponse->redirect('/');
         }
             
 
@@ -53,6 +53,8 @@ class UserController extends Controller
             'user/signIn.html.twig',
             ['form' => $form->createView()]
         );
+
+        $httpResponse->send($this->page);
     }
 
     /**
@@ -62,7 +64,7 @@ class UserController extends Controller
      * 
      * @return void
      */
-    public function signUp(HTTPRequest $httpRequest)
+    public function signUp(HTTPRequest $httpRequest, HTTPResponse $httpResponse)
     {
         if ($httpRequest->getMethod() == 'POST') {
             $user = new User(
@@ -84,10 +86,11 @@ class UserController extends Controller
 
         $formHandler = new FormHandler($form, $user, $httpRequest);
 
-        if ($formHandler->saveProcess()) {
-            $user->authenticate();
-            
-            $this->app->getHttpResponse()->redirect('/');
+        if ($formHandler->saveProcess($this->managers->getManagerOf('User'))) {
+            $response = $this->managers->getManagerOf('User')->get($user->getEmail());
+
+            $httpResponse->setSession('user', $response);
+            $httpResponse->redirect('/');
         }
 
         $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../views');
@@ -97,6 +100,8 @@ class UserController extends Controller
             'user/signUp.html.twig',
             ['form' => $form->createView()]
         );
+
+        $httpResponse->send($this->page);
     }
 
     /**
@@ -106,9 +111,24 @@ class UserController extends Controller
      * 
      * @return void
      */
-    public function changePassword(HTTPRequest $httpRequest)
+    public function changePassword(HTTPRequest $httpRequest, HTTPResponse $httpResponse)
     {
 
+        $user = $httpRequest->getSession($user);
+        
+        $formBuilder = new ChangingPasswordFormBuilder($user);
+        $formBuilder->build();
+
+        $form = $formBuilder->getForm();
+
+        $formHandler = new FormHandler($form, $user, $httpRequest);
+
+        if ($formHandler->saveProcess($this->managers->getManagerOf('User'))) {
+            $response = $this->managers->getManagerOf('User')->get($user->getEmail());
+
+            $httpResponse->setSession('user', $response);
+            $httpResponse->redirect('/');
+        }
     }
 
     /**
@@ -118,7 +138,7 @@ class UserController extends Controller
      * 
      * @return void
      */
-    public function adminPanel(HTTPRequest $httpRequest)
+    public function adminPanel(HTTPRequest $httpRequest, HTTPResponse $httpResponse)
     {
 
     }

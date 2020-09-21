@@ -30,12 +30,6 @@ abstract class Controller
             );
         }
 
-        $this->$method($this->app->getHttpRequest());
-    }
-
-    // GETTERS
-    public function getPage()
-    {
-        return $this->page;
+        $this->$method($this->app->getHttpRequest(), $this->app->getHttpResponse());
     }
 }
