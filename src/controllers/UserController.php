@@ -41,7 +41,7 @@ class UserController extends Controller
             }
 
             $user->authenticate();
-            
+
             $this->app->getHttpResponse()->redirect('/');
         }
             
@@ -85,6 +85,8 @@ class UserController extends Controller
         $formHandler = new FormHandler($form, $user, $httpRequest);
 
         if ($formHandler->saveProcess()) {
+            $user->authenticate();
+            
             $this->app->getHttpResponse()->redirect('/');
         }
 
