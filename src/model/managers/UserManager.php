@@ -7,6 +7,15 @@ use \App\Model\Entity\User;
 abstract class UserManager extends Manager
 {
     /**
+     * This method gets a user from the database.
+     * 
+     * @param mixed $email Email address to use as a filter
+     * 
+     * @return User
+     */
+    abstract public function get($email);
+
+    /**
      * This method adds a new user in the database.
      * 
      * @param User $user User to be added.
@@ -39,7 +48,7 @@ abstract class UserManager extends Manager
      * 
      * @param string $email Email address to be checked.
      * 
-     * @return void
+     * @return bool
      */
     abstract public function exists($email);
 

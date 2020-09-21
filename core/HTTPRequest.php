@@ -1,6 +1,8 @@
 <?php
 namespace Core;
 
+session_start();
+
 class HTTPRequest
 {
     /**
@@ -69,6 +71,30 @@ class HTTPRequest
     public function getPost($key)
     {
         return isset($_POST[$key]) ? $_POST[$key] : null;
+    }
+
+    /**
+     * This method checkes if a SESSION key exists.
+     * 
+     * @param string $key SESSION key
+     * 
+     * @return bool
+     */
+    public function sessionExist($key)
+    {
+        return isset($_SESSION[$key]);
+    }
+
+    /**
+     * This method returns a SESSION key value.
+     * 
+     * @param string $key SESSION key
+     * 
+     * @return string
+     */
+    public function getSession($key)
+    {
+        return isset($_SESSION[$key]) ? $_SESSION[$key] : null;
     }
 
     /**

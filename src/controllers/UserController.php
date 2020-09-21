@@ -33,9 +33,18 @@ class UserController extends Controller
 
         $formHandler = new FormHandler($form, $user, $httpRequest);
 
-        if ($formHandler->saveProcess()) {
+        $userDatabase = $formHandler->getProcess($this->managers->getManagerOf('User'));
+
+        if ($userDatabase) {
+            if (!password_verify($user->getPassword(), $userDatabase->getPassword())) {
+                throw new \Exception('Mot de passe incorrect');
+            }
+
+            $user->authenticate();
+            
             $this->app->getHttpResponse()->redirect('/');
         }
+            
 
         $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../views');
         $twig = new \Twig\Environment($loader);

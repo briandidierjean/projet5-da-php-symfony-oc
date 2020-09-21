@@ -5,6 +5,19 @@ use \App\Model\Entity\User;
 
 class UserManagerPDO extends UserManager
 {
+    protected function get($email)
+    {
+        $request = $this->dao->prepare(
+            'SELECT * FROM users WHERE email = :email'
+        );
+
+        $request->bindValue(':email', $email, \PDO::PARAM_STR);
+
+        $request->execute();
+
+        return new User($request->fetch());
+    }
+
     protected function add(User $user)
     {
         $request = $this->dao->prepare(
