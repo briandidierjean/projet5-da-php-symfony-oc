@@ -9,6 +9,13 @@ use \Core\FormHandler;
 
 class HomeController extends Controller
 {
+    /**
+     * This method show the home page with the contact form.
+     * 
+     * @param HTTPRequest $httpRequest HTTP request to be passed.
+     * 
+     * @return void
+     */
     public function index(HTTPRequest $httpRequest)
     {
         if ($httpRequest->getMethod() == 'POST') {
