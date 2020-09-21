@@ -41,7 +41,7 @@ class MessageFormBuilder extends FormBuilder
                     'required' => true,
                     'validators' => [
                         new NotNullValidator(
-                            'Merci de spécifier une adresse e-mail', 30
+                            'Merci de spécifier une adresse e-mail'
                         ),
                         new EmailValidator(
                             'Merci de spécifier une adresse e-mail valide'

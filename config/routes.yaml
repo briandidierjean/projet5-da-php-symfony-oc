@@ -1,12 +1,8 @@
-Home:
-
 - url: /
   controller: home
   action: index
   vars:
 
-User:
-  
 - url: /sign-in
   controller: user
   action: signIn

@@ -97,7 +97,7 @@ class UserController extends Controller
      */
     public function changePassword(HTTPRequest $httpRequest)
     {
-        
+
     }
 
     /**
@@ -107,7 +107,7 @@ class UserController extends Controller
      * 
      * @return void
      */
-    public function admin(HTTPRequest $httpRequest)
+    public function adminPanel(HTTPRequest $httpRequest)
     {
 
     }
