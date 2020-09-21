@@ -55,4 +55,5 @@ class UserManagerPDO extends UserManager
         $request->execute();
 
         return $user = $request->fetch();
+    }
 }
