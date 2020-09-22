@@ -115,7 +115,6 @@ class UserController extends Controller
      */
     public function changePassword(HTTPRequest $httpRequest, HTTPResponse $httpResponse)
     {
-
         $user = $httpRequest->getSession($user);
         
         $formBuilder = new ChangingPasswordFormBuilder($user);
@@ -141,8 +140,26 @@ class UserController extends Controller
      * 
      * @return void
      */
-    public function adminPanel(HTTPRequest $httpRequest, HTTPResponse $httpResponse)
+    public function admin(HTTPRequest $httpRequest, HTTPResponse $httpResponse)
     {
+        if ($httpRequest->getSession($user) === null) {
+            $httpResponse->redirect('/sign-in');
+        }
 
+        $user = $httpRequest->getSession($user);
+
+        if (!$user->getRole() == 'administrator') {
+            throw new \Exception('Seuls les administrateurs peuvent accéder à cette page');
+        }
+
+        $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../views');
+        $twig = new \Twig\Environment($loader);
+
+        $this->page = $twig->render(
+            'user/admin.html.twig',
+            []
+        );
+
+        $httpResponse->send($this->page);
     }
 }
