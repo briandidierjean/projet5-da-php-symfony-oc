@@ -61,6 +61,7 @@ class UserController extends Controller
      * This method signs up a user.
      * 
      * @param HTTPRequest $httpRequest HTTP request to be sent.
+     * @param HTTPResponse $httpResponse HTTP response to be sent.
      * 
      * @return void
      */
@@ -108,6 +109,7 @@ class UserController extends Controller
      * This method change the user password.
      * 
      * @param HTTPRequest $httpRequest HTTP request to be sent.
+     * @param HTTPResponse $httpResponse HTTP response to be sent.
      * 
      * @return void
      */
@@ -135,6 +137,7 @@ class UserController extends Controller
      * This method return the administration panel.
      * 
      * @param HTTPRequest $httpRequest HTTP request to be sent.
+     * @param HTTPResponse $httpResponse HTTP response to be sent.
      * 
      * @return void
      */
