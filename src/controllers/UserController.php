@@ -3,6 +3,12 @@ namespace App\Controller;
 
 use \Core\Controller;
 use \Core\HTTPRequest;
+use \Core\HTTPResponse;
+use \App\Model\Entity\User;
+use \App\FormBuilder\ChangingPasswordFormBuilder;
+use \App\FormBuilder\SigningInFormBuilder;
+use \App\FormBuilder\SigningUpFormBuilder;
+use \Core\FormHandler;
 
 class UserController extends Controller
 {

@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use \Core\Controller;
 use \Core\HTTPRequest;
+use \Core\HTTPResponse;
 use \App\Model\Entity\Message;
 use \App\FormBuilder\MessageFormBuilder;
 use \Core\FormHandler;

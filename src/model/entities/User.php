@@ -1,6 +1,8 @@
 <?php
 namespace App\Model\Entity;
 
+use \Core\Entity;
+
 class User extends Entity
 {
     protected $id;

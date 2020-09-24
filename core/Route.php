@@ -12,7 +12,7 @@ class Route
     public function __construct($url, $controller, $action, array $varsNames)
     {
         $this->setURL($url);
-        $this->setcontroller($controller);
+        $this->setController($controller);
         $this->setAction($action);
         $this->setVarsNames($varsNames);
     }
