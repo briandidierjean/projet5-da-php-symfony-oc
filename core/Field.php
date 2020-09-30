@@ -37,7 +37,7 @@ abstract class Field
     {
         foreach ($this->validators as $validator) {
             if (!$validator->isValid($this->value)) {
-                $this->errorMsg = $validator->errorMsg();
+                $this->errorMsg = $validator->getErrorMsg();
                 return false;
             }
         }

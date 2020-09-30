@@ -27,7 +27,7 @@ class Managers
         }
 
         if (!isset($this->managers[$entity])) {
-            $manager = '\\App\\Model\\Manager\\Manager'.$this->api;
+            $manager = '\\App\\Model\\Manager\\'.$entity.'Manager'.$this->api;
             
             $this->managers[$entity] = new $manager($this->dao);
         }

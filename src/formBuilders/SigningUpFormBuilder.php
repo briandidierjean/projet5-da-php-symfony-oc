@@ -6,8 +6,9 @@ use \Core\InputField;
 use \Core\MaxLengthValidator;
 use \Core\NotNullValidator;
 use \Core\EmailValidator;
+use \Core\PasswordValidator;
 
-class SigningInFormBuilder extends FormBuilder
+class SigningUpFormBuilder extends FormBuilder
 {
     public function build()
     {
@@ -55,7 +56,7 @@ class SigningInFormBuilder extends FormBuilder
                     'label' => 'Mot de passe (confirmation)',
                     'type' => 'password',
                     'name' => 'confirmedPassword',
-                    'placeholder' => 'Mot de passe',
+                    'placeholder' => 'Mot de passe (confirmation)',
                     'required' => true,
                     'maxLength' => 30,
                     'validators' => [

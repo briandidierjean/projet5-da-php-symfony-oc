@@ -22,6 +22,8 @@ class UserController extends Controller
      */
     public function signIn(HTTPRequest $httpRequest, HTTPResponse $httpResponse)
     {
+        $user = new User;
+
         if ($httpRequest->getMethod() == 'POST') {
             $user = new User(
                 [
@@ -29,8 +31,8 @@ class UserController extends Controller
                     'password' => $httpRequest->getPost('password')
                 ]
             );
-        } else {
-            $user = new User;
+            /* echo '<pre>';print_r($user);
+            exit(); */
         }
 
         $formBuilder = new SigningInFormBuilder($user);
@@ -40,7 +42,7 @@ class UserController extends Controller
 
         $formHandler = new FormHandler($form, $user, $httpRequest);
 
-        $response = $formHandler->getProcess($this->managers->getManagerOf('User'));
+        $response = $formHandler->getProcess($this->managers->getManagerOf('User'), 'email');
 
         if ($response) {
             if (!password_verify($user->getPassword(), $response->getPassword())) {
@@ -50,7 +52,6 @@ class UserController extends Controller
             $httpResponse->setSession('user', $response);
             $httpResponse->redirect('/');
         }
-            
 
         $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../views');
         $twig = new \Twig\Environment($loader);
@@ -78,26 +79,40 @@ class UserController extends Controller
                 [
                     'email' => $httpRequest->getPost('email'),
                     'password' => $httpRequest->getPost('password'),
+                    'confirmedPassword' => $httpRequest->getPost('confirmedPassword'),
                     'firstName' => $httpRequest->getPost('firstName'),
                     'lastName' => $httpRequest->getPost('lastName')
                 ]
             );
+        /* echo '<pre>';print_r($user);
+        exit(); */
         } else {
             $user = new User;
         }
 
-        $formBuilder = new SigninUpFormBuilder($user);
+        $formBuilder = new SigningUpFormBuilder($user);
         $formBuilder->build();
 
         $form = $formBuilder->getForm();
-
+        
         $formHandler = new FormHandler($form, $user, $httpRequest);
 
-        if ($formHandler->saveProcess($this->managers->getManagerOf('User'))) {
-            $response = $this->managers->getManagerOf('User')->get($user->getEmail());
+        if ($httpRequest->getMethod() == 'POST') {
+            $manager = $this->managers->getManagerOf('User');
+            $response = $manager->get($user->getEmail());
 
+            if ($response) {
+                if ($user->getEmail() === $response->getEmail()) {
+                    throw new \Exception('Adresse email déjà utilisée');
+                }
+            }
+        }
+
+        if ($formHandler->saveProcess($this->managers->getManagerOf('User'))) {
+            /* echo '<pre>';print_r($user);
+            exit(); */
             $httpResponse->setSession('user', $response);
-            $httpResponse->redirect('/');
+            $httpResponse->redirect('/sign-up');
         }
 
         $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../views');

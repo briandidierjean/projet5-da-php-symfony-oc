@@ -1,5 +1,5 @@
 <?php
-namespace Model\Manager;
+namespace App\Model\Manager;
 
 use \Core\Manager;
 use \App\Model\Entity\User;
@@ -22,7 +22,7 @@ abstract class UserManager extends Manager
      * 
      * @return void
      */
-    abstract public function add(User $user);
+    abstract protected function add(User $user);
 
     /**
      * This method updates an existing user in the database.
@@ -31,7 +31,7 @@ abstract class UserManager extends Manager
      * 
      * @return void
      */
-    abstract public function update(User $user);
+    abstract protected function update(User $user);
 
     /**
      * This method deletes an existing user from the database.

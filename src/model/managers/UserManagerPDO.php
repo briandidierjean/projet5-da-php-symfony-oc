@@ -5,7 +5,7 @@ use \App\Model\Entity\User;
 
 class UserManagerPDO extends UserManager
 {
-    protected function get($email)
+    public function get($email)
     {
         $request = $this->dao->prepare(
             'SELECT * FROM users WHERE email = :email'
@@ -15,13 +15,13 @@ class UserManagerPDO extends UserManager
 
         $request->execute();
 
-        return new User($request->fetch());
+        return new User($request->fetchAll());
     }
 
     protected function add(User $user)
     {
         $request = $this->dao->prepare(
-            'INSERT INTO users(email, password, first_name, last_name VALUES(:email, :password, :first_name, :last_name)'
+            'INSERT INTO users(email, password, first_name, last_name) VALUES(:email, :password, :first_name, :last_name)'
         );
 
         $request->bindValue(':email', $user->getEmail(), \PDO::PARAM_STR);
@@ -46,7 +46,7 @@ class UserManagerPDO extends UserManager
         $request->execute();
     }
 
-    protected function delete($id)
+    public function delete($id)
     {
         $request = $this->dao->prepare(
             'DELETE FROM users WHERE id = :id'
@@ -57,7 +57,7 @@ class UserManagerPDO extends UserManager
         $request->execute();
     }
 
-    protected function exists($email)
+    public function exists($email)
     {
         $request = $this->dao->prepare(
             'SELECT email FROM user WHERE email = :email'

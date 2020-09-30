@@ -1,6 +1,6 @@
 {% extends "template.html.twig" %}
 
-{% block title %}Connexion - Brian Didierjean{% endblock %}
+{% block title %}Inscription - Brian Didierjean{% endblock %}
 
 {% block content %}
 <!-- Sign In Section-->
@@ -8,7 +8,7 @@
 		<div
 			class="container mt-5">
 			<!-- Sign In Section Heading-->
-			<h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Connexion</h2>
+			<h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Inscription</h2>
 			<!-- Icon Divider-->
 			<div class="divider-custom">
 				<div class="divider-custom-line"></div>
@@ -21,12 +21,12 @@
 			<div class="row">
 				<div
 					class="col-lg-8 mx-auto">
-					<form method="post" action="/sign-in">
+					<form method="post" action="/sign-up">
           {{ form | raw }}
 						<br/>
 						<div id="success"></div>
 						<div class="form-group">
-							<button class="btn btn-primary btn-xl" type="submit">Se connecter</button>
+							<button class="btn btn-primary btn-xl" type="submit">S'inscrire</button>
 						</div>
 					</form>
 				</div>

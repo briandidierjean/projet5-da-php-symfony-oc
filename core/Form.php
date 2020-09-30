@@ -50,6 +50,8 @@ class Form
      */
     public function isValid()
     {
+        /* echo '<pre>';print_r($this->fields);
+        exit(); */
         foreach ($this->fields as $field) {
             if (!$field->isValid()) {
                 return false;
