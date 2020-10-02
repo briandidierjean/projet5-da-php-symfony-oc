@@ -10,7 +10,7 @@ class Mail
     protected $subject;
     protected $body;
 
-    public function __construct($sender, $subject, $body)
+    public function __construct($sender = '', $subject = '', $body = '')
     {
         $emails = Yaml::parseFile(
             __DIR__.'/../config/mail.yaml'

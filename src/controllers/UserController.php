@@ -8,16 +8,16 @@ use \App\Model\Entity\User;
 use \App\FormBuilder\ChangingPasswordFormBuilder;
 use \App\FormBuilder\SigningInFormBuilder;
 use \App\FormBuilder\SigningUpFormBuilder;
-use \Core\FormHandler;
+use \Core\MatchedValidator;
 
 class UserController extends Controller
 {
     /**
      * This method signs in a user.
-     * 
-     * @param HTTPRequest $httpRequest HTTP request to be sent.
+     *
+     * @param HTTPRequest  $httpRequest  HTTP request to be sent.
      * @param HTTPResponse $httpResponse HTTP response to be sent.
-     * 
+     *
      * @return void
      */
     public function signIn(HTTPRequest $httpRequest, HTTPResponse $httpResponse)
@@ -31,8 +31,6 @@ class UserController extends Controller
                     'password' => $httpRequest->getPost('password')
                 ]
             );
-            /* echo '<pre>';print_r($user);
-            exit(); */
         }
 
         $formBuilder = new SigningInFormBuilder($user);
@@ -40,15 +38,19 @@ class UserController extends Controller
 
         $form = $formBuilder->getForm();
 
-        $formHandler = new FormHandler($form, $user, $httpRequest);
+        if ($httpRequest->getMethod() == 'POST' && $form->isValid()) {
+            $userManager = $this->managers->getManagerOf('User');
 
-        $response = $formHandler->getProcess($this->managers->getManagerOf('User'), 'email');
+            $response = $userManager->get($user->getEmail());
 
-        if ($response) {
-            if (!password_verify($user->getPassword(), $response->getPassword())) {
-                throw new \Exception('Mot de passe incorrect');
+            if (!$response
+                || !MatchedValidator::isValid(
+                    $user->getPassword(),
+                    $response->getPassword()
+                )
+            ) {
+                throw new \Exception('Adresse email out mot de passe incorrect');
             }
-
             $httpResponse->setSession('user', $response);
             $httpResponse->redirect('/');
         }
@@ -66,10 +68,10 @@ class UserController extends Controller
 
     /**
      * This method signs up a user.
-     * 
-     * @param HTTPRequest $httpRequest HTTP request to be sent.
+     *
+     * @param HTTPRequest  $httpRequest  HTTP request to be sent.
      * @param HTTPResponse $httpResponse HTTP response to be sent.
-     * 
+     *
      * @return void
      */
     public function signUp(HTTPRequest $httpRequest, HTTPResponse $httpResponse)
@@ -84,8 +86,6 @@ class UserController extends Controller
                     'lastName' => $httpRequest->getPost('lastName')
                 ]
             );
-        /* echo '<pre>';print_r($user);
-        exit(); */
         } else {
             $user = new User;
         }
@@ -94,25 +94,25 @@ class UserController extends Controller
         $formBuilder->build();
 
         $form = $formBuilder->getForm();
-        
-        $formHandler = new FormHandler($form, $user, $httpRequest);
 
-        if ($httpRequest->getMethod() == 'POST') {
-            $manager = $this->managers->getManagerOf('User');
-            $response = $manager->get($user->getEmail());
+        if ($httpRequest->getMethod() == 'POST' && $form->isValid()) {
+            $userManager = $this->managers->getManagerOf('User');
 
-            if ($response) {
-                if ($user->getEmail() === $response->getEmail()) {
-                    throw new \Exception('Adresse email déjà utilisée');
-                }
+            if ($userManager->get($user->getEmail())) {
+                throw new \Exception('Cet adresse email est déjà utilisée');
             }
-        }
+            if (!MatchedValidator::isValid(
+                $user->getConfirmedPassword(),
+                $user->getPassword()
+            )
+            ) {
+                throw new \Exception('Les mots de passe ne correspondent pas');
+            }
+            $userManager->save($user);
 
-        if ($formHandler->saveProcess($this->managers->getManagerOf('User'))) {
-            /* echo '<pre>';print_r($user);
-            exit(); */
             $httpResponse->setSession('user', $response);
-            $httpResponse->redirect('/sign-up');
+
+            $httpResponse->redirect('/');
         }
 
         $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../views');
@@ -128,10 +128,10 @@ class UserController extends Controller
 
     /**
      * This method change the user password.
-     * 
-     * @param HTTPRequest $httpRequest HTTP request to be sent.
+     *
+     * @param HTTPRequest  $httpRequest  HTTP request to be sent.
      * @param HTTPResponse $httpResponse HTTP response to be sent.
-     * 
+     *
      * @return void
      */
     public function changePassword(HTTPRequest $httpRequest, HTTPResponse $httpResponse)
@@ -155,10 +155,10 @@ class UserController extends Controller
 
     /**
      * This method return the administration panel.
-     * 
-     * @param HTTPRequest $httpRequest HTTP request to be sent.
+     *
+     * @param HTTPRequest  $httpRequest  HTTP request to be sent.
      * @param HTTPResponse $httpResponse HTTP response to be sent.
-     * 
+     *
      * @return void
      */
     public function admin(HTTPRequest $httpRequest, HTTPResponse $httpResponse)

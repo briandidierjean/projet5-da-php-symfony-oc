@@ -15,7 +15,10 @@ class UserManagerPDO extends UserManager
 
         $request->execute();
 
-        return new User($request->fetchAll());
+        if ($request->fetchAll()) {
+            return new User($request->fetchAll());
+        }
+        return null;
     }
 
     protected function add(User $user)
@@ -67,6 +70,9 @@ class UserManagerPDO extends UserManager
 
         $request->execute();
 
-        return $user = $request->fetch();
+        if ($request->fetch()) {
+            return true;
+        }
+        return false;
     }
 }

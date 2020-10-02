@@ -71,17 +71,17 @@ class User extends Entity
     {
         if (is_string($password)) {
             $this->password = password_hash($password, PASSWORD_DEFAULT);
-            /* echo $this->password;
-            exit(); */
         }
     }
 
     public function setConfirmedPassword($confirmedPassword)
     {
-        if (password_hash($confirmedPassword, PASSWORD_DEFAULT) === $this->password) {
-            throw new \Exception('Les deux mots de passe ne correspondent pas');
+        if (is_string($password)) {
+            $this->confirmedPassword = password_hash(
+                $confirmedPassword,
+                PASSWORD_DEFAULT
+            );
         }
-        $this->confirmedPassword = password_hash($confirmedPassword, PASSWORD_DEFAULT);
     }
 
     public function setFirstName($firstName)

@@ -6,7 +6,7 @@ use \Core\HTTPRequest;
 use \Core\HTTPResponse;
 use \App\Model\Entity\Message;
 use \App\FormBuilder\MessageFormBuilder;
-use \Core\FormHandler;
+use \Core\Mail;
 
 class HomeController extends Controller
 {
@@ -37,10 +37,11 @@ class HomeController extends Controller
 
         $form = $formBuilder->getForm();
 
-        $formHandler = new FormHandler($form, $message, $httpRequest);
+        if ($httpRequest->getMethod() == 'POST' && $form->isValid()) {
+            $mail = new Mail($message->getEmail(), $message->getMessage());
+            $mail->send();
 
-        if ($formHandler->sendProcess()) {
-            $this->app->getHttpResponse()->redirect('/');
+            $httpResponse->redirect('/');
         }
 
         $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../views');
