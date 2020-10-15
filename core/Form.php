@@ -3,12 +3,12 @@ namespace Core;
 
 class Form
 {
-    protected $entity;
+    protected $data;
     protected $fields = [];
 
-    public function __construct(Entity $entity)
+    public function __construct(array $data)
     {
-        $this->entity = $entity;
+        $this->data = $data;
     }
 
     /**
@@ -20,8 +20,11 @@ class Form
      */
     public function addField(Field $field)
     {
-        $attributeGetter = 'get'.$field->getName();
-        $field->setValue($this->entity->$attributeGetter());
+        $fieldName = $field->getName();
+        
+        if (!empty($this->data[$fieldName])) {
+            $field->setValue($this->data[$fieldName]);
+        }
 
         $this->fields[] = $field;
         return $this;

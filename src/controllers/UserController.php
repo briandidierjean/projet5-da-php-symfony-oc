@@ -4,11 +4,11 @@ namespace App\Controller;
 use \Core\Controller;
 use \Core\HTTPRequest;
 use \Core\HTTPResponse;
+use \Core\MatchedValidator;
 use \App\Model\Entity\User;
 use \App\FormBuilder\ChangingPasswordFormBuilder;
 use \App\FormBuilder\SigningInFormBuilder;
 use \App\FormBuilder\SigningUpFormBuilder;
-use \Core\MatchedValidator;
 
 class UserController extends Controller
 {
@@ -22,18 +22,16 @@ class UserController extends Controller
      */
     public function signIn(HTTPRequest $httpRequest, HTTPResponse $httpResponse)
     {
-        $user = new User;
+        $data = [];
 
         if ($httpRequest->getMethod() == 'POST') {
-            $user = new User(
-                [
-                    'email' => $httpRequest->getPost('email'),
-                    'password' => $httpRequest->getPost('password')
-                ]
-            );
+            $data = [
+                'email' => $httpRequest->getPost('email'),
+                'password' => $httpRequest->getPost('password')
+            ];
         }
 
-        $formBuilder = new SigningInFormBuilder($user);
+        $formBuilder = new SigningInFormBuilder($data);
         $formBuilder->build();
 
         $form = $formBuilder->getForm();
@@ -41,17 +39,14 @@ class UserController extends Controller
         if ($httpRequest->getMethod() == 'POST' && $form->isValid()) {
             $userManager = $this->managers->getManagerOf('User');
 
-            $response = $userManager->get($user->getEmail());
+            $user = $userManager->get($data['email']);
 
-            if (!$response
-                || !MatchedValidator::isValid(
-                    $user->getPassword(),
-                    $response->getPassword()
-                )
+            if ($user->getEmail() != $data['email']
+                || !password_verify($data['password'], $user->getPassword())
             ) {
                 throw new \Exception('Adresse email out mot de passe incorrect');
             }
-            $httpResponse->setSession('user', $response);
+            $httpResponse->setSession('user', $user);
             $httpResponse->redirect('/');
         }
 
@@ -76,21 +71,19 @@ class UserController extends Controller
      */
     public function signUp(HTTPRequest $httpRequest, HTTPResponse $httpResponse)
     {
+        $data = [];
+
         if ($httpRequest->getMethod() == 'POST') {
-            $user = new User(
-                [
-                    'email' => $httpRequest->getPost('email'),
-                    'password' => $httpRequest->getPost('password'),
-                    'confirmedPassword' => $httpRequest->getPost('confirmedPassword'),
-                    'firstName' => $httpRequest->getPost('firstName'),
-                    'lastName' => $httpRequest->getPost('lastName')
-                ]
-            );
-        } else {
-            $user = new User;
+            $data = [
+                'email' => $httpRequest->getPost('email'),
+                'password' => $httpRequest->getPost('password'),
+                'confirmedPassword' => $httpRequest->getPost('confirmedPassword'),
+                'firstName' => $httpRequest->getPost('firstName'),
+                'lastName' => $httpRequest->getPost('lastName')
+            ];
         }
 
-        $formBuilder = new SigningUpFormBuilder($user);
+        $formBuilder = new SigningUpFormBuilder($data);
         $formBuilder->build();
 
         $form = $formBuilder->getForm();
@@ -98,19 +91,23 @@ class UserController extends Controller
         if ($httpRequest->getMethod() == 'POST' && $form->isValid()) {
             $userManager = $this->managers->getManagerOf('User');
 
-            if ($userManager->get($user->getEmail())) {
+            if ($userManager->exists($data['email'])) {
                 throw new \Exception('Cet adresse email est déjà utilisée');
             }
-            if (!MatchedValidator::isValid(
-                $user->getConfirmedPassword(),
-                $user->getPassword()
-            )
-            ) {
+            if ($data['password'] != $data['confirmedPassword']) {
                 throw new \Exception('Les mots de passe ne correspondent pas');
             }
+            $user  = new User(
+                [
+                    'email' => $data['email'],
+                    'password' => $data['password'],
+                    'firstName' => $data['firstName'],
+                    'lastName' => $data['lastName']
+                ]
+            );
             $userManager->save($user);
 
-            $httpResponse->setSession('user', $response);
+            $httpResponse->setSession('user', $user);
 
             $httpResponse->redirect('/');
         }
@@ -127,21 +124,40 @@ class UserController extends Controller
     }
 
     /**
-     * This method change the user password.
+     * This method changes the user password.
      *
      * @param HTTPRequest  $httpRequest  HTTP request to be sent.
      * @param HTTPResponse $httpResponse HTTP response to be sent.
      *
      * @return void
      */
-    public function changePassword(HTTPRequest $httpRequest, HTTPResponse $httpResponse)
-    {
+    public function changePassword(
+        HTTPRequest $httpRequest,
+        HTTPResponse $httpResponse
+    ) {
+        if (!$httpRequest->sessionExist($user)) {
+            throw new \Exception('Not signed in');
+        }
         $user = $httpRequest->getSession($user);
+
+        $data = [];
+
+        if ($httpRequest->getMethod() == 'POST') {
+            $data = [
+                'formerPassword' => $httpRequest->getPost('formerPassword'),
+                'newPassword' => $httpRequest->getPost('newPassword'),
+                'confirmedNewPassword' => $httpRequest->getPost('confirmedNewPassword')
+            ];
+        }
         
-        $formBuilder = new ChangingPasswordFormBuilder($user);
+        $formBuilder = new ChangingPasswordFormBuilder($data);
         $formBuilder->build();
 
         $form = $formBuilder->getForm();
+
+        if ($httpRequest->getMethod() == 'POST' && $form->isValid()) {
+            
+        }
 
         $formHandler = new FormHandler($form, $user, $httpRequest);
 
@@ -168,6 +184,20 @@ class UserController extends Controller
         }
 
         $user = $httpRequest->getSession($user);
+
+        if ($httpRequest->getMethod() == 'POST') {
+            $user = new User(
+                [
+                    'email' => $httpRequest->getPost('email'),
+                    'password' => $httpRequest->getPost('password'),
+                    'confirmedPassword' => $httpRequest->getPost('confirmedPassword'),
+                    'firstName' => $httpRequest->getPost('firstName'),
+                    'lastName' => $httpRequest->getPost('lastName')
+                ]
+            );
+        } else {
+            $user = new User;
+        }
 
         if (!$user->getRole() == 'administrator') {
             throw new \Exception('Seuls les administrateurs peuvent accéder à cette page');

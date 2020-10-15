@@ -9,7 +9,6 @@ class User extends Entity
     protected $role;
     protected $email;
     protected $password;
-    protected $confirmedPassword;
     protected $firstName;
     protected $lastName;
 
@@ -44,11 +43,6 @@ class User extends Entity
         return $this->password;
     }
 
-    public function getConfirmedPassword()
-    {
-        return $this->confirmedPassword;
-    }
-
     public function getFirstName()
     {
         return $this->firstName;
@@ -70,17 +64,7 @@ class User extends Entity
     public function setPassword($password)
     {
         if (is_string($password)) {
-            $this->password = password_hash($password, PASSWORD_DEFAULT);
-        }
-    }
-
-    public function setConfirmedPassword($confirmedPassword)
-    {
-        if (is_string($password)) {
-            $this->confirmedPassword = password_hash(
-                $confirmedPassword,
-                PASSWORD_DEFAULT
-            );
+            $this->password = $password;
         }
     }
 

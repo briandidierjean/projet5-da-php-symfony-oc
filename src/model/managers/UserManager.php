@@ -62,6 +62,8 @@ abstract class UserManager extends Manager
     public function save(User $user)
     {
         if ($user->isValid()) {
+            $user->setPassword(password_hash($user->getPassword(), PASSWORD_DEFAULT));
+            
             $user->isNew() ? $this->add($user) : $this->update($user);
         } else {
             throw new \Exception('L\'utilisateur doit être valide pour être enregistré');

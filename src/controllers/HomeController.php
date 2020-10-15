@@ -12,33 +12,35 @@ class HomeController extends Controller
 {
     /**
      * This method show the home page with the contact form.
-     * 
+     *
      * @param HTTPRequest $httpRequest HTTP request to be passed.
      * @param HTTPResponse $httpResponse HTTP response to be passed.
-     * 
+     *
      * @return void
      */
     public function index(HTTPRequest $httpRequest, HTTPResponse $httpResponse)
     {
+        $formData = [];
+
         if ($httpRequest->getMethod() == 'POST') {
-            $message = new Message(
-                [
-                    'name' => $httpRequest->getPost('name'),
-                    'email' => $httpRequest->getPost('email'),
-                    'message' => $httpRequest->getPost('message')
-                ]
-            );
-        } else {
-            $message = new Message;
+            $formData = [
+                'name' => $httpRequest->getPost('name'),
+                'email' => $httpRequest->getPost('email'),
+                'message' => $httpRequest->getPost('message')
+            ];
         }
 
-        $formBuilder = new MessageFormBuilder($message);
+        $formBuilder = new MessageFormBuilder($formData);
         $formBuilder->build();
 
         $form = $formBuilder->getForm();
 
         if ($httpRequest->getMethod() == 'POST' && $form->isValid()) {
-            $mail = new Mail($message->getEmail(), $message->getMessage());
+            $mail = new Mail(
+                $formData['email'],
+                $formData['name'],
+                $formData['message']
+            );
             $mail->send();
 
             $httpResponse->redirect('/');

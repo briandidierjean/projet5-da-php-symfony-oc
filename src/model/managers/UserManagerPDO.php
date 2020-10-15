@@ -15,10 +15,8 @@ class UserManagerPDO extends UserManager
 
         $request->execute();
 
-        if ($request->fetchAll()) {
-            return new User($request->fetchAll());
-        }
-        return null;
+        return new User($request->fetch());
+
     }
 
     protected function add(User $user)
@@ -63,16 +61,13 @@ class UserManagerPDO extends UserManager
     public function exists($email)
     {
         $request = $this->dao->prepare(
-            'SELECT email FROM user WHERE email = :email'
+            'SELECT * FROM users WHERE email = :email'
         );
 
-        $request->bindValue(':email', $user->getEmail(), \PDO::PARAM_STR);
+        $request->bindValue(':email', $email, \PDO::PARAM_STR);
 
         $request->execute();
-
-        if ($request->fetch()) {
-            return true;
-        }
-        return false;
+        
+        return count($request->fetchAll());
     }
 }
