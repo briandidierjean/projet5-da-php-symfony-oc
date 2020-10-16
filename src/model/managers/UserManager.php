@@ -9,7 +9,7 @@ abstract class UserManager extends Manager
     /**
      * Return a user from the database
      * 
-     * @param mixed $email Email address to use as a key
+     * @param string $email Email address to use as a key
      * 
      * @return User
      */
