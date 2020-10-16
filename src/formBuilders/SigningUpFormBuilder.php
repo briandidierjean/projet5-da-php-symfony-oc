@@ -10,6 +10,11 @@ use \Core\PasswordValidator;
 
 class SigningUpFormBuilder extends FormBuilder
 {
+    /**
+     * Build a signing up form
+     *
+     * @return void
+     */
     public function build()
     {
         $this->form->addField(
@@ -20,13 +25,17 @@ class SigningUpFormBuilder extends FormBuilder
                     'name' => 'email',
                     'placeholder' => 'Email',
                     'required' => true,
-                    'maxLength' => 30,
+                    'maxLength' => 256,
                     'validators' => [
                         new NotNullValidator(
                             'Merci de spécifier votre adresse e-mail'
                         ),
                         new EmailValidator(
                             'Merci de spécifier une adresse e-mail valide'
+                        ),
+                        new MaxLengthValidator(
+                            'Votre adresse e-mail ne doit pas dépasser
+                            255 caractères', 255
                         )
                     ]
                 ]
@@ -45,7 +54,9 @@ class SigningUpFormBuilder extends FormBuilder
                             'Merci de spécifier votre mot de passe'
                         ),
                         new PasswordValidator(
-                            'Merci de spécifier un mot de passe valide'
+                            'Votre mot de passe doit faire entre 8 et
+                            50 caractères et contenir une majuscule, une minuscule,
+                            un chiffre et un symbole'
                         )
                     ]
                 ]
@@ -64,7 +75,9 @@ class SigningUpFormBuilder extends FormBuilder
                             'Merci de spécifier votre mot de passe'
                         ),
                         new PasswordValidator(
-                            'Merci de spécifier un mot de passe valide'
+                            'Votre mot de passe doit faire entre 8 et
+                            50 caractères et contenir une majuscule, une minuscule,
+                            un chiffre et un symbole'
                         )
                     ]
                 ]
@@ -81,6 +94,9 @@ class SigningUpFormBuilder extends FormBuilder
                     'validators' => [
                         new NotNullValidator(
                             'Merci de spécifier votre prénom'
+                        ),
+                        new MaxLengthValidator(
+                            'Votre prénom ne doit pas dépassé 30 caractères', 30
                         )
                     ]
                 ]
@@ -96,7 +112,10 @@ class SigningUpFormBuilder extends FormBuilder
                     'maxLength' => 30,
                     'validators' => [
                         new NotNullValidator(
-                            'Merci de spécifier votre mot de passe'
+                            'Merci de spécifier votre nom'
+                        ),
+                        new MaxLengthValidator(
+                            'Votre nom ne doit pas dépassé 30 caractères', 30
                         )
                     ]
                 ]

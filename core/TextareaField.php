@@ -7,7 +7,7 @@ class TextareaField extends Field
     protected $rows;
 
     /**
-     * This method builds an HTML textarea field.
+     * Build an HTML textarea field
      *
      * @return string
      */
@@ -16,8 +16,14 @@ class TextareaField extends Field
         $field = '<div class="control-group">
         <div class="form-group floating-label-form-group controls mb-0 pb-2">';
 
-        $field .= '<label>'.$this->label.
-                  '</label><textarea class="form-control" name="'.$this->name.'"';
+        if (!empty($this->errorMsg)) {
+            $field .= '<label>'.$this->label.
+            '</label><textarea class="form-control
+            is-invalid" name="'.$this->name.'"';
+        } else {
+            $field .= '<label>'.$this->label.
+            '</label><textarea class="form-control" name="'.$this->name.'"';
+        }
 
         if (!empty($this->placeholder)) {
             $field .= ' placeholder="'.($this->placeholder).'"';

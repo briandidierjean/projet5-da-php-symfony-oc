@@ -7,25 +7,27 @@ use \Core\MaxLengthValidator;
 use \Core\NotNullValidator;
 use \Core\PasswordValidator;
 
-class SigningInFormBuilder extends FormBuilder
+class ChangingPasswordFormBuilder extends FormBuilder
 {
+    /**
+     * Build a changing password form
+     *
+     * @return void
+     */
     public function build()
     {
         $this->form->addField(
             new InputField(
                 [
-                    'label' => 'Mot de passe',
+                    'label' => 'Ancien mot de passe',
                     'type' => 'password',
-                    'name' => 'password',
-                    'placeholder' => 'Mot de passe',
+                    'name' => 'formerPassword',
+                    'placeholder' => 'Ancien mot de passe',
                     'required' => true,
-                    'maxLength' => 30,
+                    'maxLength' => 50,
                     'validators' => [
                         new NotNullValidator(
-                            'Merci de spécifier votre nouveau mot de passe'
-                        ),
-                        new PasswordValidator(
-                            'Merci de spécifier votre nouveau mot de passe'
+                            'Merci de spécifier votre ancien mot de passe'
                         )
                     ]
                 ]
@@ -33,18 +35,41 @@ class SigningInFormBuilder extends FormBuilder
         )->addField(
             new InputField(
                 [
-                    'label' => 'Mot de passe',
+                    'label' => 'Nouveau mot de passe',
                     'type' => 'password',
-                    'name' => 'confirmedPassword',
-                    'placeholder' => 'Mot de passe',
+                    'name' => 'newPassword',
+                    'placeholder' => 'Nouveau mot de passe',
                     'required' => true,
-                    'maxLength' => 30,
+                    'maxLength' => 50,
                     'validators' => [
                         new NotNullValidator(
-                            'Merci de spécifier votre mot de passe'
+                            'Merci de spécifier votre nouveau mot de passe'
                         ),
                         new PasswordValidator(
+                            'Votre mot de passe doit faire entre 8 et
+                            50 caractères et contenir une majuscule, une minuscule,
+                            un chiffre et un symbole'
+                        )
+                    ]
+                ]
+            )
+        )->addField(
+            new InputField(
+                [
+                    'label' => 'Nouveau mot de passe (confirmation)',
+                    'type' => 'password',
+                    'name' => 'newConfirmedPassword',
+                    'placeholder' => 'Nouveau mot de passe (confirmation)',
+                    'required' => true,
+                    'maxLength' => 50,
+                    'validators' => [
+                        new NotNullValidator(
                             'Merci de spécifier votre nouveau mot de passe'
+                        ),
+                        new PasswordValidator(
+                            'Votre mot de passe doit faire entre 8 et
+                            50 caractères et contenir une majuscule, une minuscule,
+                            un chiffre et un symbole'
                         )
                     ]
                 ]

@@ -5,6 +5,7 @@ abstract class Field
 {
     use Hydrator;
 
+    protected $id;
     protected $label;
     protected $name;
     protected $value;
@@ -22,14 +23,14 @@ abstract class Field
     }
 
     /**
-     * This method creates a view representing a field.
+     * Create a view representing a field
      *
      * @return string
      */
     abstract public function build();
 
     /**
-     * This method checks if the field data sent by the user is valid.
+     * Check if a field data is valid
      *
      * @return bool
      */
@@ -46,6 +47,11 @@ abstract class Field
     }
 
     // GETTERS
+    public function getId()
+    {
+        return $this->id;
+    }
+
     public function getLabel()
     {
         return $this->label;
@@ -76,12 +82,22 @@ abstract class Field
         return $this->maxLength;
     }
 
+    public function getErrorMsg()
+    {
+        return $this->errorMsg;
+    }
+
     public function getValidators()
     {
         return $this->validators;
     }
 
     // SETTERS
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
     public function setLabel($label)
     {
         $this->label = $label;
@@ -118,6 +134,13 @@ abstract class Field
     public function setMaxLength($maxLength)
     {
         $this->maxLength = (int) $maxLength;
+    }
+
+    public function setErrorMsg($errorMsg)
+    {
+        if (is_string($errorMsg)) {
+            $this->errorMsg = $errorMsg;
+        }
     }
 
     public function setValidators(array $validators)

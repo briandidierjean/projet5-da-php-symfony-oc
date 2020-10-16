@@ -28,19 +28,29 @@
 				<div class="collapse navbar-collapse" id="navbarResponsive">
 					<ul class="navbar-nav mr-auto">
 						<li class="nav-item mx-0 mx-lg-1 text-center">
-							<a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="\">Accueil</a>
+							<a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/">Accueil</a>
 						</li>
 						<li class="nav-item mx-0 mx-lg-1 text-center">
-							<a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="blog">Blog</a>
+							<a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/blog">Blog</a>
 						</li>
 					</ul>
           <ul class="navbar-nav">
+          {% if isAuth == false %}
             <li class="nav-item mx-0 mx-lg-1 my-1">
-							<a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger btn btn-primary font-weight-bold" href="sign-in">Connexion</a>
+							<a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger btn btn-primary font-weight-bold" href="/sign-in">Connexion</a>
 						</li>
             <li class="nav-item mx-0 mx-lg-1 my-1">
-							<a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger btn btn-primary font-weight-bold" href="sign-up">Inscription</a>
+							<a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger btn btn-primary font-weight-bold" href="/sign-up">Inscription</a>
 						</li>
+            {% endif %}
+            {% if isAuth == true %}
+              <li class="nav-item mx-0 mx-lg-1 my-1">
+                <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger btn btn-primary font-weight-bold" href="/change-password">Modifier le mot de passe</a>
+              </li>
+              <li class="nav-item mx-0 mx-lg-1 my-1">
+                <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger btn btn-primary font-weight-bold" href="/sign-out">Déconnexion</a>
+              </li>
+            {% endif %}
           </ul>
 				</div>
 			</div>
@@ -69,7 +79,7 @@
         <!-- Administration Panel Link -->
         <div class="row mt-5">
           <div class="col-12">
-            <p><a href="">Administration</a></p>
+            <p><a href="/admin">Administration</a></p>
           </div>
         </div>
 			</div>

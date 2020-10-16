@@ -7,55 +7,54 @@ use \App\Model\Entity\User;
 abstract class UserManager extends Manager
 {
     /**
-     * This method gets a user from the database.
+     * Return a user from the database
      * 
-     * @param mixed $email Email address to use as a filter
+     * @param mixed $email Email address to use as a key
      * 
      * @return User
      */
     abstract public function get($email);
 
     /**
-     * This method adds a new user in the database.
+     * Add a new user in the database
      * 
-     * @param User $user User to be added.
+     * @param User $user User to be added
      * 
      * @return void
      */
     abstract protected function add(User $user);
 
     /**
-     * This method updates an existing user in the database.
+     * Update an existing user in the database
      * 
-     * @param User $user User to be updated.
+     * @param User $user User to be updated
      * 
      * @return void
      */
     abstract protected function update(User $user);
 
     /**
-     * This method deletes an existing user from the database.
+     * Delete an existing user from the database
      * 
-     * @param int $id User id to be deleted.
+     * @param string $email Email address to use as a key
      * 
      * @return void
      */
-    abstract public function delete($id);
+    abstract public function delete($email);
 
     /**
-     * This method checks takes an email address and checks
-     * if a user is associated to that email.
+     * Check if a user exists
      * 
-     * @param string $email Email address to be checked.
+     * @param string $email Email address to use as a key
      * 
-     * @return bool
+     * @return void
      */
     abstract public function exists($email);
 
     /**
-     * This method save a user in the database.
+     * Save a user in the database
      * 
-     * @param User $user User to be saved.
+     * @param User $user User to be saved
      * 
      * @return void
      */
@@ -65,8 +64,6 @@ abstract class UserManager extends Manager
             $user->setPassword(password_hash($user->getPassword(), PASSWORD_DEFAULT));
             
             $user->isNew() ? $this->add($user) : $this->update($user);
-        } else {
-            throw new \Exception('L\'utilisateur doit être valide pour être enregistré');
         }
     }
 }

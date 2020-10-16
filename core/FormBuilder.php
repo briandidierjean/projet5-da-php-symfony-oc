@@ -11,7 +11,7 @@ abstract class FormBuilder
     }
 
     /**
-     * This method builds a form.
+     * Build a form
      *
      * @return void
      */

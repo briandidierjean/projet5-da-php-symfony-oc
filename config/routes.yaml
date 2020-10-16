@@ -8,6 +8,11 @@
   action: signIn
   vars:
 
+- url: /sign-out
+  controller: user
+  action: signOut
+  vars:
+
 - url: /sign-up
   controller: user
   action: signUp
@@ -16,9 +21,4 @@
 - url: /change-password
   controller: user
   action: changePassword
-  vars:
-
-- url: /admin
-  controller: user
-  action: admin
   vars:

@@ -6,7 +6,7 @@ session_start();
 class HTTPRequest
 {
     /**
-     * This method return the URL used by the client.
+     * Return the URL used
      * 
      * @return string
      */
@@ -16,7 +16,7 @@ class HTTPRequest
     }
     
     /**
-     * This method return the method used by the client.
+     * Return the method used
      * 
      * @return string
      */
@@ -26,19 +26,7 @@ class HTTPRequest
     }
 
     /**
-     * This method checks if a GET key exists.
-     * 
-     * @param string $key GET key
-     * 
-     * @return bool
-     */
-    public function getExists($key)
-    {
-        return isset($_GET[$key]);
-    }
-
-    /**
-     * This method returns a GET key value.
+     * Return a GET variable
      * 
      * @param string $key GET key
      * 
@@ -50,19 +38,7 @@ class HTTPRequest
     }
 
     /**
-     * This method checks if a POST key exists.
-     * 
-     * @param string $key POST key
-     * 
-     * @return bool
-     */
-    public function postExists($key)
-    {
-        return isset($_POST[$key]);
-    }
-
-    /**
-     * This method returns a POST key value.
+     * Return a POST variable
      * 
      * @param string $key POST key
      * 
@@ -74,19 +50,7 @@ class HTTPRequest
     }
 
     /**
-     * This method checkes if a SESSION key exists.
-     * 
-     * @param string $key SESSION key
-     * 
-     * @return bool
-     */
-    public function sessionExist($key)
-    {
-        return isset($_SESSION[$key]);
-    }
-
-    /**
-     * This method returns a SESSION key value.
+     * Return a SESSION variable
      * 
      * @param string $key SESSION key
      * 
@@ -98,19 +62,7 @@ class HTTPRequest
     }
 
     /**
-     * This method checks if a COOKIE key exists.
-     * 
-     * @param string $key COOKIE key
-     * 
-     * @return bool
-     */
-    public function cookieExists($key)
-    {
-        return isset($_COOKIE[$key]);
-    }
-
-    /**
-     * This method returns a COOKIE key value.
+     * Return a COOKIE variable
      * 
      * @param string $key COOKIE key
      * 

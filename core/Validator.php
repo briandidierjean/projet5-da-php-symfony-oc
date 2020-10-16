@@ -11,7 +11,7 @@ abstract class Validator
     }
 
     /**
-     * This methods checks if a form field is validated by the validator.
+     * Check if a field value is valid
      * 
      * @param strong $value Value to be validated
      * 

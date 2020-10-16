@@ -10,21 +10,21 @@ class Mail
     protected $subject;
     protected $body;
 
-    public function __construct($sender = '', $subject = '', $body = '')
+    public function __construct($sender, $subject = '', $body = '')
     {
-        $emails = Yaml::parseFile(
+        $config = Yaml::parseFile(
             __DIR__.'/../config/mail.yaml'
         );
 
-        $this->receiver = $emails['receiptAddress'];
-        $this->header = 'De: '.$emails['sendingAddress'];
+        $this->receiver = $config['receiver'];
+        $this->header = 'De: '.$config['sendingAddress'];
         $this->header .= 'Répondre à:'.$sender;
-        $this->subject = $emails['subject'];
+        $this->subject = $subject;
         $this->body = $body;
     }
 
     /**
-     * This method sends a mail.
+     * Send an email
      *
      * @return null
      */

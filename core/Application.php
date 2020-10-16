@@ -15,8 +15,7 @@ class Application
     }
 
     /**
-     * This methods run the application. It takes a HTTP request
-     * and returns a HTTP Response.
+     * Get a controller a execute it
      *
      * @return void
      */
@@ -27,7 +26,7 @@ class Application
     }
 
     /**
-     * This methods take a URL and returns the matched controller.
+     * Choose a controller matching the client route
      *
      * @return Controller
      */

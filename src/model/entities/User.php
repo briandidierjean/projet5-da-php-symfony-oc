@@ -6,14 +6,14 @@ use \Core\Entity;
 class User extends Entity
 {
     protected $id;
-    protected $role;
+    protected $role = 'member';
     protected $email;
     protected $password;
     protected $firstName;
     protected $lastName;
 
     /**
-     * This method checks if a user is valid.
+     * Check if a user is valid
      * 
      * @return bool
      */

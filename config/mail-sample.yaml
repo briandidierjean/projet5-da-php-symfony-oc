@@ -1,2 +1,5 @@
-receiptAddress: The mail you want to receive the contact message.
-sendingAdress: The mail you want to send the contact message.
+# Define which email addres you want to receive emails and
+# which one you want emails to be sent
+
+receiver: admin@example.com
+sendingAddress: no-reply@example.com

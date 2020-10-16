@@ -9,6 +9,11 @@ use \Core\EmailValidator;
 
 class SigningInFormBuilder extends FormBuilder
 {
+    /**
+     * Build a signing in form
+     *
+     * @return void
+     */
     public function build()
     {
         $this->form->addField(
@@ -19,13 +24,17 @@ class SigningInFormBuilder extends FormBuilder
                     'name' => 'email',
                     'placeholder' => 'Email',
                     'required' => true,
-                    'maxLength' => 30,
+                    'maxLength' => 255,
                     'validators' => [
                         new NotNullValidator(
                             'Merci de spécifier votre adresse e-mail'
                         ),
                         new EmailValidator(
                             'Merci de spécifier une adresse e-mail valide'
+                        ),
+                        new MaxLengthValidator(
+                            'Votre adresse e-mail ne doit pas dépasser
+                            255 caractères', 255
                         )
                     ]
                 ]
@@ -44,6 +53,15 @@ class SigningInFormBuilder extends FormBuilder
                             'Merci de spécifier votre mot de passe'
                         )
                     ]
+                ]
+            )
+        )->addField(
+            new InputField(
+                [
+                    'id' => 'stay-sign-in',
+                    'label' => 'Se souvenir de moi',
+                    'type' => 'checkbox',
+                    'name' => 'staySignedIn'
                 ]
             )
         );

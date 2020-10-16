@@ -4,17 +4,17 @@ namespace App\Controller;
 use \Core\Controller;
 use \Core\HTTPRequest;
 use \Core\HTTPResponse;
+use \Core\Mail;
 use \App\Model\Entity\Message;
 use \App\FormBuilder\MessageFormBuilder;
-use \Core\Mail;
 
 class HomeController extends Controller
 {
     /**
-     * This method show the home page with the contact form.
+     * Show the home page with the contact form
      *
-     * @param HTTPRequest $httpRequest HTTP request to be passed.
-     * @param HTTPResponse $httpResponse HTTP response to be passed.
+     * @param HTTPRequest  $httpRequest  HTTP request
+     * @param HTTPResponse $httpResponse HTTP response
      *
      * @return void
      */
@@ -51,7 +51,10 @@ class HomeController extends Controller
 
         $this->page = $twig->render(
             'home/index.html.twig',
-            ['form' => $form->createView()]
+            [
+                'form' => $form->createView(),
+                'isAuth' => $httpRequest->getSession('isAuth')
+            ]
         );
 
         $httpResponse->send($this->page);

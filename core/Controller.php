@@ -16,20 +16,13 @@ abstract class Controller
     }
 
     /**
-     * This method calls the right method to execute the action attribute.
+     * Call a child method to execute the action attribute
      *
      * @return void
      */
     public function execute()
     {
         $method = $this->action;
-
-        if (!is_callable([$this, $method])) {
-            throw new \Exception(
-                'L\'action "'.$this->action.'" n\'est pas définie sur ce controller.'
-            );
-        }
-
         $this->$method($this->app->getHttpRequest(), $this->app->getHttpResponse());
     }
 }

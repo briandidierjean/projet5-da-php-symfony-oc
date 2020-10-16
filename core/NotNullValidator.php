@@ -4,9 +4,9 @@ namespace Core;
 class NotNullValidator extends Validator
 {
     /**
-     * This methods checks a field value is empty.
+     * Check a field value is empty
      * 
-     * @param string $value Value to be validated
+     * @param string $value Value to be checked
      * 
      * @return bool
      */

@@ -10,6 +10,11 @@ use \Core\EmailValidator;
 
 class MessageFormBuilder extends FormBuilder
 {
+    /**
+     * Build a message form
+     *
+     * @return void
+     */
     public function build()
     {
         $this->form->addField(
@@ -20,13 +25,13 @@ class MessageFormBuilder extends FormBuilder
                     'name' => 'name',
                     'placeholder' => 'Nom',
                     'required' => true,
-                    'maxLength' => 30,
+                    'maxLength' => 60,
                     'validators' => [
-                        new MaxLengthValidator(
-                            'Le nom est trop long (30 caractères maximum)', 30
-                        ),
                         new NotNullValidator(
                             'Merci de spécifier un nom'
+                        ),
+                        new MaxLengthValidator(
+                            'Le nom est trop long (60 caractères maximum)', 60
                         )
                     ]
                 ]
@@ -39,12 +44,17 @@ class MessageFormBuilder extends FormBuilder
                     'name' => 'email',
                     'placeholder' => 'Email',
                     'required' => true,
+                    'maxLength' => 255,
                     'validators' => [
                         new NotNullValidator(
                             'Merci de spécifier une adresse e-mail'
                         ),
                         new EmailValidator(
                             'Merci de spécifier une adresse e-mail valide'
+                        ),
+                        new MaxLengthValidator(
+                            'Votre adresse e-mail ne doit pas dépasser
+                            255 caractères', 255
                         )
                     ]
                 ]
@@ -56,14 +66,16 @@ class MessageFormBuilder extends FormBuilder
                     'name' => 'message',
                     'placeholder' => 'Message',
                     'required' => true,
+                    'maxLength' => 2000,
                     'rows' => 8,
                     'validators' => [
-                        new MaxLengthValidator(
-                            'Le message est trop long (2000 caractères maximum)', 200
-                        ),
                         new NotNullValidator(
                             'Merci de spécifier un message'
-                        )
+                        ),
+                        new MaxLengthValidator(
+                            'Le message est trop long (2000 caractères maximum)',
+                            2000
+                        ),
                     ]
                 ]
             )
