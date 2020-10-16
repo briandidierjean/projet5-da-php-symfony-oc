@@ -6,6 +6,7 @@ abstract class Field
     use Hydrator;
 
     protected $id;
+    protected $class;
     protected $label;
     protected $name;
     protected $value;
@@ -52,6 +53,11 @@ abstract class Field
         return $this->id;
     }
 
+    public function getClass()
+    {
+        return $this->class;
+    }
+
     public function getLabel()
     {
         return $this->label;
@@ -96,6 +102,11 @@ abstract class Field
     public function setId($id)
     {
         $this->id = $id;
+    }
+
+    public function setClass($class)
+    {
+        $this->class = $class;
     }
 
     public function setLabel($label)
