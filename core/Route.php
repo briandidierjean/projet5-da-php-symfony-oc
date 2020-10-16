@@ -12,13 +12,13 @@ class Route
     public function __construct($url, $controller, $action, array $varsNames)
     {
         $this->setURL($url);
-        $this->setcontroller($controller);
+        $this->setController($controller);
         $this->setAction($action);
         $this->setVarsNames($varsNames);
     }
 
     /**
-     * This method checks if a route has variables.
+     * Check if a route has variables
      *
      * @return bool
      */
@@ -27,6 +27,13 @@ class Route
         return !empty($this->varsNames);
     }
 
+    /**
+     * Check if a URL has a matching route
+     * 
+     * @param string $url URL to be matched
+     * 
+     * @return mixed
+     */
     public function match($url)
     {
         if (preg_match('#^'.$this->url.'$#', $url, $matches)) {
@@ -35,63 +42,33 @@ class Route
         return false;
     }
 
-    /**
-     * This method return the URL attribute.
-     *
-     * @return string
-     */
+    // GETTERS
     public function getUrl()
     {
         return $this->url;
     }
 
-    /**
-     * This method return the controller attribute.
-     *
-     * @return string
-     */
     public function getController()
     {
         return $this->controller;
     }
 
-    /**
-     * This method return the action attribute.
-     *
-     * @return string
-     */
     public function getAction()
     {
         return $this->action;
     }
 
-    /**
-     * This method return the vars attribute.
-     *
-     * @return array
-     */
     public function getVars()
     {
         return $this->vars;
     }
 
-    /**
-     * This method return the varsNames attribute.
-     *
-     * @return array
-     */
     public function getVarsNames()
     {
         return $this->varsNames;
     }
 
-    /**
-     * This method set the URL attribute.
-     *
-     * @param string $url The URL to be set
-     *
-     * @return void
-     */
+    // SETTERS
     public function setUrl($url)
     {
         if (is_string($url)) {
@@ -99,13 +76,6 @@ class Route
         }
     }
     
-    /**
-     * This method set the controller attribute.
-     *
-     * @param string $controller The controller to be set
-     *
-     * @return void
-     */
     public function setController($controller)
     {
         if (is_string($controller)) {
@@ -113,13 +83,6 @@ class Route
         }
     }
 
-    /**
-     * This method set the action attribute.
-     *
-     * @param string $action The action to be set
-     *
-     * @return void
-     */
     public function setAction($action)
     {
         if (is_string($action)) {
@@ -127,25 +90,11 @@ class Route
         }
     }
 
-    /**
-     * This method set the vars attribute.
-     *
-     * @param array $vars The vars attribute to be set
-     *
-     * @return void
-     */
     public function setVars(array $vars)
     {
         $this->vars = $vars;
     }
 
-    /**
-     * This method set the varsNames attribute.
-     *
-     * @param array $varsNames The varsNames attribute to be set
-     *
-     * @return void
-     */
     public function setVarsNames(array $varsNames)
     {
         $this->varsNames = $varsNames;

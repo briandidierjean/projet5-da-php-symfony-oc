@@ -1,7 +1,0 @@
-# To connect your database to this application, you need to copy this sample content
-# to a "database.yaml" and add your database credentials.
-
-host: Your database host
-name: Your database name
-user: Your database user
-password: Your database password

@@ -15,7 +15,7 @@ abstract class Entity
     }
 
     /**
-     * This method checks if an entity has been added to database.
+     * Check if the entity has been added to the database
      * 
      * @return bool
      */

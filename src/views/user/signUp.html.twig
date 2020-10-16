@@ -1,0 +1,36 @@
+{% extends "template.html.twig" %}
+
+{% block title %}Inscription - Brian Didierjean{% endblock %}
+
+{% block content %}
+<!-- Sign In Section-->
+	<section class="page-section mt-4" id="sign-in">
+		<div
+			class="container mt-5">
+			<!-- Sign In Section Heading-->
+			<h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Inscription</h2>
+			<!-- Icon Divider-->
+			<div class="divider-custom">
+				<div class="divider-custom-line"></div>
+				<div class="divider-custom-icon">
+					<i class="fas fa-star"></i>
+				</div>
+				<div class="divider-custom-line"></div>
+			</div>
+			<!-- Sign In Section Form-->
+			<div class="row">
+				<div
+					class="col-lg-8 mx-auto">
+					<form method="post" action="/sign-up">
+          {{ form | raw }}
+						<br/>
+						<div id="success"></div>
+						<div class="form-group">
+							<button class="btn btn-primary btn-xl" type="submit">S'inscrire</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}

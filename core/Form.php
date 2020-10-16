@@ -3,16 +3,16 @@ namespace Core;
 
 class Form
 {
-    protected $entity;
+    protected $data;
     protected $fields = [];
 
-    public function __construct(Entity $entity)
+    public function __construct(array $data)
     {
-        $this->entity = $entity;
+        $this->data = $data;
     }
 
     /**
-     * This method adds a field to the form.
+     * Add a field
      *
      * @param Field $field Field to be added
      *
@@ -20,15 +20,36 @@ class Form
      */
     public function addField(Field $field)
     {
-        $attributeGetter = 'get'.$field->getName();
-        $field->setValue($this->entity->$attributeGetter());
+        $fieldName = $field->getName();
+
+        if (!empty($this->data[$fieldName])) {
+            $field->setValue($this->data[$fieldName]);
+        }
 
         $this->fields[] = $field;
+
         return $this;
     }
 
     /**
-     * This method creates a view representing the form.
+     * Add en error message to a field
+     * 
+     * @param string $errorMsg  Error message to show
+     * @param string $fieldName Field name to affect the error message
+     * 
+     * @return void
+     */
+    public function addErrorMsg($errorMsg, $fieldName)
+    {
+        foreach ($this->fields as $field) {
+            if ($field->getName() === $fieldName) {
+                $field->setErrorMsg($errorMsg);
+            }
+        }
+    }
+
+    /**
+     * Create a view representing the form
      *
      * @return string
      */
@@ -44,18 +65,20 @@ class Form
     }
 
     /**
-     * This methods checks if the form data sent by the user is valid.
+     * Check if the form data is valid
      *
      * @return bool
      */
     public function isValid()
     {
+        $isValid = true;
+
         foreach ($this->fields as $field) {
             if (!$field->isValid()) {
-                return false;
+                $isValid = false;
             }
-
-            return true;
         }
+
+        return $isValid;
     }
 }
