@@ -1,18 +1,24 @@
 <?php
 namespace Core;
 
-abstract class Controller
+abstract class Controller extends ApplicationComponent
 {
-    protected $app;
+    protected $httpRequest;
+    protected $httpResponse;
     protected $action;
     protected $page;
     protected $managers;
+    protected $authentication;
 
     public function __construct(Application $app, $action)
     {
-        $this->app = $app;
+        parent::__construct($app);
+
+        $this->httpRequest = $app->getHttpRequest();
+        $this->httpResponse = $app->getHttpResponse();
         $this->action = $action;
         $this->managers = new Managers('PDO', PDOFactory::getMysqlConnexion());
+        $this->authentication = $app->getAuthentication();
     }
 
     /**
@@ -23,6 +29,6 @@ abstract class Controller
     public function execute()
     {
         $method = $this->action;
-        $this->$method($this->app->getHttpRequest(), $this->app->getHttpResponse());
+        $this->$method();
     }
 }

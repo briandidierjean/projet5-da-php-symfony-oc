@@ -7,11 +7,13 @@ class Application
 {
     protected $httpRequest;
     protected $httpResponse;
+    protected $authentication;
 
     public function __construct()
     {
-        $this->httpRequest = new HTTPRequest;
-        $this->httpResponse = new HTTPResponse;
+        $this->httpRequest = new HTTPRequest($this);
+        $this->httpResponse = new HTTPResponse($this);
+        $this->authentication = new Authentication($this);
     }
 
     /**
@@ -81,5 +83,10 @@ class Application
     public function getHttpResponse()
     {
         return $this->httpResponse;
+    }
+
+    public function getAuthentication()
+    {
+        return $this->authentication;
     }
 }

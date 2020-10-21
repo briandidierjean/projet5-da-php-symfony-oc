@@ -13,20 +13,17 @@ class HomeController extends Controller
     /**
      * Show the home page with the contact form
      *
-     * @param HTTPRequest  $httpRequest  HTTP request
-     * @param HTTPResponse $httpResponse HTTP response
-     *
      * @return void
      */
-    public function index(HTTPRequest $httpRequest, HTTPResponse $httpResponse)
+    public function index()
     {
         $formData = [];
 
-        if ($httpRequest->getMethod() == 'POST') {
+        if ($this->httpRequest->getMethod() == 'POST') {
             $formData = [
-                'name' => $httpRequest->getPost('name'),
-                'email' => $httpRequest->getPost('email'),
-                'message' => $httpRequest->getPost('message')
+                'name' => $this->httpRequest->getPost('name'),
+                'email' => $this->httpRequest->getPost('email'),
+                'message' => $this->httpRequest->getPost('message')
             ];
         }
 
@@ -35,7 +32,7 @@ class HomeController extends Controller
 
         $form = $formBuilder->getForm();
 
-        if ($httpRequest->getMethod() == 'POST' && $form->isValid()) {
+        if ($this->httpRequest->getMethod() == 'POST' && $form->isValid()) {
             $mail = new Mail(
                 $formData['email'],
                 $formData['name'],
@@ -43,7 +40,7 @@ class HomeController extends Controller
             );
             $mail->send();
 
-            $httpResponse->redirect('/');
+            $this->httpResponse->redirect('/');
         }
 
         $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../views');
@@ -53,10 +50,10 @@ class HomeController extends Controller
             'home/index.html.twig',
             [
                 'form' => $form->createView(),
-                'isAuth' => $httpRequest->getSession('isAuth')
+                'isSignedIn' => $this->authentication->isSignedIn()
             ]
         );
 
-        $httpResponse->send($this->page);
+        $this->httpResponse->send($this->page);
     }
 }

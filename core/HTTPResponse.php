@@ -1,7 +1,7 @@
 <?php
 namespace Core;
 
-class HTTPResponse
+class HTTPResponse extends ApplicationComponent
 {
     /**
      * Set a header to be sent

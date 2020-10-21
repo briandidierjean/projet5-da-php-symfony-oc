@@ -9,12 +9,16 @@ class Route
     protected $vars = [];
     protected $varsNames;
 
-    public function __construct($url, $controller, $action, array $varsNames)
-    {
-        $this->setURL($url);
-        $this->setController($controller);
-        $this->setAction($action);
-        $this->setVarsNames($varsNames);
+    public function __construct(
+        $url,
+        $controller,
+        $action,
+        array $varsNames
+    ) {
+        $this->url = $url;
+        $this->controller = $controller;
+        $this->action = $action;
+        $this->varsNames = $varsNames;
     }
 
     /**
@@ -29,9 +33,9 @@ class Route
 
     /**
      * Check if a URL has a matching route
-     * 
+     *
      * @param string $url URL to be matched
-     * 
+     *
      * @return mixed
      */
     public function match($url)
@@ -66,37 +70,5 @@ class Route
     public function getVarsNames()
     {
         return $this->varsNames;
-    }
-
-    // SETTERS
-    public function setUrl($url)
-    {
-        if (is_string($url)) {
-            $this->url = $url;
-        }
-    }
-    
-    public function setController($controller)
-    {
-        if (is_string($controller)) {
-            $this->controller = $controller;
-        }
-    }
-
-    public function setAction($action)
-    {
-        if (is_string($action)) {
-            $this->action = $action;
-        }
-    }
-
-    public function setVars(array $vars)
-    {
-        $this->vars = $vars;
-    }
-
-    public function setVarsNames(array $varsNames)
-    {
-        $this->varsNames = $varsNames;
     }
 }

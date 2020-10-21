@@ -13,7 +13,7 @@ abstract class UserManager extends Manager
      * 
      * @return User
      */
-    abstract public function get($email);
+    abstract protected function get($email);
 
     /**
      * Add a new user in the database
@@ -49,7 +49,7 @@ abstract class UserManager extends Manager
      * 
      * @return void
      */
-    abstract public function exists($email);
+    abstract protected function exists($email);
 
     /**
      * Save a user in the database

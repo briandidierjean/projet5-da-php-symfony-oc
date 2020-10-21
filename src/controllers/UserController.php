@@ -9,25 +9,25 @@ use \App\Model\Entity\User;
 use \App\FormBuilder\ChangingPasswordFormBuilder;
 use \App\FormBuilder\SigningInFormBuilder;
 use \App\FormBuilder\SigningUpFormBuilder;
+use \App\FormHandler\ChangingPasswordFormHandler;
+use \App\FormHandler\SigningInFormHandler;
+use \App\FormHandler\SigningUpFormHandler;
 
 class UserController extends Controller
 {
     /**
      * Sign in a user
      *
-     * @param HTTPRequest  $httpRequest  HTTP request to be sent.
-     * @param HTTPResponse $httpResponse HTTP response to be sent.
-     *
      * @return void
      */
-    public function signIn(HTTPRequest $httpRequest, HTTPResponse $httpResponse)
+    public function signIn()
     {
         $formData = [];
 
-        if ($httpRequest->getMethod() == 'POST') {
+        if ($this->httpRequest->getMethod() == 'POST') {
             $formData = [
-                'email' => $httpRequest->getPost('email'),
-                'password' => $httpRequest->getPost('password')
+                'email' => $this->httpRequest->getPost('email'),
+                'password' => $this->httpRequest->getPost('password')
             ];
         }
 
@@ -36,33 +36,16 @@ class UserController extends Controller
 
         $form = $formBuilder->getForm();
 
-        if ($httpRequest->getMethod() == 'POST' && $form->isValid()) {
-            $userManager = $this->managers->getManagerOf('User');
+        $signingInFormHandler = new SigningInFormHandler(
+            $this->httpRequest,
+            $this->httpResponse,
+            $form,
+            $this->managers->getManagerOf('User'),
+            $this->authentication
+        );
 
-            if ($userManager->exists($formData['email'])) {
-                $user = $userManager->get($formData['email']);
-
-                if (password_verify($formData['password'], $user->getPassword())) {
-                    if ($formData['staySignedIn']) {
-                        $httpResponse->setCookie('isAuth', true);
-                        $httpResponse->setCookie('authRole', $user->getRole());
-                        $httpResponse->setCookie('authEmail', $user->getEmail());
-                    }
-                    $httpResponse->setSession('isAuth', true);
-                    $httpResponse->setSession('authRole', $user->getRole());
-                    $httpResponse->setSession('authEmail', $user->getEmail());
-
-                    $httpResponse->redirect('/');
-                }
-            }
-            $form->addErrorMsg(
-                'L\'adresse e-mail ou le mot de passe est incorrect',
-                'email'
-            );
-            $form->addErrorMsg(
-                'L\'adresse e-mail ou le mot de passe est incorrect',
-                'password'
-            );
+        if ($signingInFormHandler->process()) {
+            $this->httpResponse->redirect('/');
         }
 
         $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../views');
@@ -72,52 +55,42 @@ class UserController extends Controller
             'user/signIn.html.twig',
             [
                 'form' => $form->createView(),
-                'isAuth' => $httpRequest->getSession('isAuth')
+                'isSignedIn' => $this->authentication->isSignedIn()
             ]
         );
 
-        $httpResponse->send($this->page);
+        $this->httpResponse->send($this->page);
     }
 
 
     /**
      * Sign out a user
      *
-     * @param HTTPRequest  $httpRequest  HTTP Request
-     * @param HTTPResponse $httpResponse HTTP Response
-     *
      * @return void
      */
-    public function signOut(HTTPRequest $httpRequest, HTTPResponse $httpResponse)
+    public function signOut()
     {
-        session_destroy();
+        $this->authentication->unsetConnexion();
 
-        $httpResponse->setCookie('isAuth', false);
-        $httpResponse->setCookie('authRole', '');
-        $httpResponse->setCookie('authEmail', '');
-
-        $httpResponse->redirect('/');
+        $this->httpResponse->redirect('/');
     }
 
     /**
      * Sign up a user
-     *
-     * @param HTTPRequest  $httpRequest  HTTP request to be sent.
-     * @param HTTPResponse $httpResponse HTTP response to be sent.
-     *
+     * 
      * @return void
      */
-    public function signUp(HTTPRequest $httpRequest, HTTPResponse $httpResponse)
+    public function signUp()
     {
         $formData = [];
 
-        if ($httpRequest->getMethod() == 'POST') {
+        if ($this->httpRequest->getMethod() == 'POST') {
             $formData = [
-                'email' => $httpRequest->getPost('email'),
-                'password' => $httpRequest->getPost('password'),
-                'confirmedPassword' => $httpRequest->getPost('confirmedPassword'),
-                'firstName' => $httpRequest->getPost('firstName'),
-                'lastName' => $httpRequest->getPost('lastName')
+                'email' => $this->httpRequest->getPost('email'),
+                'password' => $this->httpRequest->getPost('password'),
+                'confirmedPassword' => $this->httpRequest->getPost('confirmedPassword'),
+                'firstName' => $this->httpRequest->getPost('firstName'),
+                'lastName' => $this->httpRequest->getPost('lastName')
             ];
         }
 
@@ -126,38 +99,16 @@ class UserController extends Controller
 
         $form = $formBuilder->getForm();
 
-        if ($httpRequest->getMethod() == 'POST' && $form->isValid()) {
-            $userManager = $this->managers->getManagerOf('User');
+        $signingUpFormHandler = new SigningUpFormHandler(
+            $this->httpRequest,
+            $this->httpResponse,
+            $form,
+            $this->managers->getManagerOf('User'),
+            $this->authentication
+        );
 
-            if (!$userManager->exists($formData['email'])) {
-                if ($formData['password'] == $formData['confirmedPassword']) {
-                    $user  = new User(
-                        [
-                                'email' => $formData['email'],
-                                'password' => $formData['password'],
-                                'firstName' => $formData['firstName'],
-                                'lastName' => $formData['lastName']
-                            ]
-                    );
-                    $userManager->save($user);
-        
-                    $httpResponse->setSession('isAuth', true);
-                    $httpResponse->setSession('authRole', $user->getRole());
-                    $httpResponse->setSession('authEmail', $user->getEmail());
-        
-                    $httpResponse->redirect('/');
-                }
-                $form->addErrorMsg(
-                    'Les mots de passe ne correspondent pas',
-                    'password'
-                );
-                $form->addErrorMsg(
-                    'Les mots de passe ne correspondent pas',
-                    'confirmedPassword'
-                );
-            } else {
-                $form->addErrorMsg('L\'adresse e-mail est déjà utilisée', 'email');
-            }
+        if ($signingUpFormHandler->process()) {
+            $this->httpResponse->redirect('/');
         }
 
         $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../views');
@@ -167,40 +118,35 @@ class UserController extends Controller
             'user/signUp.html.twig',
             [
                 'form' => $form->createView(),
-                'isAuth' => $httpRequest->getSession('isAuth')
+                'isSignedIn' => $this->authentication->isSignedIn()
             ]
         );
 
-        $httpResponse->send($this->page);
+        $this->httpResponse->send($this->page);
     }
 
     /**
      * Change the user password
-     *
-     * @param HTTPRequest  $httpRequest  HTTP request to be sent.
-     * @param HTTPResponse $httpResponse HTTP response to be sent.
-     *
+     * 
      * @return void
      */
-    public function changePassword(
-        HTTPRequest $httpRequest,
-        HTTPResponse $httpResponse
-    ) {
-        if (!$httpRequest->getSession('isAuth')) {
-            $httpResponse->redirect('/sign-in');
+    public function changePassword()
+    {
+        if ($this->authentication->isSignedIn()) {
+            $this->httpResponse->redirect('/sign-in');
         }
 
         $formData = [];
 
-        if ($httpRequest->getMethod() == 'POST') {
+        if ($this->httpRequest->getMethod() == 'POST') {
             $formData = [
-                'formerPassword' => $httpRequest->getPost(
+                'formerPassword' => $this->httpRequest->getPost(
                     'formerPassword'
                 ),
-                'newPassword' => $httpRequest->getPost(
+                'newPassword' => $this->httpRequest->getPost(
                     'newPassword'
                 ),
-                'newConfirmedPassword' => $httpRequest->getPost(
+                'newConfirmedPassword' => $this->httpRequest->getPost(
                     'newConfirmedPassword'
                 )
             ];
@@ -211,10 +157,22 @@ class UserController extends Controller
 
         $form = $formBuilder->getForm();
 
-        if ($httpRequest->getMethod() == 'POST' && $form->isValid()) {
+        $changePasswordFormHandler = new ChangePasswordFormHandler(
+            $this->httpRequest,
+            $this->httpResponse,
+            $form,
+            $this->managers->getManagerOf('User'),
+            $this->authentication
+        );
+
+        if ($changePasswordFormHandler->process()) {
+            $this->httpResponse->redirect('/');
+        }
+
+        if ($this->httpRequest->getMethod() == 'POST' && $form->isValid()) {
             $userManager = $this->managers->getManagerOf('User');
 
-            $user = $userManager->get($httpRequest->getSession('authEmail'));
+            $user = $userManager->get($this->httpRequest->getSession('authEmail'));
 
             if (password_verify($formData['formerPassword'], $user->getPassword())) {
                 if ($formData['newPassword'] == $formData['newConfirmedPassword']) {
@@ -222,7 +180,7 @@ class UserController extends Controller
 
                     $userManager->save($user);
 
-                    $httpResponse->redirect('/');
+                    $this->httpResponse->redirect('/');
                 }
                 $form->addErrorMsg(
                     'Les mots de passe ne correspondent pas',
@@ -247,10 +205,10 @@ class UserController extends Controller
             'user/changePassword.html.twig',
             [
                 'form' => $form->createView(),
-                'isAuth' => $httpRequest->getSession('isAuth')
+                'isAuth' => $this->httpRequest->getSession('isAuth')
             ]
         );
 
-        $httpResponse->send($this->page);
+        $this->httpResponse->send($this->page);
     }
 }

@@ -35,7 +35,7 @@
 						</li>
 					</ul>
           <ul class="navbar-nav">
-          {% if isAuth == false %}
+          {% if isSignedIn == false %}
             <li class="nav-item mx-0 mx-lg-1 my-1">
 							<a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger btn btn-primary font-weight-bold" href="/sign-in">Connexion</a>
 						</li>
@@ -43,7 +43,7 @@
 							<a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger btn btn-primary font-weight-bold" href="/sign-up">Inscription</a>
 						</li>
             {% endif %}
-            {% if isAuth == true %}
+            {% if isSignedIn == true %}
               <li class="nav-item mx-0 mx-lg-1 my-1">
                 <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger btn btn-primary font-weight-bold" href="/change-password">Modifier le mot de passe</a>
               </li>

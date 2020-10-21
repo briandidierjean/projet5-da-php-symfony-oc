@@ -1,9 +1,7 @@
 <?php
 namespace Core;
 
-session_start();
-
-class HTTPRequest
+class HTTPRequest extends ApplicationComponent
 {
     /**
      * Return the URL used

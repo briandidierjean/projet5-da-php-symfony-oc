@@ -14,7 +14,8 @@
             "App\\Controller\\": "src/controllers/",
             "App\\Model\\Entity\\": "src/model/entities/",
             "App\\Model\\Manager\\": "src/model/managers/",
-            "App\\FormBuilder\\": "src/formBuilders/"
+            "App\\FormBuilder\\": "src/formBuilders/",
+            "App\\FormHandler\\": "src/formHandlers/"
         }
     },
     "require": {

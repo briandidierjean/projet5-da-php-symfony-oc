@@ -3,7 +3,7 @@ namespace Core;
 
 class Form
 {
-    protected $data;
+    protected $data = [];
     protected $fields = [];
 
     public function __construct(array $data)
@@ -39,11 +39,13 @@ class Form
      * 
      * @return void
      */
-    public function addErrorMsg($errorMsg, $fieldName)
+    public function addErrorMsg($errorMsg, array $fieldNames)
     {
-        foreach ($this->fields as $field) {
-            if ($field->getName() === $fieldName) {
-                $field->setErrorMsg($errorMsg);
+        foreach ($fieldNames as $fieldName) {
+            foreach ($this->fields as $field) {
+                if ($field->getName() === $fieldName) {
+                    $field->setErrorMsg($errorMsg);
+                }
             }
         }
     }
@@ -80,5 +82,17 @@ class Form
         }
 
         return $isValid;
+    }
+
+    /**
+     * Get a piece of data from the data list
+     * 
+     * @param string $index Index of data to get
+     * 
+     * @return mixed
+     */
+    public function getData($index)
+    {
+        return $this->data[$index];
     }
 }
