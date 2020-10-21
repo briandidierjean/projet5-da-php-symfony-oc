@@ -7,6 +7,7 @@ use \Core\HTTPResponse;
 use \Core\Mail;
 use \App\Model\Entity\Message;
 use \App\FormBuilder\MessageFormBuilder;
+use \App\FormHandler\SendingMessageFormHandler;
 
 class HomeController extends Controller
 {
@@ -32,17 +33,16 @@ class HomeController extends Controller
 
         $form = $formBuilder->getForm();
 
-        if ($this->httpRequest->getMethod() == 'POST' && $form->isValid()) {
-            $mail = new Mail(
-                $formData['email'],
-                $formData['name'],
-                $formData['message']
-            );
-            $mail->send();
+        $formHandler = new SendingMessageFormHandler(
+            $this->httpRequest,
+            $this->httpResponse,
+            $form,
+        );
 
-            $this->httpResponse->redirect('/');
+        if ($formHandler->process()) {
+            $this->httpResponse->redirect();
         }
-
+        
         $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../views');
         $twig = new \Twig\Environment($loader);
 

@@ -36,7 +36,7 @@ class UserController extends Controller
 
         $form = $formBuilder->getForm();
 
-        $signingInFormHandler = new SigningInFormHandler(
+        $formHandler = new SigningInFormHandler(
             $this->httpRequest,
             $this->httpResponse,
             $form,
@@ -44,7 +44,7 @@ class UserController extends Controller
             $this->authentication
         );
 
-        if ($signingInFormHandler->process()) {
+        if ($formHandler->process()) {
             $this->httpResponse->redirect('/');
         }
 
@@ -99,7 +99,7 @@ class UserController extends Controller
 
         $form = $formBuilder->getForm();
 
-        $signingUpFormHandler = new SigningUpFormHandler(
+        $formHandler = new SigningUpFormHandler(
             $this->httpRequest,
             $this->httpResponse,
             $form,
@@ -107,7 +107,7 @@ class UserController extends Controller
             $this->authentication
         );
 
-        if ($signingUpFormHandler->process()) {
+        if ($formHandler->process()) {
             $this->httpResponse->redirect('/');
         }
 
@@ -157,7 +157,7 @@ class UserController extends Controller
 
         $form = $formBuilder->getForm();
 
-        $changePasswordFormHandler = new ChangePasswordFormHandler(
+        $formHandler = new ChangingPasswordFormHandler(
             $this->httpRequest,
             $this->httpResponse,
             $form,
@@ -165,37 +165,8 @@ class UserController extends Controller
             $this->authentication
         );
 
-        if ($changePasswordFormHandler->process()) {
+        if ($formHandler->process()) {
             $this->httpResponse->redirect('/');
-        }
-
-        if ($this->httpRequest->getMethod() == 'POST' && $form->isValid()) {
-            $userManager = $this->managers->getManagerOf('User');
-
-            $user = $userManager->get($this->httpRequest->getSession('authEmail'));
-
-            if (password_verify($formData['formerPassword'], $user->getPassword())) {
-                if ($formData['newPassword'] == $formData['newConfirmedPassword']) {
-                    $user->setPassword($formData['newPassword']);
-
-                    $userManager->save($user);
-
-                    $this->httpResponse->redirect('/');
-                }
-                $form->addErrorMsg(
-                    'Les mots de passe ne correspondent pas',
-                    'newPassword'
-                );
-                $form->addErrorMsg(
-                    'Les mots de passe ne correspondent pas',
-                    'newConfirmedPassword'
-                );
-            } else {
-                $form->addErrorMsg(
-                    'L\'ancien mot de passe est inccorect',
-                    'formerPassword'
-                );
-            }
         }
 
         $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../views');
