@@ -7,16 +7,17 @@ class Application
 {
     protected $httpRequest;
     protected $httpResponse;
+    protected $authentication;
 
     public function __construct()
     {
-        $this->httpRequest = new HTTPRequest;
-        $this->httpResponse = new HTTPResponse;
+        $this->httpRequest = new HTTPRequest($this);
+        $this->httpResponse = new HTTPResponse($this);
+        $this->authentication = new Authentication($this);
     }
 
     /**
-     * This methods run the application. It takes a HTTP request
-     * and returns a HTTP Response.
+     * Get a controller a execute it
      *
      * @return void
      */
@@ -24,12 +25,10 @@ class Application
     {
         $controller = $this->getController();
         $controller->execute();
-
-        $this->httpResponse->send($controller->getPage());
     }
 
     /**
-     * This methods take a URL and returns the matched controller.
+     * Choose a controller matching the client route
      *
      * @return Controller
      */
@@ -84,5 +83,10 @@ class Application
     public function getHttpResponse()
     {
         return $this->httpResponse;
+    }
+
+    public function getAuthentication()
+    {
+        return $this->authentication;
     }
 }

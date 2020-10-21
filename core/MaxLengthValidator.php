@@ -13,10 +13,9 @@ class MaxLengthValidator extends Validator
     }
 
     /**
-     * This method checks if a form field value length is not superior
-     * to the maximum length validator value.
+     * Check if a field value length is not superior to a maximum length
      * 
-     * @param string $value Value to be set
+     * @param string $value Value to be checked
      * 
      * @return bool
      */
@@ -29,11 +28,8 @@ class MaxLengthValidator extends Validator
     public function setMaxLength($maxLength)
     {
         $maxLength = (int) $maxLength;
-        if (!$maxLength > 0) {
-            throw new \Exception(
-                'La longueur maximale doit être un nombre supérieur à 0'
-            );
+        if ($maxLength > 0) {
+            $this->maxLength = $maxLength;
         }
-        $this->maxLength = $maxLength;
     }
 }

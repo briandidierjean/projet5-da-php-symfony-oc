@@ -1,5 +1,24 @@
-Home:
-  url: /
+- url: /
   controller: home
   action: index
+  vars:
+
+- url: /sign-in
+  controller: user
+  action: signIn
+  vars:
+
+- url: /sign-out
+  controller: user
+  action: signOut
+  vars:
+
+- url: /sign-up
+  controller: user
+  action: signUp
+  vars:
+
+- url: /change-password
+  controller: user
+  action: changePassword
   vars:

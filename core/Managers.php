@@ -14,7 +14,7 @@ class Managers
     }
 
     /**
-     * This method takes an entity name and returns the matched manager.
+     * Return a manager matching an entity name
      *
      * @param string $entity Entity name to be matched
      *
@@ -22,12 +22,8 @@ class Managers
      */
     public function getManagerOf($entity)
     {
-        if (!is_string($entity) || empty($entity)) {
-            throw new \Exception('L\'entité n\'est pas valide');
-        }
-
         if (!isset($this->managers[$entity])) {
-            $manager = '\\App\\Model\\Manager\\Manager'.$this->api;
+            $manager = '\\App\\Model\\Manager\\'.$entity.'Manager'.$this->api;
             
             $this->managers[$entity] = new $manager($this->dao);
         }

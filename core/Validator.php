@@ -7,11 +7,11 @@ abstract class Validator
 
     public function __construct($errorMsg)
     {
-        $this->setErrorMsg($errorMsg);
+        $this->errorMsg = $errorMsg;
     }
 
     /**
-     * This methods checks if a form field is validated by the validator.
+     * Check if a field value is valid
      * 
      * @param strong $value Value to be validated
      * 
@@ -23,13 +23,5 @@ abstract class Validator
     public function getErrorMsg()
     {
         return $this->errorMsg;
-    }
-
-    // SETTERS
-    public function setErrorMsg($errorMsg)
-    {
-        if (is_string($errorMsg)) {
-            $this->errorMsg = $errorMsg;
-        }
     }
 }

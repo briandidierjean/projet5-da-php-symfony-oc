@@ -3,43 +3,57 @@ namespace App\Controller;
 
 use \Core\Controller;
 use \Core\HTTPRequest;
+use \Core\HTTPResponse;
+use \Core\Mail;
 use \App\Model\Entity\Message;
 use \App\FormBuilder\MessageFormBuilder;
-use \Core\FormHandler;
+use \App\FormHandler\SendingMessageFormHandler;
 
 class HomeController extends Controller
 {
-    public function index(HTTPRequest $httpRequest)
+    /**
+     * Show the home page with the contact form
+     *
+     * @return void
+     */
+    public function index()
     {
-        if ($httpRequest->getMethod() == 'POST') {
-            $message = new Message(
-                [
-                    'name' => $httpRequest->getPost('name'),
-                    'email' => $httpRequest->getPost('email'),
-                    'message' => $httpRequest->getPost('message')
-                ]
-            );
-        } else {
-            $message = new Message;
+        $formData = [];
+
+        if ($this->httpRequest->getMethod() == 'POST') {
+            $formData = [
+                'name' => $this->httpRequest->getPost('name'),
+                'email' => $this->httpRequest->getPost('email'),
+                'message' => $this->httpRequest->getPost('message')
+            ];
         }
 
-        $formBuilder = new MessageFormBuilder($message);
+        $formBuilder = new MessageFormBuilder($formData);
         $formBuilder->build();
 
         $form = $formBuilder->getForm();
 
-        $formHandler = new FormHandler($form, $message, $httpRequest);
+        $formHandler = new SendingMessageFormHandler(
+            $this->httpRequest,
+            $this->httpResponse,
+            $form,
+        );
 
-        if ($formHandler->sendProcess()) {
-            $this->app->getHttpResponse()->redirect('/');
+        if ($formHandler->process()) {
+            $this->httpResponse->redirect();
         }
-
+        
         $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../views');
         $twig = new \Twig\Environment($loader);
 
         $this->page = $twig->render(
             'home/index.html.twig',
-            ['form' => $form->createView()]
+            [
+                'form' => $form->createView(),
+                'isSignedIn' => $this->authentication->isSignedIn()
+            ]
         );
+
+        $this->httpResponse->send($this->page);
     }
 }

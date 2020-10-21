@@ -4,7 +4,7 @@ namespace Core;
 trait Hydrator
 {
     /**
-     * This method takes data and hydrates it.
+     * Hydrate data
      *
      * @param array $data Data to be hydrated
      *

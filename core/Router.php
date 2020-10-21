@@ -3,12 +3,12 @@ namespace Core;
 
 class Router
 {
-    protected $routes = [];
+    public $routes = [];
 
     /**
-     * This method add a route to the routes list.
+     * Add a route to the routes list
      *
-     * @param Route $route Route to be added to the list.
+     * @param Route $route Route to be added to the list
      *
      * @return void
      */
@@ -20,9 +20,9 @@ class Router
     }
 
     /**
-     * This method take a URL and returns the matched route.
+     * Return a route matching a URL
      * 
-     * @param string $url The URL to be matched
+     * @param string $url URL to be matched
      * 
      * @return Route
      */
@@ -31,7 +31,7 @@ class Router
         foreach ($this->routes as $route) {
             if (($varsValues = $route->match($url)) !== false) {
                 if ($route->hasVars()) {
-                    $varsNames = $route->varNames();
+                    $varsNames = $route->varsNames();
                     $vars = [];
 
                     foreach ($varsValues as $key => $value) {
@@ -45,7 +45,8 @@ class Router
                 }
                 return $route;
             }
-            throw new \Exception('Aucune route ne correspond à l\'URL');
         }
+
+        throw new \Exception;
     }
 }

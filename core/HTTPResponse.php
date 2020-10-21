@@ -1,10 +1,10 @@
 <?php
 namespace Core;
 
-class HTTPResponse
+class HTTPResponse extends ApplicationComponent
 {
     /**
-     * This method set a header to be sent to the client.
+     * Set a header to be sent
      *
      * @param string $header Header to be sent
      *
@@ -16,7 +16,7 @@ class HTTPResponse
     }
 
     /**
-     * This method redirect the client.
+     * Make a redirection
      *
      * @param string $location Location to be redirected
      *
@@ -29,7 +29,24 @@ class HTTPResponse
     }
 
     /**
-     * This method takes a HTML page and sends it the the client.
+     * Redirect to an error page
+     * 
+     * @return void
+     */
+    public function redirect404()
+    {
+        $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../src/views');
+        $twig = new \Twig\Environment($loader);
+
+        $this->page = $twig->render('errors/404.html.twig');
+
+        $this->setHeader('HTTP/1.0 404 Not Found');
+
+        $this->send($this->page);
+    }
+
+    /**
+     * Send a HTML page
      * 
      * @param string $page HTML page to be sent
      *
@@ -41,10 +58,23 @@ class HTTPResponse
     }
 
     /**
-     * This method set a secure cookie.
+     * Set a session variable
+     * 
+     * @param string $key   Session key to be set
+     * @param mixed  $value Session value to be set
+     * 
+     * @return void
+     */
+    public function setSession($key, $value)
+    {
+        $_SESSION[$key] = $value;
+    }
+
+    /**
+     * Set a cookie variable
      *
      * @param string $name     Name of the cookie
-     * @param string $value    Value of the cookie
+     * @param mixed  $value    Value of the cookie
      * @param int    $expire   Expiration timestamp of the cookie
      * @param mixed  $path     Path where the cookie must be saved
      * @param mixed  $domain   The (sub)domain that the cookie is available to.
@@ -57,7 +87,7 @@ class HTTPResponse
      */
     public function setCookie(
         $name,
-        $value = '',
+        $value,
         $expire = 0,
         $path = null,
         $domain = null,

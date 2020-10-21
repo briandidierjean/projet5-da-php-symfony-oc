@@ -4,7 +4,7 @@ namespace Core;
 class EmailValidator extends Validator
 {
     /**
-     * This method checks if a field value matched the email format.
+     * Check if a field value matched the email format
      * 
      * @param string $value Value to be checked
      * 

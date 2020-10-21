@@ -5,13 +5,13 @@ abstract class FormBuilder
 {
     protected $form;
 
-    public function __construct(Entity $entity)
+    public function __construct(array $data)
     {
-        $this->form = new Form($entity);
+        $this->form = new Form($data);
     }
 
     /**
-     * This method builds a form.
+     * Build a form
      *
      * @return void
      */

@@ -1,68 +1,26 @@
 <?php
 namespace Core;
 
-use Symfony\Component\Yaml\Yaml;
-
-class FormHandler
+abstract class FormHandler
 {
-    protected $form;
-    protected $entity;
     protected $httpRequest;
-
+    protected $httpResponse;
+    protected $form;
+ 
     public function __construct(
-        Form $form,
-        Entity $entity,
-        HTTPRequest $httpRequest
+        HTTPRequest $httpRequest,
+        HTTPResponse $httpResponse,
+        Form $form
     ) {
-        $this->form = $form;
-        $this->entity = $entity;
         $this->httpRequest = $httpRequest;
+        $this->httpResponse = $httpResponse;
+        $this->form = $form;
     }
 
     /**
-     * This method checks if a POST parameter is found,
-     * and save form data to database.
-     * 
-     * @param Manager $manager Manager to use
-     * 
+     * Process the form
+     *
      * @return bool
      */
-    public function saveProcess(Manager $manager)
-    {
-        if ($this->httpRequest->getMethod() == 'POST' && $this->form->isValid()) {
-            $manager->save($this->entity);
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * This method checks if a POST parameter is found,
-     * and send form data to an email adress.
-     * 
-     * @return bool
-     */
-    public function sendProcess()
-    {
-        if ($this->httpRequest->getMethod() == 'POST' && $this->form->isValid()) {
-
-            $mails = Yaml::parseFile(
-                __DIR__.'/../config/mail.yaml'
-            );
-
-            $to = $mails['receiptAddress'];
-            $subject = 'Website Contact Form: '.$this->entity->getName();
-            $body = $this->entity->getMessage();
-            $header = 'From: '.$mails['sendingAddress'];
-            $header .= 'Reply-To:'.$this->entity->getEmail();
-
-            mail($to, $subject, $body, $header);
-
-            return true;
-        }
-
-        return false;
-    }
+    abstract public function process();
 }
