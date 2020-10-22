@@ -71,4 +71,10 @@ class Route
     {
         return $this->varsNames;
     }
+
+    // SETTERS
+    public function setVars(array $vars)
+    {
+        $this->vars = $vars;
+    }
 }

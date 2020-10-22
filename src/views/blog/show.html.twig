@@ -1,0 +1,21 @@
+{% extends "template.html.twig" %}
+
+{% block title %}{{ blogPost.title }} - Brian Didierjean
+{% endblock %}
+
+{% block content %}
+<!-- Blog Post Section -->
+<section class="page-section mb-0 mt-5 mx-5" id="blog-post">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6">
+            <h1>{{ blogPost.title }}</h1>
+            <p>{{ blogPost.heading }}</p>
+            <p >{{ blogPost.content }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

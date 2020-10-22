@@ -9,7 +9,7 @@ use \App\Model\Entity\BlogPost;
 class BlogPostController extends Controller
 {
     /**
-     * Show the blog page with the blog posts
+     * Show the blog posts list
      *
      * @return void
      */
@@ -27,6 +27,31 @@ class BlogPostController extends Controller
             [
                 'isSignedIn' => $this->authentication->isSignedIn(),
                 'blogPosts' => $blogPosts
+            ]
+        );
+
+        $this->httpResponse->send($this->page);
+    }
+
+    /**
+     * Show a blog post
+     * 
+     * @return void
+     */
+    public function show()
+    {
+        $blogPostManager = $this->managers->getManagerOf('BlogPost');
+
+        $blogPost = $blogPostManager->get($this->httpRequest->getGet('id'));
+
+        $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../views');
+        $twig = new \Twig\Environment($loader);
+
+        $this->page = $twig->render(
+            'blog/show.html.twig',
+            [
+                'isSignedIn' => $this->authentication->isSignedIn(),
+                'blogPost' => $blogPost
             ]
         );
 

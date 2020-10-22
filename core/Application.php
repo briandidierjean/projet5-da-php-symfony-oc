@@ -44,7 +44,7 @@ class Application
             $vars = [];
 
             if (isset($route['vars'])) {
-                $vars = $route['vars'];
+                $vars = explode(',', $route['vars']);
             }
 
             $router->addRoute(
