@@ -20,15 +20,15 @@ class BlogPost extends Entity
     public function isValid()
     {
         return !(
+            empty($this->userId) ||
             empty($this->title) ||
             empty($this->heading) ||
-            empty($this->content) ||
-            empty($this->updateDate)
+            empty($this->content)
         );
     }
 
     // GETTERS
-    public function getUserId($userId)
+    public function getUserId()
     {
         return $this->userId;
     }

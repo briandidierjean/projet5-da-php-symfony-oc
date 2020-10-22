@@ -6,44 +6,45 @@ use \Core\HTTPRequest;
 use \Core\HTTPResponse;
 use \Core\Form;
 use \Core\Authentication;
-use \App\Model\Entity\Comment;
-use \App\Model\Manager\CommentManager;
+use \App\Model\Entity\BlogPost;
+use \App\Model\Manager\BlogPostManager;
 
-class AddCommentFormHandler extends FormHandler
+class AddBlogPostFormHandler extends FormHandler
 {
-    protected $commentManager;
+    protected $blogPostManager;
     protected $authentication;
 
     public function __construct(
         HTTPRequest $httpRequest,
         HTTPResponse $httpResponse,
         Form $form,
-        CommentManager $commentManager,
+        BlogPostManager $blogPostManager,
         Authentication $authentication
     ) {
         parent::__construct($httpRequest, $httpResponse, $form);
 
-        $this->commentManager = $commentManager;
+        $this->blogPostManager = $blogPostManager;
         $this->authentication = $authentication;
     }
 
     /**
-     * Process the form to add a comment
+     * Process the form to add a blog post
      *
      * @return bool
      */
     public function process()
     {
         if ($this->httpRequest->getMethod() == 'POST' && $this->form->isValid()) {
-            $comment  = new Comment(
+            $blogPost  = new BlogPost(
                 [
-                    'blogPostId' => $this->httpRequest->getGet('id'),
                     'userId' => $this->authentication->getId(),
+                    'title' => $this->form->getData('title'),
+                    'heading' => $this->form->getData('heading'),
                     'content' => $this->form->getData('content')
                 ]
             );
 
-            $this->commentManager->save($comment);
+            $_GET['id'] =  $this->blogPostManager->save($blogPost);
 
             return true;
         }

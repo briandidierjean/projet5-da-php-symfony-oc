@@ -59,14 +59,14 @@ class BlogPostManagerPDO extends BlogPostManager
      *
      * @param BlogPost $blogPost Blog post to be added
      *
-     * @return void
+     * @return int
      */
     protected function add(BlogPost $blogPost)
     {
         $request = $this->dao->prepare(
             'INSERT INTO blog_posts(
-                user_id, title, heading, content, update_date = NOW()
-            ) VALUES(:user_id, :title, :heading, :content)'
+                user_id, title, heading, content, update_date
+            ) VALUES(:user_id, :title, :heading, :content, NOW())'
         );
 
         $request->bindValue(
@@ -91,6 +91,8 @@ class BlogPostManagerPDO extends BlogPostManager
         );
 
         $request->execute();
+        
+        return $this->dao->lastInsertId();
     }
 
     /**
