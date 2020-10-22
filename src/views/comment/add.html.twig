@@ -1,0 +1,36 @@
+{% extends "template.html.twig" %}
+
+{% block title %}Ajouter un commentaire - Brian Didierjean{% endblock %}
+
+{% block content %}
+<!-- Add Comment Section-->
+	<section class="page-section mt-4" id="add-comment">
+		<div
+			class="container mt-5">
+			<!-- Add Comment Section Heading-->
+			<h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Ajouter un commentaire</h2>
+			<!-- Icon Divider-->
+			<div class="divider-custom">
+				<div class="divider-custom-line"></div>
+				<div class="divider-custom-icon">
+					<i class="fas fa-star"></i>
+				</div>
+				<div class="divider-custom-line"></div>
+			</div>
+			<!-- Add Comment Section Form-->
+			<div class="row">
+				<div
+					class="col-lg-8 mx-auto">
+					<form method="post" action="/add-comment-{{ blogPostId }}">
+          {{ form | raw }}
+						<br/>
+						<div id="success"></div>
+						<div class="form-group">
+							<button class="btn btn-primary btn-xl" type="submit">Ajouter</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}
