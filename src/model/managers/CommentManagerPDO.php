@@ -8,7 +8,7 @@ class CommentManagerPDO extends CommentManager
     /**
      * Return a list of the comments
      *
-     * @param int $blogPostId Blog post ID that owes the comments
+     * @param int $blogPostId comment ID that owes the comments
      * @param int $start      First comment to get
      * @param int $limit      The number of comments get
      *
@@ -148,5 +148,25 @@ class CommentManagerPDO extends CommentManager
         $request->bindValue(':id', $id, \PDO::PARAM_INT);
 
         $request->execute();
+    }
+
+    /**
+     * Check if a comment exists
+     * 
+     * @param int $id ID to use as a key
+     * 
+     * @return void
+     */
+    public function exists($id)
+    {
+        $request = $this->dao->prepare(
+            'SELECT COUNT(*) FROM comments WHERE id = :id'
+        );
+        
+        $request->bindValue(':id', $id, \PDO::PARAM_INT);
+
+        $request->execute();
+
+        return (bool) $request->fetchColumn();
     }
 }

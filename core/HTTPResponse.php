@@ -29,16 +29,47 @@ class HTTPResponse extends ApplicationComponent
     }
 
     /**
-     * Redirect to an error page
+     * Redirect to a 401 error page
+     * 
+     * @return void
+     */
+    public function redirect401()
+    {
+        $authentication = $this->app->getAuthentication();
+
+        $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../src/views');
+        $twig = new \Twig\Environment($loader);
+
+        $this->page = $twig->render(
+            'errors/401.html.twig',
+            [
+                'isSignedIn' => $authentication->isSignedIn()
+            ]
+        );
+
+        $this->setHeader('HTTP/1.1 401 Unauthorized ');
+
+        $this->send($this->page);
+    }
+
+    /**
+     * Redirect to a 404 error page
      * 
      * @return void
      */
     public function redirect404()
     {
+        $authentication = $this->app->getAuthentication();
+
         $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../src/views');
         $twig = new \Twig\Environment($loader);
 
-        $this->page = $twig->render('errors/404.html.twig');
+        $this->page = $twig->render(
+            'errors/404.html.twig',
+            [
+                'isSignedIn' => $authentication->isSignedIn()
+            ]
+        );
 
         $this->setHeader('HTTP/1.0 404 Not Found');
 

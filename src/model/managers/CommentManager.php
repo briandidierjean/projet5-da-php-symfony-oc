@@ -54,6 +54,15 @@ abstract class CommentManager extends Manager
     abstract public function delete($id);
 
     /**
+     * Check if a comment exists
+     * 
+     * @param int $id ID to use as a key
+     * 
+     * @return void
+     */
+    abstract public function exists($id);
+
+    /**
      * Save a comment in the database
      *
      * @param Comment $comment Comment to be saved

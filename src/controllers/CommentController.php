@@ -37,9 +37,9 @@ class CommentController extends Controller
         $formHandler = new AddCommentFormHandler(
             $this->httpRequest,
             $this->httpResponse,
+            $this->authentication,
             $form,
-            $this->managers->getManagerOf('Comment'),
-            $this->authentication
+            $this->managers->getManagerOf('Comment')
         );
 
         if ($formHandler->process()) {
