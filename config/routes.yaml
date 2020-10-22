@@ -22,3 +22,8 @@
   controller: user
   action: changePassword
   vars:
+
+- url: /blog
+  controller: blogPost
+  action: index
+  vars:

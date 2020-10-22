@@ -15,13 +15,18 @@ class BlogPostController extends Controller
      */
     public function index()
     {   
+        $blogPostManager = $this->managers->getManagerOf('BlogPost');
+
+        $blogPosts = $blogPostManager->getList(0, 5);
+
         $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../views');
         $twig = new \Twig\Environment($loader);
 
         $this->page = $twig->render(
             'blog/index.html.twig',
             [
-                'isSignedIn' => $this->authentication->isSignedIn()
+                'isSignedIn' => $this->authentication->isSignedIn(),
+                'blogPosts' => $blogPosts
             ]
         );
 
