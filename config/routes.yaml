@@ -47,3 +47,8 @@
   controller: comment
   action: add
   vars: id
+
+- url: /admin
+  controller: admin
+  action: index
+  vars:
