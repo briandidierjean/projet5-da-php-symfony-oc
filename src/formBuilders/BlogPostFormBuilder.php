@@ -23,7 +23,7 @@ class BlogPostFormBuilder extends FormBuilder
                     'maxLength' => 255,
                     'validators' => [
                         new NotNullValidator(
-                            'Merci de spécifier votre ancien mot de passe'
+                            'Merci de spécifier un titre'
                         ),
                         new MaxLengthValidator(
                             'Le titre ne doit pas dépasser
@@ -38,11 +38,15 @@ class BlogPostFormBuilder extends FormBuilder
                     'label' => 'Chapô',
                     'name' => 'heading',
                     'placeholder' => 'Chapô de l\'article',
+                    'required' => true,
                     'maxLength' => 2000,
                     'rows' => 8,
                     'validators' => [
+                        new NotNullValidator(
+                            'Merci de spécifier un chapô'
+                        ),
                         new MaxLengthValidator(
-                            'Le message est trop long (2000 caractères maximum)',
+                            'Le chapô ne doit pas dépasser 2000 caratères',
                             2000
                         )
                     ]
@@ -56,10 +60,9 @@ class BlogPostFormBuilder extends FormBuilder
                     'name' => 'content',
                     'placeholder' => 'Contenu de l\'article',
                     'required' => true,
-                    'rows' => 8,
                     'validators' => [
                         new NotNullValidator(
-                            'Merci de spécifier votre ancien mot de passe'
+                            'Merci de spécifier un contenu d\'article'
                         )
                     ]
                 ]
