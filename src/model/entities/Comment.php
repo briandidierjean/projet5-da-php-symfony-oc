@@ -27,6 +27,16 @@ class Comment extends Entity
     }
 
     // GETTERS
+    public function getBlogPostId()
+    {
+        return $this->blogPostId;
+    }
+
+    public function getUserId()
+    {
+        return $this->userId;
+    }
+
     public function getContent()
     {
         return $this->content;
@@ -43,6 +53,16 @@ class Comment extends Entity
     }
 
     // SETTERS
+    public function setBlogPostId($blogPostId)
+    {
+        $this->blogPostId = (int) $blogPostId;
+    }
+
+    public function setUserId($userId)
+    {
+        $this->userId = (int) $userId;
+    }
+
     public function setContent($content)
     {
         if (is_string($content)) {
@@ -50,9 +70,12 @@ class Comment extends Entity
         }
     }
 
-    public function setAddDate(\DateTime $addDate)
+    public function setAddDate($addDate)
     {
-        $this->addDate = $addDate;
+        if (is_string($addDate)) {
+            $addDate = new \DateTime($addDate);
+            $this->addDate = $addDate;
+        }
     }
 
     public function setStatus($status)
