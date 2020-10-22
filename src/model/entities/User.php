@@ -6,7 +6,7 @@ use \Core\Entity;
 class User extends Entity
 {
     protected $id;
-    protected $role = 'member';
+    protected $role;
     protected $email;
     protected $password;
     protected $firstName;

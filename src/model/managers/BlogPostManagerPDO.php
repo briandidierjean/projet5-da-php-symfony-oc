@@ -8,8 +8,8 @@ class BlogPostManagerPDO extends BlogPostManager
     /**
      * Return a list of the blog posts
      *
-     * @param int $start First blog post the get
-     * @param int $limit The number of blog post the get
+     * @param int $start First blog post to get
+     * @param int $limit The number of blog post to get
      *
      * @return array
      */

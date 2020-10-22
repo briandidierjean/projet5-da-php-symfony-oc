@@ -24,14 +24,20 @@ class Authentication extends ApplicationComponent
     public function isSignedIn()
     {
         if ($this->httpRequest->getSession('auth')
+            && $this->httpRequest->getSession('id') !== null
             && $this->httpRequest->getSession('email') !== null
         ) {
             return true;
         }
         if ($this->httpRequest->getCookie('auth')
+            && $this->httpRequest->getCookie('id')
             && $this->httpRequest->getCookie('email')
         ) {
             $this->httpResponse->setSession('auth', true);
+            $this->httpResponse->setSession(
+                'id',
+                $this->httpRequest->getCookie('id')
+            );
             $this->httpResponse->setSession(
                 'email',
                 $this->httpRequest->getCookie('email')
@@ -44,13 +50,14 @@ class Authentication extends ApplicationComponent
     }
 
     /**
-     * Get the user email session
-     * 
+     * Get the session user email
+     *
      * @return mixed
      */
     public function getEmail()
     {
         if ($this->httpRequest->getSession('auth')
+            && $this->httpRequest->getSession('id') !== null
             && $this->httpRequest->getSession('email') !== null
         ) {
             return $this->httpRequest->getSession('email');
@@ -58,34 +65,53 @@ class Authentication extends ApplicationComponent
     }
 
     /**
+     * Get the session user ID
+     *
+     * @return mixed
+     */
+    public function getId()
+    {
+        if ($this->httpRequest->getSession('auth')
+            && $this->httpRequest->getSession('id') !== null
+            && $this->httpRequest->getSession('email') !== null
+        ) {
+            return $this->httpRequest->getSession('id');
+        }
+    }
+
+    /**
      * Set a connexion session
      *
+     * @param int    $id    ID to set in the session
      * @param string $email Email address to set in the session
      *
      * @return void
      */
-    public function setConnexion($email)
+    public function setConnexion($id, $email)
     {
         $this->httpResponse->setSession('auth', true);
+        $this->httpResponse->setSession('id', $id);
         $this->httpResponse->setSession('email', $email);
     }
 
     /**
      * Set a connexion cookie
-     * 
+     *
+     * @param int    $id    ID to save in the cookie
      * @param string $email Email address to save in the cookie
-     * 
+     *
      * @return void
      */
-    public function saveConnexion($email)
+    public function saveConnexion($id, $email)
     {
         $this->httpResponse->setCookie('auth', true);
+        $this->httpResponse->setCookie('id', $id);
         $this->httpResponse->setCookie('email', $email);
     }
 
     /**
      * Unset a connexion session and a connexion cookie
-     * 
+     *
      * @return void
      */
     public function unsetConnexion()
@@ -93,7 +119,7 @@ class Authentication extends ApplicationComponent
         session_destroy();
 
         $this->httpResponse->setCookie('isAuth', false);
-        $this->httpResponse->setCookie('authRole', '');
-        $this->httpResponse->setCookie('authEmail', '');
+        $this->httpResponse->setCookie('id', '');
+        $this->httpResponse->setCookie('email', '');
     }
 }

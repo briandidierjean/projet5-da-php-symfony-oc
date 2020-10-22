@@ -46,10 +46,16 @@ class SigningInFormHandler extends FormHandler
                     $staySignedIn = $this->form->getData('staySignedIn');
 
                     if ($staySignedIn) {
-                        $this->authentication->saveConnexion($email);
+                        $this->authentication->saveConnexion(
+                            $user->getId(),
+                            $user->getEmail()
+                        );
                     }
 
-                    $this->authentication->setConnexion($email);
+                    $this->authentication->setConnexion(
+                        $user->getId(),
+                        $user->getEmail()
+                    );
 
                     return true;
                 }

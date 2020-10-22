@@ -31,4 +31,9 @@
 - url: /blog-post-([0-9]+)
   controller: blogPost
   action: show
-  vars: id, slug
+  vars: id
+
+- url: /add-comment-([0-9]+)
+  controller: comment
+  action: add
+  vars: id

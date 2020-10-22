@@ -10,7 +10,7 @@ class Comment extends Entity
     protected $userId;
     protected $content;
     protected $addDate;
-    protected $status = "pending";
+    protected $status;
 
     /**
      * Check if a comment is valid
@@ -20,9 +20,9 @@ class Comment extends Entity
     public function isValid()
     {
         return !(
-            empty($this->content) ||
-            empty($this->addDate) ||
-            empty($this->status)
+            empty($this->blogPostId) ||
+            empty($this->userId) ||
+            empty($this->content)
         );
     }
 

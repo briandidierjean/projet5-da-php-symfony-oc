@@ -23,7 +23,7 @@ class BlogPostController extends Controller
         $twig = new \Twig\Environment($loader);
 
         $this->page = $twig->render(
-            'blog/index.html.twig',
+            'blog-post/index.html.twig',
             [
                 'isSignedIn' => $this->authentication->isSignedIn(),
                 'blogPosts' => $blogPosts
@@ -41,17 +41,20 @@ class BlogPostController extends Controller
     public function show()
     {
         $blogPostManager = $this->managers->getManagerOf('BlogPost');
+        $commentManager = $this->managers->getManagerOf('Comment');
 
         $blogPost = $blogPostManager->get($this->httpRequest->getGet('id'));
+        $comments = $commentManager->getList($this->httpRequest->getGet('id'), 0, 5);
 
         $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../views');
         $twig = new \Twig\Environment($loader);
 
         $this->page = $twig->render(
-            'blog/show.html.twig',
+            'blog-post/show.html.twig',
             [
                 'isSignedIn' => $this->authentication->isSignedIn(),
-                'blogPost' => $blogPost
+                'blogPost' => $blogPost,
+                'comments' => $comments
             ]
         );
 

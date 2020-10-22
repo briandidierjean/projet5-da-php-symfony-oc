@@ -73,7 +73,9 @@ class SigningUpFormHandler extends FormHandler
             );
             $this->userManager->save($user);
 
-            $this->authentication->setConnexion($user->getEmail());
+            $user = $this->userManager->get($user->getEmail());
+
+            $this->authentication->setConnexion($user->getId(), $user->getEmail());
 
             return true;
         }

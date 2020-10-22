@@ -2,6 +2,9 @@
 namespace App\FormBuilder;
 
 use \Core\FormBuilder;
+use \Core\TextareaField;
+use \Core\MaxLengthValidator;
+use \Core\NotNullValidator;
 
 class CommentFormBuilder extends FormBuilder
 {
