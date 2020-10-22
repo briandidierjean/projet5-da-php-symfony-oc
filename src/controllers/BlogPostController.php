@@ -6,7 +6,7 @@ use \Core\HTTPRequest;
 use \Core\HTTPResponse;
 use \App\Model\Entity\BlogPost;
 use \App\FormBuilder\BlogPostFormBuilder;
-use \App\FormHandler\AddBlogPostFormHandler;
+use \App\FormHandler\BlogPostFormHandler;
 
 class BlogPostController extends Controller
 {
@@ -74,11 +74,7 @@ class BlogPostController extends Controller
             $this->httpResponse->redirect('/sign-in');
         }
 
-        $userManager = $this->managers->getManagerOf('User');
-
-        $user = $userManager->get($this->authentication->getEmail());
-
-        if ($user->getRole() !== 'administrator') {
+        if (!$this->authentication->isAdmin()) {
             $this->httpResponse->redirect401();
         }
 
@@ -97,15 +93,15 @@ class BlogPostController extends Controller
 
         $form = $formBuilder->getForm();
 
-        $formHandler = new AddBlogPostFormHandler(
+        $formHandler = new BlogPostFormHandler(
             $this->httpRequest,
             $this->httpResponse,
+            $this->authentication,
             $form,
-            $this->managers->getManagerOf('BlogPost'),
-            $this->authentication
+            $this->managers->getManagerOf('BlogPost')
         );
 
-        if ($formHandler->process()) {
+        if ($formHandler->addProcess()) {
             $this->httpResponse->redirect(
                 'blog-post-'.$this->httpRequest->getGet('id')
             );
@@ -118,6 +114,79 @@ class BlogPostController extends Controller
             'blog-post/add.html.twig',
             [
                 'form' => $form->createView(),
+                'isSignedIn' => $this->authentication->isSignedIn()
+            ]
+        );
+
+        $this->httpResponse->send($this->page);
+    }
+
+    /**
+     * Update a blog post
+     *
+     * @return void
+     */
+    public function update()
+    {
+        if (!$this->authentication->isSignedIn()) {
+            $this->httpResponse->redirect('/sign-in');
+        }
+
+        if (!$this->authentication->isAdmin()) {
+            $this->httpResponse->redirect401();
+        }
+
+        $blogPostManager = $this->managers->getManagerOf('BlogPost');
+
+        if (!$blogPostManager->exists($this->httpRequest->getGet('id'))) {
+            $this->httpResponse->redirect404();
+        }
+
+        $blogPost = $blogPostManager->get($this->httpRequest->getGet('id'));
+
+        $formData = [];
+
+        $formData = [
+                'title' => $blogPost->getTitle(),
+                'heading' => $blogPost->getHeading(),
+                'content' => $blogPost->getContent()
+        ];
+
+        if ($this->httpRequest->getMethod() == 'POST') {
+            $formData = [
+                'title' => $this->httpRequest->getPost('title'),
+                'heading' => $this->httpRequest->getPost('heading'),
+                'content' => $this->httpRequest->getPost('content')
+            ];
+        }
+
+        $formBuilder = new BlogPostFormBuilder($formData);
+        $formBuilder->build();
+
+        $form = $formBuilder->getForm();
+
+        $formHandler = new BlogPostFormHandler(
+            $this->httpRequest,
+            $this->httpResponse,
+            $this->authentication,
+            $form,
+            $this->managers->getManagerOf('BlogPost')
+        );
+
+        if ($formHandler->updateProcess()) {
+            $this->httpResponse->redirect(
+                'blog-post-'.$this->httpRequest->getGet('id')
+            );
+        }
+
+        $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../views');
+        $twig = new \Twig\Environment($loader);
+
+        $this->page = $twig->render(
+            'blog-post/update.html.twig',
+            [
+                'form' => $form->createView(),
+                'id' => $this->httpRequest->getGet('id'),
                 'isSignedIn' => $this->authentication->isSignedIn()
             ]
         );

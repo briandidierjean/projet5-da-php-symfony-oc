@@ -38,7 +38,7 @@
   action: add
   vars:
 
-- url: /update-blog-post
+- url: /update-blog-post-([0-9]+)
   controller: blogPost
   action: update
   vars: id

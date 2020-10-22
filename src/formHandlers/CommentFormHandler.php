@@ -1,50 +1,52 @@
 <?php
 namespace App\FormHandler;
 
-use \Core\FormHandler;
 use \Core\HTTPRequest;
 use \Core\HTTPResponse;
-use \Core\Form;
 use \Core\Authentication;
-use \App\Model\Entity\BlogPost;
-use \App\Model\Manager\BlogPostManager;
+use \Core\Form;
+use \App\Model\Entity\Comment;
+use \App\Model\Manager\CommentManager;
 
-class AddBlogPostFormHandler extends FormHandler
+class AddCommentFormHandler
 {
-    protected $blogPostManager;
+    protected $httpRequest;
+    protected $httpResponse;
     protected $authentication;
+    protected $form;
+    protected $commentManager;
 
     public function __construct(
         HTTPRequest $httpRequest,
         HTTPResponse $httpResponse,
+        Authentication $authentication,
         Form $form,
-        BlogPostManager $blogPostManager,
-        Authentication $authentication
+        CommentManager $commentManager
     ) {
-        parent::__construct($httpRequest, $httpResponse, $form);
-
-        $this->blogPostManager = $blogPostManager;
+        $this->httpRequest = $httpRequest;
+        $this->httpResponse = $httpResponse;
         $this->authentication = $authentication;
+        $this->form = $form;
+        $this->commentManager = $commentManager;
     }
 
     /**
-     * Process the form to add a blog post
+     * Process the form to add a comment
      *
      * @return bool
      */
     public function process()
     {
         if ($this->httpRequest->getMethod() == 'POST' && $this->form->isValid()) {
-            $blogPost  = new BlogPost(
+            $comment  = new Comment(
                 [
+                    'blogPostId' => $this->httpRequest->getGet('id'),
                     'userId' => $this->authentication->getId(),
-                    'title' => $this->form->getData('title'),
-                    'heading' => $this->form->getData('heading'),
                     'content' => $this->form->getData('content')
                 ]
             );
 
-            $_GET['id'] =  $this->blogPostManager->save($blogPost);
+            $this->commentManager->save($comment);
 
             return true;
         }

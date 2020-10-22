@@ -53,6 +53,15 @@ abstract class BlogPostManager extends Manager
     abstract public function delete($id);
 
     /**
+     * Check if a blog post exists
+     * 
+     * @param int $id ID to use as a key
+     * 
+     * @return void
+     */
+    abstract public function exists($id);
+
+    /**
      * Save a blog post in the database
      * 
      * @param BlogPost $blogPost Blog post to be saved
@@ -65,7 +74,7 @@ abstract class BlogPostManager extends Manager
             if ($blogPost->isNew()) {
                 return $this->add($blogPost);
             }
-            
+
             $this->update($blogPost);
         }
     }

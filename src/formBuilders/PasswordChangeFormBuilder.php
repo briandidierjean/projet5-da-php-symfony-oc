@@ -10,7 +10,7 @@ use \Core\PasswordValidator;
 class ChangingPasswordFormBuilder extends FormBuilder
 {
     /**
-     * Build a changing password form
+     * Build a password change form
      *
      * @return void
      */

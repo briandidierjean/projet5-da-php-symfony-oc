@@ -5,9 +5,8 @@ use \Core\Controller;
 use \Core\HTTPRequest;
 use \Core\HTTPResponse;
 use \Core\Mail;
-use \App\Model\Entity\Message;
-use \App\FormBuilder\MessageFormBuilder;
-use \App\FormHandler\SendingMessageFormHandler;
+use \App\FormBuilder\ContactMessageFormBuilder;
+use \App\FormHandler\ContactMessageFormHandler;
 
 class HomeController extends Controller
 {
@@ -28,12 +27,12 @@ class HomeController extends Controller
             ];
         }
 
-        $formBuilder = new MessageFormBuilder($formData);
+        $formBuilder = new ContactMessageFormBuilder($formData);
         $formBuilder->build();
 
         $form = $formBuilder->getForm();
 
-        $formHandler = new SendingMessageFormHandler(
+        $formHandler = new ContactMessageFormHandler(
             $this->httpRequest,
             $this->httpResponse,
             $form,

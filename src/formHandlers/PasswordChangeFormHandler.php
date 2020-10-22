@@ -1,30 +1,33 @@
 <?php
 namespace App\FormHandler;
 
-use \Core\FormHandler;
 use \Core\HTTPRequest;
 use \Core\HTTPResponse;
-use \Core\Form;
 use \Core\Authentication;
+use \Core\Form;
 use \App\Model\Entity\User;
 use \App\Model\Manager\UserManager;
 
-class ChangingPasswordFormHandler extends FormHandler
+class ChangingPasswordFormHandler
 {
-    protected $userManager;
+    protected $httpRequest;
+    protected $httpResponse;
     protected $authentication;
+    protected $form;
+    protected $userManager;
 
     public function __construct(
         HTTPRequest $httpRequest,
         HTTPResponse $httpResponse,
+        Authentication $authentication,
         Form $form,
-        UserManager $userManager,
-        Authentication $authentication
+        UserManager $userManager
     ) {
-        parent::__construct($httpRequest, $httpResponse, $form);
-
-        $this->userManager = $userManager;
+        $this->httpRequest = $httpRequest;
+        $this->httpResponse = $httpResponse;
         $this->authentication = $authentication;
+        $this->form = $form;
+        $this->userManager = $userManager;
     }
 
     /**

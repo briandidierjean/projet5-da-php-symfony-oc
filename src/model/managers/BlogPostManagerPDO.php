@@ -135,4 +135,24 @@ class BlogPostManagerPDO extends BlogPostManager
 
         $request->execute();
     }
+
+    /**
+     * Check if a blog post exists
+     * 
+     * @param int $id ID to use as a key
+     * 
+     * @return void
+     */
+    public function exists($id)
+    {
+        $request = $this->dao->prepare(
+            'SELECT COUNT(*) FROM blog_posts WHERE id = :id'
+        );
+        
+        $request->bindValue(':id', $id, \PDO::PARAM_INT);
+
+        $request->execute();
+
+        return (bool) $request->fetchColumn();
+    }
 }

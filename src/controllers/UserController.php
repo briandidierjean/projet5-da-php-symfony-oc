@@ -4,14 +4,13 @@ namespace App\Controller;
 use \Core\Controller;
 use \Core\HTTPRequest;
 use \Core\HTTPResponse;
-use \Core\MatchedValidator;
 use \App\Model\Entity\User;
-use \App\FormBuilder\ChangingPasswordFormBuilder;
 use \App\FormBuilder\SigningInFormBuilder;
 use \App\FormBuilder\SigningUpFormBuilder;
-use \App\FormHandler\ChangingPasswordFormHandler;
+use \App\FormBuilder\PasswordChangeFormBuilder;
 use \App\FormHandler\SigningInFormHandler;
 use \App\FormHandler\SigningUpFormHandler;
+use \App\FormHandler\PasswordChangeFormHandler;
 
 class UserController extends Controller
 {
@@ -39,9 +38,9 @@ class UserController extends Controller
         $formHandler = new SigningInFormHandler(
             $this->httpRequest,
             $this->httpResponse,
+            $this->authentication,
             $form,
-            $this->managers->getManagerOf('User'),
-            $this->authentication
+            $this->managers->getManagerOf('User')
         );
 
         if ($formHandler->process()) {
@@ -102,9 +101,9 @@ class UserController extends Controller
         $formHandler = new SigningUpFormHandler(
             $this->httpRequest,
             $this->httpResponse,
+            $this->authentication,
             $form,
-            $this->managers->getManagerOf('User'),
-            $this->authentication
+            $this->managers->getManagerOf('User')
         );
 
         if ($formHandler->process()) {
@@ -152,17 +151,17 @@ class UserController extends Controller
             ];
         }
         
-        $formBuilder = new ChangingPasswordFormBuilder($formData);
+        $formBuilder = new PasswordChangeFormBuilder($formData);
         $formBuilder->build();
 
         $form = $formBuilder->getForm();
 
-        $formHandler = new ChangingPasswordFormHandler(
+        $formHandler = new PasswordChangeFormHandler(
             $this->httpRequest,
             $this->httpResponse,
+            $this->authentication,
             $form,
-            $this->managers->getManagerOf('User'),
-            $this->authentication
+            $this->managers->getManagerOf('User')
         );
 
         if ($formHandler->process()) {
