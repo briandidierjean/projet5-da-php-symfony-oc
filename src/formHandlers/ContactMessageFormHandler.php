@@ -1,14 +1,27 @@
 <?php
 namespace App\FormHandler;
 
-use \Core\FormHandler;
 use \Core\HTTPRequest;
 use \Core\HTTPResponse;
 use \Core\Form;
 use \Core\Mail;
 
-class SendingMessageFormHandler extends FormHandler
+class SendingMessageFormHandler
 {
+    protected $httpRequest;
+    protected $httpResponse;
+    protected $form;
+
+    public function __construct(
+        HTTPRequest $httpRequest,
+        HTTPResponse $httpResponse,
+        Form $form
+    ) {
+        $this->httpRequest = $httpRequest;
+        $this->httpResponse = $httpResponse;
+        $this->form = $form;
+    }
+
     /**
      * Process the form to send a message
      *

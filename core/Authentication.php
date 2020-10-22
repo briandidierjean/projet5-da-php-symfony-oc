@@ -7,6 +7,7 @@ class Authentication extends ApplicationComponent
 {
     protected $httpRequest;
     protected $httpResponse;
+    protected $managers;
 
     public function __construct(Application $app)
     {
@@ -14,6 +15,7 @@ class Authentication extends ApplicationComponent
 
         $this->httpRequest = $app->getHttpRequest();
         $this->httpResponse = $app->getHttpResponse();
+        $this->managers = new Managers('PDO', PDOFactory::getMysqlConnexion());
     }
 
     /**
@@ -50,18 +52,21 @@ class Authentication extends ApplicationComponent
     }
 
     /**
-     * Get the session user email
-     *
-     * @return mixed
+     * Check if a user is administrator
+     * 
+     * @return bool
      */
-    public function getEmail()
+    public function isAdmin()
     {
-        if ($this->httpRequest->getSession('auth')
-            && $this->httpRequest->getSession('id') !== null
-            && $this->httpRequest->getSession('email') !== null
-        ) {
-            return $this->httpRequest->getSession('email');
+        $userManager = $this->managers->getManagerOf('User');
+
+        $user = $userManager->get($this->getEmail());
+
+        if ($user->getRole() !== 'administrator') {
+            return true;
         }
+
+        return false;
     }
 
     /**
@@ -76,6 +81,21 @@ class Authentication extends ApplicationComponent
             && $this->httpRequest->getSession('email') !== null
         ) {
             return $this->httpRequest->getSession('id');
+        }
+    }
+
+    /**
+     * Get the session user email
+     *
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        if ($this->httpRequest->getSession('auth')
+            && $this->httpRequest->getSession('id') !== null
+            && $this->httpRequest->getSession('email') !== null
+        ) {
+            return $this->httpRequest->getSession('email');
         }
     }
 

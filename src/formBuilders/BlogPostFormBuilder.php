@@ -2,6 +2,10 @@
 namespace App\FormBuilder;
 
 use \Core\FormBuilder;
+use \Core\InputField;
+use \Core\TextareaField;
+use \Core\NotNullValidator;
+use \Core\MaxLengthValidator;
 
 class BlogPostFormBuilder extends FormBuilder
 {

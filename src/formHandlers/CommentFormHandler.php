@@ -1,32 +1,40 @@
 <?php
 namespace App\FormHandler;
 
-use \Core\FormHandler;
 use \Core\HTTPRequest;
 use \Core\HTTPResponse;
-use \Core\Form;
 use \Core\Authentication;
+use \Core\Form;
 use \App\Model\Entity\Comment;
 use \App\Model\Manager\CommentManager;
 
-class AddCommentFormHandler extends FormHandler
+class AddCommentFormHandler
 {
-    protected $commentManager;
+    protected $httpRequest;
+    protected $httpResponse;
     protected $authentication;
+    protected $form;
+    protected $commentManager;
 
     public function __construct(
         HTTPRequest $httpRequest,
         HTTPResponse $httpResponse,
+        Authentication $authentication,
         Form $form,
-        CommentManager $commentManager,
-        Authentication $authentication
+        CommentManager $commentManager
     ) {
-        parent::__construct($httpRequest, $httpResponse, $form);
-
-        $this->commentManager = $commentManager;
+        $this->httpRequest = $httpRequest;
+        $this->httpResponse = $httpResponse;
         $this->authentication = $authentication;
+        $this->form = $form;
+        $this->commentManager = $commentManager;
     }
 
+    /**
+     * Process the form to add a comment
+     *
+     * @return bool
+     */
     public function process()
     {
         if ($this->httpRequest->getMethod() == 'POST' && $this->form->isValid()) {

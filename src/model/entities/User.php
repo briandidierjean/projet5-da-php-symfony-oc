@@ -54,6 +54,13 @@ class User extends Entity
     }
 
     // SETTERS
+    public function setRole($role)
+    {
+        if ($role == 'administrator' || $role == 'member') {
+            $this->role = $role;
+        }
+    }
+
     public function setEmail($email)
     {
         if (is_string($email)) {

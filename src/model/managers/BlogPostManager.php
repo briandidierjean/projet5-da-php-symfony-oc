@@ -30,7 +30,7 @@ abstract class BlogPostManager extends Manager
      * 
      * @param BlogPost $blogPost Blog post to be added
      * 
-     * @return void
+     * @return int
      */
     abstract protected function add(BlogPost $blogPost);
 
@@ -53,16 +53,29 @@ abstract class BlogPostManager extends Manager
     abstract public function delete($id);
 
     /**
+     * Check if a blog post exists
+     * 
+     * @param int $id ID to use as a key
+     * 
+     * @return void
+     */
+    abstract public function exists($id);
+
+    /**
      * Save a blog post in the database
      * 
      * @param BlogPost $blogPost Blog post to be saved
      * 
-     * @return void
+     * @return mixed
      */
     public function save(BlogPost $blogPost)
     {
         if ($blogPost->isValid()) {
-            $blogPost->isNew() ? $this->add($blogPost) : $this->update($blogPost);
+            if ($blogPost->isNew()) {
+                return $this->add($blogPost);
+            }
+
+            $this->update($blogPost);
         }
     }
 }

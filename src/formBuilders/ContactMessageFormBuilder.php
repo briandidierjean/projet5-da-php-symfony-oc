@@ -8,10 +8,10 @@ use \Core\MaxLengthValidator;
 use \Core\NotNullValidator;
 use \Core\EmailValidator;
 
-class MessageFormBuilder extends FormBuilder
+class ContactMessageFormBuilder extends FormBuilder
 {
     /**
-     * Build a message form
+     * Build a contact message form
      *
      * @return void
      */

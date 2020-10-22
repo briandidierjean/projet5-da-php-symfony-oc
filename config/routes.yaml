@@ -33,6 +33,16 @@
   action: show
   vars: id
 
+- url: /add-blog-post
+  controller: blogPost
+  action: add
+  vars:
+
+- url: /update-blog-post-([0-9]+)
+  controller: blogPost
+  action: update
+  vars: id
+
 - url: /add-comment-([0-9]+)
   controller: comment
   action: add
