@@ -6,6 +6,33 @@ use \App\Model\Entity\BlogPost;
 class BlogPostManagerPDO extends BlogPostManager
 {
     /**
+     * Return a list of the blog posts
+     *
+     * @param int $start First blog post the get
+     * @param int $limit The number of blog post the get
+     *
+     * @return array
+     */
+    public function getList($start = -1, $limit = -1)
+    {
+        $request = 'SELECT * FROM blog_posts ORDER BY id DESC';
+
+        if ($start != -1 || $limit != -1) {
+            $request .= ' LIMIT '.(int) $limit.' OFFSET '.(int) $start;
+        }
+
+        $request = $this->dao->query($request);
+
+        while ($data = $request->fetch(\PDO::FETCH_ASSOC)) {
+            $blogPosts[] = new BlogPost($data);
+        }
+
+        $request->closeCursor();
+
+        return $blogPosts;
+    }
+
+    /**
      * Return a blog post from the database
      *
      * @param int $id Blog post ID to use as a key
@@ -22,7 +49,9 @@ class BlogPostManagerPDO extends BlogPostManager
 
         $request->execute();
 
-        return new BlogPost($request->fetch(\PDO::FETCH_ASSOC));
+        $blogPost = new BlogPost($request->fetch(\PDO::FETCH_ASSOC));
+
+        return $blogPost;
     }
 
     /**
