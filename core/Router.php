@@ -31,7 +31,7 @@ class Router
         foreach ($this->routes as $route) {
             if (($varsValues = $route->match($url)) !== false) {
                 if ($route->hasVars()) {
-                    $varsNames = $route->varsNames();
+                    $varsNames = $route->getVarsNames();
                     $vars = [];
 
                     foreach ($varsValues as $key => $value) {

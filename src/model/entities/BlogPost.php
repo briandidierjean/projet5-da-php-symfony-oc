@@ -28,6 +28,11 @@ class BlogPost extends Entity
     }
 
     // GETTERS
+    public function getUserId($userId)
+    {
+        return $this->userId;
+    }
+
     public function getTitle()
     {
         return $this->title;
@@ -49,6 +54,11 @@ class BlogPost extends Entity
     }
 
     // SETTERS
+    public function setUserId($userId)
+    {
+        $this->userId = (int) $userId;
+    }
+
     public function setTitle($title)
     {
         if (is_string($title)) {
@@ -70,8 +80,11 @@ class BlogPost extends Entity
         }
     }
 
-    public function setUpdateDate(\DateTime $updateDate)
+    public function setUpdateDate($updateDate)
     {
-        $this->updateDate = $updateDate;
+        if (is_string($updateDate)) {
+            $updateDate = new \DateTime($updateDate);
+            $this->updateDate = $updateDate;
+        }
     }
 }

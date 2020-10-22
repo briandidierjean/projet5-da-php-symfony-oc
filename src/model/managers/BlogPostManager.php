@@ -7,6 +7,16 @@ use \App\Model\Entity\BlogPost;
 abstract class BlogPostManager extends Manager
 {
     /**
+     * Return a list of the blog posts
+     * 
+     * @param int $start First blog post to get
+     * @param int $limit The number of blog post to get
+     * 
+     * @return array
+     */
+    abstract public function getList($start = -1, $limit = -1);
+
+    /**
      * Return a blog post from the database
      * 
      * @param int $id Blog post ID to use as a key

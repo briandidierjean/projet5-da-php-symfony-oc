@@ -1,0 +1,27 @@
+{% extends "template.html.twig" %}
+
+{% block title %}Blog - Brian Didierjean
+{% endblock %}
+
+{% block content %}
+<!-- Blog Posts Section -->
+<section class="page-section mb-0 mt-5 mx-5" id="blog-posts">
+  <div class="container">
+    <div class="row">
+      <!-- Blog Posts List -->
+      {% for blogPost in blogPosts %}
+      <!-- Blog Post Card -->
+      <div class="col-sm-6">
+        <div class="card mt-5">
+          <div class="card-body">
+            <h2 class="card-title">{{ blogPost.title }}</h2>
+            <p class="card-text">{{ blogPost.heading }}</p>
+            <a class="btn btn-primary" href="/blog-post-{{ blogPost.id }}">Lire l'article</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

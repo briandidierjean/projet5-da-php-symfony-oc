@@ -22,3 +22,18 @@
   controller: user
   action: changePassword
   vars:
+
+- url: /blog
+  controller: blogPost
+  action: index
+  vars:
+
+- url: /blog-post-([0-9]+)
+  controller: blogPost
+  action: show
+  vars: id
+
+- url: /add-comment-([0-9]+)
+  controller: comment
+  action: add
+  vars: id

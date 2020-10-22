@@ -6,6 +6,40 @@ use \App\Model\Entity\Comment;
 class CommentManagerPDO extends CommentManager
 {
     /**
+     * Return a list of the comments
+     *
+     * @param int $blogPostId Blog post ID that owes the comments
+     * @param int $start      First comment to get
+     * @param int $limit      The number of comments get
+     *
+     * @return array
+     */
+    public function getList($blogPostId, $start = -1, $limit = -1)
+    {
+        $request
+            = 'SELECT * FROM comments WHERE blog_post_id = :blog_post_id
+            ORDER BY id DESC';
+
+        if ($start != -1 || $limit != -1) {
+            $request .= ' LIMIT '.(int) $limit.' OFFSET '.(int) $start;
+        }
+
+        $request = $this->dao->prepare($request);
+
+        $request->bindValue(':blog_post_id', $blogPostId, \PDO::PARAM_INT);
+
+        $request->execute();
+
+        while ($data = $request->fetch(\PDO::FETCH_ASSOC)) {
+            $comments[] = new Comment($data);
+        }
+
+        $request->closeCursor();
+
+        return $comments;
+    }
+
+    /**
      * Return a comment from the database
      *
      * @param int $id Comment ID to use as a key
@@ -36,8 +70,8 @@ class CommentManagerPDO extends CommentManager
     {
         $request = $this->dao->prepare(
             'INSERT INTO comments(
-                blog_post_id, user_id, content, add_date = NOW(), status
-            ) VALUES(:blog_post_id, :user_id, :content, :status)'
+                blog_post_id, user_id, content, add_date
+            ) VALUES(:blog_post_id, :user_id, :content, NOW())'
         );
 
         $request->bindValue(
@@ -53,11 +87,6 @@ class CommentManagerPDO extends CommentManager
         $request->bindValue(
             ':content',
             $comment->getContent(),
-            \PDO::PARAM_STR
-        );
-        $request->bindValue(
-            ':status',
-            $comment->getStatus(),
             \PDO::PARAM_STR
         );
 

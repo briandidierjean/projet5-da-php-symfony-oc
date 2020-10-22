@@ -132,7 +132,7 @@ class UserController extends Controller
      */
     public function changePassword()
     {
-        if ($this->authentication->isSignedIn()) {
+        if (!$this->authentication->isSignedIn()) {
             $this->httpResponse->redirect('/sign-in');
         }
 
