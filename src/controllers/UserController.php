@@ -47,10 +47,7 @@ class UserController extends Controller
             $this->httpResponse->redirect('/');
         }
 
-        $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../views');
-        $twig = new \Twig\Environment($loader);
-
-        $this->page = $twig->render(
+        $this->page = $this->twig->render(
             'user/signIn.html.twig',
             [
                 'form' => $form->createView(),
@@ -110,10 +107,7 @@ class UserController extends Controller
             $this->httpResponse->redirect('/');
         }
 
-        $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../views');
-        $twig = new \Twig\Environment($loader);
-
-        $this->page = $twig->render(
+        $this->page = $this->twig->render(
             'user/signUp.html.twig',
             [
                 'form' => $form->createView(),
@@ -168,10 +162,7 @@ class UserController extends Controller
             $this->httpResponse->redirect('/');
         }
 
-        $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../views');
-        $twig = new \Twig\Environment($loader);
-
-        $this->page = $twig->render(
+        $this->page = $this->twig->render(
             'user/changePassword.html.twig',
             [
                 'form' => $form->createView(),

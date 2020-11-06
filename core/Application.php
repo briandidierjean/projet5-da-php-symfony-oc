@@ -11,6 +11,9 @@ class Application
 
     public function __construct()
     {
+        $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../src/views');
+        $this->twig = new \Twig\Environment($loader);
+
         $this->httpRequest = new HTTPRequest($this);
         $this->httpResponse = new HTTPResponse($this);
         $this->authentication = new Authentication($this);
@@ -70,7 +73,8 @@ class Application
 
         return new $controllerClass(
             $this,
-            $matchedRoute->getAction()
+            $matchedRoute->getAction(),
+            $this->twig
         );
     }
 

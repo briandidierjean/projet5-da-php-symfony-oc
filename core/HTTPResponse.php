@@ -37,10 +37,7 @@ class HTTPResponse extends ApplicationComponent
     {
         $authentication = $this->app->getAuthentication();
 
-        $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../src/views');
-        $twig = new \Twig\Environment($loader);
-
-        $this->page = $twig->render(
+        $page = $this->app->twig->render(
             'errors/401.html.twig',
             [
                 'isSignedIn' => $authentication->isSignedIn()
@@ -49,7 +46,7 @@ class HTTPResponse extends ApplicationComponent
 
         $this->setHeader('HTTP/1.1 401 Unauthorized ');
 
-        $this->send($this->page);
+        $this->send($page);
     }
 
     /**

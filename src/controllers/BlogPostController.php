@@ -21,10 +21,7 @@ class BlogPostController extends Controller
 
         $blogPosts = $blogPostManager->getList(0, 5);
 
-        $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../views');
-        $twig = new \Twig\Environment($loader);
-
-        $this->page = $twig->render(
+        $this->page = $this->twig->render(
             'blog-post/index.html.twig',
             [
                 'isSignedIn' => $this->authentication->isSignedIn(),
@@ -48,10 +45,7 @@ class BlogPostController extends Controller
         $blogPost = $blogPostManager->get($this->httpRequest->getGet('id'));
         $comments = $commentManager->getList($this->httpRequest->getGet('id'), 0, 5);
 
-        $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../views');
-        $twig = new \Twig\Environment($loader);
-
-        $this->page = $twig->render(
+        $this->page = $this->twig->render(
             'blog-post/show.html.twig',
             [
                 'isSignedIn' => $this->authentication->isSignedIn(),
@@ -107,10 +101,7 @@ class BlogPostController extends Controller
             );
         }
 
-        $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../views');
-        $twig = new \Twig\Environment($loader);
-
-        $this->page = $twig->render(
+        $this->page = $this->twig->render(
             'blog-post/add.html.twig',
             [
                 'form' => $form->createView(),
@@ -179,10 +170,7 @@ class BlogPostController extends Controller
             );
         }
 
-        $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../views');
-        $twig = new \Twig\Environment($loader);
-
-        $this->page = $twig->render(
+        $this->page = $this->twig->render(
             'blog-post/update.html.twig',
             [
                 'form' => $form->createView(),

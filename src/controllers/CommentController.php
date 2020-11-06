@@ -48,10 +48,7 @@ class CommentController extends Controller
             );
         }
 
-        $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../views');
-        $twig = new \Twig\Environment($loader);
-
-        $this->page = $twig->render(
+        $this->page = $this->twig->render(
             'comment/add.html.twig',
             [
                 'form' => $form->createView(),
