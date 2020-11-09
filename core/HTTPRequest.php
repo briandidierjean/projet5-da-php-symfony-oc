@@ -32,7 +32,7 @@ class HTTPRequest extends ApplicationComponent
      */
     public function getGet($key)
     {
-        if (isset($_GET[$key])) {
+        if (isset($_GET[$key]) && !empty($_GET[$key])) {
             return $_GET[$key];
         }
         return null;
