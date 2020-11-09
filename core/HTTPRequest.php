@@ -10,7 +10,9 @@ class HTTPRequest extends ApplicationComponent
      */
     public function getURL()
     {
-        return $_SERVER['REQUEST_URI'];
+        if (isset($_SERVER['REQUEST_URI'])) {
+            return $_SERVER['REQUEST_URI'];
+        }
     }
     
     /**
