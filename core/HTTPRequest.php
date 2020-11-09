@@ -28,11 +28,14 @@ class HTTPRequest extends ApplicationComponent
      * 
      * @param string $key GET key
      * 
-     * @return string
+     * @return mixed
      */
     public function getGet($key)
     {
-        return isset($_GET[$key]) ? $_GET[$key] : null;
+        if (isset($_GET[$key])) {
+            return $_GET[$key];
+        }
+        return null;
     }
 
     /**
@@ -40,11 +43,14 @@ class HTTPRequest extends ApplicationComponent
      * 
      * @param string $key POST key
      * 
-     * @return string
+     * @return mixed
      */
     public function getPost($key)
     {
-        return isset($_POST[$key]) ? $_POST[$key] : null;
+        if (isset($_POST[$key])) {
+            return $_POST[$key];
+        }
+        return null;
     }
 
     /**
