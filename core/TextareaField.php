@@ -5,6 +5,7 @@ class TextareaField extends Field
 {
     protected $cols;
     protected $rows;
+    protected $field;
 
     /**
      * Build an HTML textarea field
@@ -13,40 +14,40 @@ class TextareaField extends Field
      */
     public function build()
     {
-        $field = '<div class="control-group">
+        $this->field = '<div class="control-group">
         <div class="form-group floating-label-form-group controls mb-0 pb-2">';
 
         if (!empty($this->errorMsg)) {
-            $field .= '<label>'.$this->label.
+            $this->field .= '<label>'.$this->label.
             '</label><textarea class="form-control
             is-invalid" name="'.$this->name.'"';
         } else {
-            $field .= '<label>'.$this->label.
+            $this->field .= '<label>'.$this->label.
             '</label><textarea class="form-control '.$this->class.'
             " name="'.$this->name.'"';
         }
 
         if (!empty($this->placeholder)) {
-            $field .= ' placeholder="'.($this->placeholder).'"';
+            $this->field .= ' placeholder="'.($this->placeholder).'"';
         }
 
         if (!empty($this->cols)) {
-            $field .= ' cols="'.$this->cols.'"';
+            $this->field .= ' cols="'.$this->cols.'"';
         }
 
         if (!empty($this->rows)) {
-            $field .= ' rows="'.$this->rows.'"';
+            $this->field .= ' rows="'.$this->rows.'"';
         }
 
         if (!empty($this->maxLength)) {
-            $field .= ' maxlength="'.$this->maxLength.'"';
+            $this->field .= ' maxlength="'.$this->maxLength.'"';
         }
 
         if (!empty($this->required) && $this->required == true) {
-            $field .= ' required';
+            $this->field .= ' required';
         }
 
-        $field .= '>';
+        $this->field .= '>';
 
         if (!empty($this->value)) {
             $field .= htmlspecialchars($this->value);
