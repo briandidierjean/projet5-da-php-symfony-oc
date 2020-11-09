@@ -48,7 +48,7 @@ class PasswordChangeFormHandler
                 if ($newPassword == $newConfirmedPassword) {
                     $user->setPassword($newPassword);
 
-                    $userManager->save($user);
+                    $this->userManager->save($user);
 
                     return true;
                 }

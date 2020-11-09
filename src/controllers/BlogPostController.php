@@ -230,7 +230,7 @@ class BlogPostController extends Controller
             $this->httpResponse->redirect404();
         }
 
-        $blogPost = $blogPostManager->delete($this->httpRequest->getGet('id'));
+        $blogPostManager->delete($this->httpRequest->getGet('id'));
 
         $this->httpResponse->redirect('/admin');
     }

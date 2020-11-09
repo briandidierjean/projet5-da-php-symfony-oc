@@ -13,17 +13,15 @@ class InputField extends Field
     public function build()
     {
         if ($this->type == 'checkbox') {
-            $field
-                = '<div class="control-group">
-                <div class="form-group controls mb-0 pb-2">
-                <div class="form-check">
-                <input class="form-check-input"
-                type="checkbox" id="'.$this->id.'">
-                <label class="form-check-label" for="'.$this->id.'">
-                '.$this->label.'
-                </label>
-                </div>
-                </div>';
+            $field = '<div class="control-group">
+            <div class="form-group controls mb-0 pb-2">
+             <div class="form-check">
+            <input class="form-check-input"
+            type="checkbox" id="'.$this->id.'">
+            <label class="form-check-label" for="'.$this->id.'">
+            '.$this->label.'</label>
+            </div>
+            </div>';
         } else {
             $field = '<div class="control-group">
             <div class="form-group floating-label-form-group controls mb-0 pb-2">';
