@@ -9,24 +9,25 @@ class CommentManagerPDO extends CommentManager
      * Return a list of the comments
      *
      * @param int $blogPostId comment ID that owes the comments
-     * @param int $start      First comment to get
-     * @param int $limit      The number of comments get
      *
      * @return array
      */
-    public function getList($blogPostId, $start = -1, $limit = -1)
+    public function getList($blogPostId = '')
     {
-        $request
-            = 'SELECT * FROM comments WHERE blog_post_id = :blog_post_id
-            ORDER BY id DESC';
+        $comments = [];
 
-        if ($start != -1 || $limit != -1) {
-            $request .= ' LIMIT '.(int) $limit.' OFFSET '.(int) $start;
+        if (empty($blogPostId)) {
+            $request= 'SELECT * FROM comments ORDER BY id DESC';
+
+            $request = $this->dao->prepare($request);
+        } else {
+            $request= 'SELECT * FROM comments
+            WHERE blog_post_id = :blog_post_id ORDER BY id DESC';
+
+            $request = $this->dao->prepare($request);
+
+            $request->bindValue(':blog_post_id', $blogPostId, \PDO::PARAM_INT);
         }
-
-        $request = $this->dao->prepare($request);
-
-        $request->bindValue(':blog_post_id', $blogPostId, \PDO::PARAM_INT);
 
         $request->execute();
 
@@ -94,45 +95,6 @@ class CommentManagerPDO extends CommentManager
     }
 
     /**
-     * Update an existing comment in the database
-     *
-     * @param omment $comment Comment to be updated
-     *
-     * @return void
-     */
-    protected function update(Comment $comment)
-    {
-        $request = $this->dao->prepare(
-            'UPDATE comments
-            SET blog_post_id = :blog_post_id, user_id = :user_id, content = :content,
-            add_date = NOW(), status = :status'
-        );
-
-        $request->bindValue(
-            ':blog_post_id',
-            $comment->getBlogPostId(),
-            \PDO::PARAM_INT
-        );
-        $request->bindValue(
-            ':user_id',
-            $comment->getUserId(),
-            \PDO::PARAM_INT
-        );
-        $request->bindValue(
-            ':content',
-            $comment->getContent(),
-            \PDO::PARAM_STR
-        );
-        $request->bindValue(
-            ':status',
-            $comment->getStatus(),
-            \PDO::PARAM_STR
-        );
-
-        $request->execute();
-    }
-
-    /**
      * Delete an existing comment from the database
      *
      * @param int $id Comment ID to use as a key
@@ -168,5 +130,28 @@ class CommentManagerPDO extends CommentManager
         $request->execute();
 
         return (bool) $request->fetchColumn();
+    }
+
+    /**
+     * Validate a comment
+     * 
+     * @param in $id ID to use as a key
+     * 
+     * @return void
+     */
+    public function validate($id)
+    {
+        $request = $this->dao->prepare(
+            'UPDATE comments
+            SET status = \'validated\' WHERE id = :id' 
+        );
+
+        $request->bindValue(
+            ':id',
+            $id,
+            \PDO::PARAM_INT
+        );
+
+        $request->execute();
     }
 }

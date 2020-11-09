@@ -45,8 +45,7 @@ class HomeController extends Controller
         $this->page = $this->twig->render(
             'home/index.html.twig',
             [
-                'form' => $form->createView(),
-                'isSignedIn' => $this->authentication->isSignedIn()
+                'form' => $form->createView()
             ]
         );
 

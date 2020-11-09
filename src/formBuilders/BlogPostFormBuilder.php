@@ -43,15 +43,15 @@ class BlogPostFormBuilder extends FormBuilder
                     'name' => 'heading',
                     'placeholder' => 'Chapô de l\'article',
                     'required' => true,
-                    'maxLength' => 2000,
-                    'rows' => 8,
+                    'maxLength' => 400,
+                    'rows' => 5,
                     'validators' => [
                         new NotNullValidator(
                             'Merci de spécifier un chapô'
                         ),
                         new MaxLengthValidator(
-                            'Le chapô ne doit pas dépasser 2000 caratères',
-                            2000
+                            'Le chapô ne doit pas dépasser 400 caratères',
+                            400
                         )
                     ]
                 ]
@@ -63,7 +63,7 @@ class BlogPostFormBuilder extends FormBuilder
                     'label' => 'Contenu',
                     'name' => 'content',
                     'placeholder' => 'Contenu de l\'article',
-                    'required' => true,
+                    'rows' => 16,
                     'validators' => [
                         new NotNullValidator(
                             'Merci de spécifier un contenu d\'article'

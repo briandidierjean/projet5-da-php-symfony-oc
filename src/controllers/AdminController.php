@@ -14,10 +14,31 @@ class AdminController extends Controller
      */
     public function index()
     {
+        $this->httpResponse->setSession('prevURL', 'admin');
+
+        if (!$this->authentication->isSignedIn()) {
+            $this->httpResponse->redirect('/sign-in');
+        }
+
+        if (!$this->authentication->isAdmin()) {
+            $this->httpResponse->redirect401();
+        }
+
+        $blogPostManager = $this->managers->getManagerOf('BlogPost');
+        $commentManager = $this->managers->getManagerOf('Comment');
+        $userManager = $this->managers->getManagerOf('User');
+        $blogPosts = $blogPostManager->getList();
+        $comments = $commentManager->getList();
+        $blogPostUsers = $userManager->getListFrom($blogPosts);
+        $commentUsers = $userManager->getListFrom($comments);
+
         $this->page = $this->twig->render(
             'admin/index.html.twig',
             [
-                'isSignedIn' => $this->authentication->isSignedIn()
+                'blogPosts' => $blogPosts,
+                'comments' => $comments,
+                'blogPostUsers' => $blogPostUsers,
+                'commentUsers' => $commentUsers
             ]
         );
 

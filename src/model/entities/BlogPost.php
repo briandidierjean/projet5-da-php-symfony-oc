@@ -50,7 +50,7 @@ class BlogPost extends Entity
 
     public function getUpdateDate()
     {
-        return $this->updateDate->format('Y-m-d H:i:s');
+        return $this->updateDate;
     }
 
     // SETTERS

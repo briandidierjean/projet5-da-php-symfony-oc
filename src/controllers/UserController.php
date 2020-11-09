@@ -21,12 +21,17 @@ class UserController extends Controller
      */
     public function signIn()
     {
+        if ($this->authentication->isSignedIn()) {
+            $this->httpResponse->redirect('/');
+        }
+
         $formData = [];
 
         if ($this->httpRequest->getMethod() == 'POST') {
             $formData = [
                 'email' => $this->httpRequest->getPost('email'),
-                'password' => $this->httpRequest->getPost('password')
+                'password' => $this->httpRequest->getPost('password'),
+                'saveConnexion' => $this->httpRequest->getPost('saveConnexion')
             ];
         }
 
@@ -44,14 +49,18 @@ class UserController extends Controller
         );
 
         if ($formHandler->process()) {
+            if (!empty($this->httpRequest->getSession('prevURL'))) {
+                $prevURL = $this->httpRequest->getSession('prevURL');
+                $this->httpResponse->setSession('prevURL', '');
+                $this->httpResponse->redirect($prevURL);
+            }
             $this->httpResponse->redirect('/');
         }
 
         $this->page = $this->twig->render(
             'user/signIn.html.twig',
             [
-                'form' => $form->createView(),
-                'isSignedIn' => $this->authentication->isSignedIn()
+                'form' => $form->createView()
             ]
         );
 
@@ -73,11 +82,15 @@ class UserController extends Controller
 
     /**
      * Sign up a user
-     * 
+     *
      * @return void
      */
     public function signUp()
     {
+        if ($this->authentication->isSignedIn()) {
+            $this->httpResponse->redirect('/');
+        }
+
         $formData = [];
 
         if ($this->httpRequest->getMethod() == 'POST') {
@@ -104,14 +117,18 @@ class UserController extends Controller
         );
 
         if ($formHandler->process()) {
+            if (!empty($this->httpRequest->getSession('prevURL'))) {
+                $prevURL = $this->httpRequest->getSession('prevURL');
+                $this->httpResponse->setSession('prevURL', '');
+                $this->httpResponse->redirect($prevURL);
+            }
             $this->httpResponse->redirect('/');
         }
 
         $this->page = $this->twig->render(
             'user/signUp.html.twig',
             [
-                'form' => $form->createView(),
-                'isSignedIn' => $this->authentication->isSignedIn()
+                'form' => $form->createView()
             ]
         );
 
@@ -120,12 +137,13 @@ class UserController extends Controller
 
     /**
      * Change the user password
-     * 
+     *
      * @return void
      */
     public function changePassword()
     {
         if (!$this->authentication->isSignedIn()) {
+            $this->httpResponse->setSession('prevURL', 'change-password');
             $this->httpResponse->redirect('/sign-in');
         }
 
@@ -165,8 +183,7 @@ class UserController extends Controller
         $this->page = $this->twig->render(
             'user/changePassword.html.twig',
             [
-                'form' => $form->createView(),
-                'isAuth' => $this->httpRequest->getSession('isAuth')
+                'form' => $form->createView()
             ]
         );
 

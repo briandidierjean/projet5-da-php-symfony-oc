@@ -8,21 +8,57 @@ class UserManagerPDO extends UserManager
     /**
      * Return a user from the database
      *
-     * @param mixed $email Email address to use as a key
+     * @param mixed $key ID or Email address to use as a key
      *
      * @return User
      */
-    public function get($email)
+    public function get($key)
     {
-        $request = $this->dao->prepare(
-            'SELECT * FROM users WHERE email = :email'
-        );
+        if (is_int($key)) {
+            $request = $this->dao->prepare(
+                'SELECT * FROM users WHERE id = :key'
+            );
+        } else {
+            $request = $this->dao->prepare(
+                'SELECT * FROM users WHERE email = :key'
+            );
+        }
 
-        $request->bindValue(':email', $email, \PDO::PARAM_STR);
+        $request->bindValue(':key', $key);
 
         $request->execute();
 
         return new User($request->fetch(\PDO::FETCH_ASSOC));
+    }
+
+    /**
+     * Take a blog posts or comments list and return a users list
+     * 
+     * @param array $list Blog posts or comments to use as a key
+     * 
+     * @return array
+     */
+    public function getListFrom($list)
+    {
+        $users = [];
+
+        foreach ($list as $item) {
+            $request = $this->dao->prepare(
+                'SELECT * FROM users WHERE id = :id'
+            );
+
+            $request->bindValue(':id', $item->getUserId(), \PDO::PARAM_INT);
+
+            $request->execute();
+
+            while ($data = $request->fetch(\PDO::FETCH_ASSOC)) {
+                $users[$item->getUserId()] = new User($data);
+            }
+
+            $request->closeCursor();
+        }
+
+        return $users;
     }
 
     /**
@@ -49,9 +85,9 @@ class UserManagerPDO extends UserManager
 
     /**
      * Update an existing user in the database
-     * 
+     *
      * @param User $user User to be updated
-     * 
+     *
      * @return void
      */
     protected function update(User $user)
@@ -72,9 +108,9 @@ class UserManagerPDO extends UserManager
 
     /**
      * Delete an existing user from the database
-     * 
+     *
      * @param string $email Email address to use as a key
-     * 
+     *
      * @return void
      */
     public function delete($email)
@@ -90,16 +126,24 @@ class UserManagerPDO extends UserManager
 
     /**
      * Check if a user exists
-     * 
-     * @param string $email Email address to use as a key
-     * 
-     * @return void
+     *
+     * @param mixed $key ID or email address to use as a key
+     *
+     * @return bool
      */
-    public function exists($email)
+    public function exists($key)
     {
-        $request = $this->dao->prepare('SELECT COUNT(*) FROM users WHERE email = :email');
+        if (is_int($key)) {
+            $request = $this->dao->prepare(
+                'SELECT COUNT(*) FROM users WHERE id = :key'
+            );
+        } else {
+            $request = $this->dao->prepare(
+                'SELECT COUNT(*) FROM users WHERE email = :key'
+            );
+        }
         
-        $request->bindValue(':email', $email, \PDO::PARAM_STR);
+        $request->bindValue(':key', $key);
 
         $request->execute();
 

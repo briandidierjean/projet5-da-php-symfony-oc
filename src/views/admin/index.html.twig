@@ -1,0 +1,81 @@
+{% extends "template.html.twig" %}
+
+{% block title %}Modifier le mot de passe - Brian Didierjean{% endblock %}
+
+{% block content %}
+<section class="page-section mb-0 mt-5" id="admin">
+  <!-- Blog Section Heading-->
+  <h1 class="page-section-heading text-center text-uppercase text-secondary pt-4">Panneau d'administration</h1>
+  <!-- Icon Divider-->
+  <div class="divider-custom">
+    <div class="divider-custom-line"></div>
+    <div class="divider-custom-icon">
+      <i class="fas fa-star"></i>
+    </div>
+    <div class="divider-custom-line"></div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="card mt-5">
+          <div class="card-header">Liste des articles</div>
+          <div class="card-body">
+            <table class="table table-bordered table-sm">
+              <thead>
+                <tr>
+                  <th scope="col">Titre</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">Auteur</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for blogPost in blogPosts %}
+                <tr>
+                  <td><a href="/blog-post-{{ blogPost.id }}">{{ blogPost.title }}</a></td>
+                  <td>{{ blogPost.updateDate|date("m/d/Y") }}</td>
+                  <td>{{ blogPostUsers[blogPost.userId].firstName }} {{ blogPostUsers[blogPost.userId].lastName }}</td>
+                  <td><a href="/update-blog-post-{{ blogPost.id }}">Modifier</a></td>
+                  <td><a href="/delete-blog-post-{{ blogPost.id }}">Supprimer</a></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <p class="text-center">
+              <a class="btn btn-primary" href="/add-blog-post">Ajouter un article</a>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="card mt-5">
+          <div class="card-header">Modération des commentaires</div>
+          <div class="card-body">
+            <table class="table table-bordered table-sm">
+              <thead>
+                <tr>
+                  <th scope="col">Contenu</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">Auteur</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for comment in comments %}
+                {% if comment.status == 'pending' %}
+                <tr>
+                  <td><a href="/blog-post-{{ comment.blogPostId }}#comment-{{ comment.id }}">Voir le commentaire</a></td>
+                  <td>{{ commentUsers[comment.userId].firstName }} {{ commentUsers[comment.userId].lastName }}</td>
+                  <td>{{ comment.addDate|date("m/d/Y") }}</td>
+                  <td><a href="/validate-comment-{{ comment.id  }}">Valider</a></td>
+                  <td><a href="/delete-comment-{{ comment.id }}">Supprimer</a></td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

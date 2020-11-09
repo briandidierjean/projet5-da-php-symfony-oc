@@ -6,7 +6,7 @@ use \Core\HTTPRequest;
 use \Core\HTTPResponse;
 use \App\Model\Entity\Comment;
 use \App\FormBuilder\CommentFormBuilder;
-use \App\FormHandler\AddCommentFormHandler;
+use \App\FormHandler\CommentFormHandler;
 
 class CommentController extends Controller
 {
@@ -18,6 +18,10 @@ class CommentController extends Controller
     public function add()
     {
         if (!$this->authentication->isSignedIn()) {
+            $this->httpResponse->setSession(
+                'prevURL',
+                '/add-comment-'.$this->httpRequest->getGet('id')
+            );
             $this->httpResponse->redirect('/sign-in');
         }
 
@@ -34,7 +38,7 @@ class CommentController extends Controller
 
         $form = $formBuilder->getForm();
 
-        $formHandler = new AddCommentFormHandler(
+        $formHandler = new CommentFormHandler(
             $this->httpRequest,
             $this->httpResponse,
             $this->authentication,
@@ -52,11 +56,72 @@ class CommentController extends Controller
             'comment/add.html.twig',
             [
                 'form' => $form->createView(),
-                'isSignedIn' => $this->authentication->isSignedIn(),
                 'blogPostId' => $this->httpRequest->getGet('id')
             ]
         );
 
         $this->httpResponse->send($this->page);
+    }
+
+    /**
+     * Delete a comment
+     * 
+     * @return void
+     */
+    public function delete()
+    {
+        if (!$this->authentication->isSignedIn()) {
+            $this->httpResponse->setSession(
+                'prevURL',
+                '/add-comment-'.$this->httpRequest->getGet('id')
+            );
+            $this->httpResponse->redirect('/sign-in');
+        }
+
+        if (!$this->authentication->isAdmin()) {
+            $this->httpResponse->redirect401();
+        }
+
+        $commentManager = $this->managers->getManagerOf('Comment');
+
+        $commentManager->delete($this->httpRequest->getGet('id'));
+
+        if (!empty($this->httpRequest->getSession('prevURL'))) {
+            $prevURL = $this->httpRequest->getSession('prevURL');
+            $this->httpResponse->setSession('prevURL', '');
+            $this->httpResponse->redirect($prevURL);
+        }
+        $this->httpResponse->redirect('/');
+    }
+
+    /**
+     * Validate a comment
+     * 
+     * @return void
+     */
+    public function validate()
+    {
+        if (!$this->authentication->isSignedIn()) {
+            $this->httpResponse->setSession(
+                'prevURL',
+                '/add-comment-'.$this->httpRequest->getGet('id')
+            );
+            $this->httpResponse->redirect('/sign-in');
+        }
+
+        if (!$this->authentication->isAdmin()) {
+            $this->httpResponse->redirect401();
+        }
+
+        $commentManager = $this->managers->getManagerOf('Comment');
+
+        $commentManager->validate($this->httpRequest->getGet('id'));
+
+        if (!empty($this->httpRequest->getSession('prevURL'))) {
+            $prevURL = $this->httpRequest->getSession('prevURL');
+            $this->httpResponse->setSession('prevURL', '');
+            $this->httpResponse->redirect($prevURL);
+        }
+        $this->httpResponse->redirect('/');
     }
 }

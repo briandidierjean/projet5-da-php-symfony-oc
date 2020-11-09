@@ -5,23 +5,81 @@
 
 {% block content %}
 <!-- Blog Post Section -->
-<section class="page-section mb-0 mt-5 mx-5" id="blog-post">
-  <div class="container">
+<section class="page-section mb-0 mt-5" id="blog-post">
+
+  <!-- Blog Post Section Heading-->
+  <h1 class="page-section-heading text-center text-uppercase text-secondary pt-4">{{ blogPost.title }}</h1>
+  <!-- Icon Divider-->
+  <div class="divider-custom">
+    <div class="divider-custom-line"></div>
+    <div class="divider-custom-icon">
+      <i class="fas fa-star"></i>
+    </div>
+    <div class="divider-custom-line"></div>
+  </div>
+  <div class="container w-50 text-justify">
     <div class="row">
-      <div class="col-sm-6">
-        <h1>{{ blogPost.title }}</h1>
-        <p>{{ blogPost.heading }}</p>
-        <p>{{ blogPost.content }}</p>
+      <div class="col-12">
+        {% if isAdmin == true %}
+        <div class="mb-5 d-flex justify-content-between">
+          <a class="btn btn-primary" href="/update-blog-post-{{ blogPost.id }}">Modifier</a>
+          <a class="btn btn-primary" href="/delete-blog-post-{{ blogPost.id }}">Supprimer</a>
+        </div>
+        {% endif %}
+        <p class="mb-5">Dernière mise à jour le {{ blogPost.updateDate|date("m/d/Y") }}</p>
+        <p class="mb-5 font-italic">{{ blogPost.heading }}</p>
+        <p class="mb-5">{{ blogPost.content|raw }}</p>
+        <p class="mb-5">Posté par {{ blogPostUser.firstName }} {{ blogPostUser.lastName }}</p>
+        <nav class="d-flex justify-content-center" aria-label="Page navigation example">
+          <ul class="pagination">
+            {% if prevBlogPostId != false %}
+            <li class="page-item"><a class="page-link" href="/blog-post-{{ prevBlogPostId }}">Article précedent</a></li>
+            {% endif %}
+            {% if nextBlogPostId != false %}
+            <li class="page-item"><a class="page-link" href="/blog-post-{{ nextBlogPostId }}">Article suivant</a></li>
+            {% endif %}
+          </ul>
+        </nav>
+        <!-- Add Comment Button -->
+        <p class="text-center">
+          <a class="btn btn-primary mt-5" href="/add-comment-{{ blogPost.id }}">Poster un commentaire</a>
+        </p>
         <!-- Comments List -->
         {% for comment in comments %}
         <!-- Comment Card -->
-        <div class="col-sm-6">
-          <div class="card mt-5">
+        {% if isAdmin == true %}
+        <div class="col-12">
+          <div id="comment-{{ comment.id }}" class="card mt-5">
+            <div class="d-flex justify-content-between card-header">
+              <span>Posté le {{ comment.addDate|date("m/d/Y") }} {% if comment.status == 'pending' %}en attente de
+                validation{% endif %}</span>
+              <span>{% if comment.status == 'pending' %}<a
+                  href="/validate-comment-{{ comment.id }}">Valider</a>{% endif %} <a
+                  href="/delete-comment-{{ comment.id }}">Supprimer</a></span>
+            </div>
             <div class="card-body">
               <p class="card-text">{{ comment.content }}</p>
             </div>
+            <div class="card-footer">
+              Par {{ commentUsers[comment.userId].firstName }} {{ commentUsers[comment.userId].lastName }}
+            </div>
           </div>
         </div>
+        {% elseif comment.status == 'validated' %}
+        <div class="col-12">
+          <div id="comment-{{ comment.id }}" class="card mt-5">
+            <div class="card-header">
+              Posté le {{ comment.addDate|date("m/d/Y") }}
+            </div>
+            <div class="card-body">
+              <p class="card-text">{{ comment.content }}</p>
+            </div>
+            <div class="card-footer">
+              Par {{ commentUsers[comment.userId].firstName }} {{ commentUsers[comment.userId].lastName }}
+            </div>
+          </div>
+        </div>
+        {% endif %}
         {% endfor %}
       </div>
     </div>
