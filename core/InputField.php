@@ -4,6 +4,7 @@ namespace Core;
 class InputField extends Field
 {
     protected $type;
+    protected $field;
 
     /**
      * Build an HTML input field
@@ -13,7 +14,7 @@ class InputField extends Field
     public function build()
     {
         if ($this->type == 'checkbox') {
-            $field = '<div class="control-group">
+            $this->field = '<div class="control-group">
             <div class="form-group controls mb-0 pb-2">
              <div class="form-check">
             <input class="form-check-input"
@@ -23,42 +24,43 @@ class InputField extends Field
             </div>
             </div>';
         } else {
-            $field = '<div class="control-group">
+            $this->field = '<div class="control-group">
             <div class="form-group floating-label-form-group controls mb-0 pb-2">';
 
             if (!empty($this->errorMsg)) {
-                $field .= '<label>'.$this->label.'</label>
+                $this->field .= '<label>'.$this->label.'</label>
                 <input class="form-control is-invalid"
                 type="'.$this->type.'" name="'.$this->name.'"';
             } else {
-                $field .= '<label>'.$this->label.'</label>
+                $this->field .= '<label>'.$this->label.'</label>
                 <input class="form-control"
                 type="'.$this->type.'" name="'.$this->name.'"';
             }
         
             if (!empty($this->placeholder)) {
-                $field .= ' placeholder="'.($this->placeholder).'"';
+                $this->field .= ' placeholder="'.($this->placeholder).'"';
             }
 
             if (!empty($this->value)) {
-                $field .= ' value="'.htmlspecialchars($this->value).'"';
+                $this->field .= ' value="'.htmlspecialchars($this->value).'"';
             }
 
             if (!empty($this->maxLength)) {
-                $field .= ' maxlength="'.$this->maxLength.'"';
+                $this->field .= ' maxlength="'.$this->maxLength.'"';
             }
 
             if (!empty($this->required) && $this->required == true) {
-                $field .= ' required';
+                $this->field .= ' required';
             }
 
-            $field .= '>';
+            $this->field .= '>';
 
             if (!empty($this->errorMsg)) {
-                $field .= '<div class="invalid-feedback">'.$this->errorMsg.'</div>';
+                $this->field .= '<div class="invalid-feedback">'
+                .$this->errorMsg.'</div>';
             }
         }
-        return $field .= '</div>';
+        return $this->field .= '</div>';
     }
 
     // SETTERS

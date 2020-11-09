@@ -50,16 +50,17 @@ class TextareaField extends Field
         $this->field .= '>';
 
         if (!empty($this->value)) {
-            $field .= htmlspecialchars($this->value);
+            $$this->field .= htmlspecialchars($this->value);
         }
 
-        $field .='</textarea>';
+        $this->field .='</textarea>';
 
         if (!empty($this->errorMsg)) {
-            $field .= '<div class="invalid-feedback">'.$this->errorMsg.'</div>';
+            $this->field .= '<div class="invalid-feedback">'
+            .$this->errorMsg.'</div>';
         }
         
-        return $field .= '</div>';
+        return $this->field .= '</div>';
     }
 
     // SETTERS
