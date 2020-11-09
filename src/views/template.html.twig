@@ -15,6 +15,8 @@
 		<link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css"/>
 		<!-- Core theme CSS (includes Bootstrap)-->
     <link href="./css/styles.css" rel="stylesheet"/>
+    <!-- TinyMCE -->
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 	</head>
 
 	<body id="page-top">
@@ -88,5 +90,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
     <script src="./js/scripts.js"></script>
+    <script>
+      tinymce.init({
+        selector: '.tinymce'
+      });
+    </script>
 	</body>
 </html>

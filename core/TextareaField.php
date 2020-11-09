@@ -22,7 +22,7 @@ class TextareaField extends Field
             is-invalid" name="'.$this->name.'"';
         } else {
             $field .= '<label>'.$this->label.
-            '</label><textarea class="form-control" name="'.$this->name.'"';
+            '</label><textarea class="form-control '.$this->class.'" name="'.$this->name.'"';
         }
 
         if (!empty($this->placeholder)) {

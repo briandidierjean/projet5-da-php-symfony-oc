@@ -34,8 +34,8 @@ class Form
     /**
      * Add en error message to a field
      * 
-     * @param string $errorMsg  Error message to show
-     * @param string $fieldName Field name to affect the error message
+     * @param string $errorMsg   Error message to show
+     * @param string $fieldNames Field name to affect the error message
      * 
      * @return void
      */

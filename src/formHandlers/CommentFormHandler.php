@@ -8,7 +8,7 @@ use \Core\Form;
 use \App\Model\Entity\Comment;
 use \App\Model\Manager\CommentManager;
 
-class AddCommentFormHandler
+class CommentFormHandler
 {
     protected $httpRequest;
     protected $httpResponse;

@@ -47,9 +47,9 @@ class SigningInFormHandler
 
                 if (password_verify($password, $user->getPassword())) {
                     $staySignedIn = $this->form->getData('staySignedIn');
-
-                    if ($staySignedIn) {
-                        $this->authentication->saveConnexion(
+                    
+                    if (!empty($saveConnexion)) {
+                        $this->authentication->staySignedIn(
                             $user->getId(),
                             $user->getEmail()
                         );

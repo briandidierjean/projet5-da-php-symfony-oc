@@ -9,12 +9,9 @@ abstract class BlogPostManager extends Manager
     /**
      * Return a list of the blog posts
      * 
-     * @param int $start First blog post to get
-     * @param int $limit The number of blog post to get
-     * 
      * @return array
      */
-    abstract public function getList($start = -1, $limit = -1);
+    abstract public function getList();
 
     /**
      * Return a blog post from the database
@@ -24,6 +21,24 @@ abstract class BlogPostManager extends Manager
      * @return BlogPost
      */
     abstract public function get($id);
+
+    /**
+     * Return a previous blog post to a blog post by date from the database
+     * 
+     * @param DateTime $date Date to use as a key
+     * 
+     * @return mixed
+     */
+    abstract public function getPrev($date);
+
+    /**
+     * Return a next blog post to a blog post by date from the database
+     *
+     * @param DateTime $date Date to use as a key
+     * 
+     * @return mixed
+     */
+    abstract public function getNext($date);
 
     /**
      * Add a new blog post in the database

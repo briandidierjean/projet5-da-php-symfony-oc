@@ -10,12 +10,10 @@ abstract class CommentManager extends Manager
      * Return a list of the comments
      *
      * @param int $blogPostId Blog post ID that owes the comments
-     * @param int $start      First comment to get
-     * @param int $limit      The number of comments get
      *
      * @return array
      */
-    abstract public function getList($blogPostId, $start = -1, $limit = -1);
+    abstract public function getList($blogPostId);
 
     /**
      * Return a comment from the database
@@ -36,15 +34,6 @@ abstract class CommentManager extends Manager
     abstract protected function add(Comment $comment);
 
     /**
-     * Update an existing comment in the database
-     *
-     * @param Comment $comment Comment to be updated
-     *
-     * @return void
-     */
-    abstract protected function update(Comment $comment);
-
-    /**
      * Delete an existing comment from the database
      *
      * @param int $id Comment ID to use as a key
@@ -56,11 +45,20 @@ abstract class CommentManager extends Manager
     /**
      * Check if a comment exists
      * 
-     * @param int $id ID to use as a key
+     * @param int $blogPostId Blog post ID to use as a key
      * 
      * @return void
      */
-    abstract public function exists($id);
+    abstract public function exists($blogPostId);
+
+    /**
+     * Validate a comment
+     * 
+     * @param in $id ID to use as a key
+     * 
+     * @return void
+     */
+    abstract public function validate($id);
 
     /**
      * Save a comment in the database

@@ -6,7 +6,7 @@ use \Core\HTTPResponse;
 use \Core\Form;
 use \Core\Mail;
 
-class SendingMessageFormHandler
+class ContactMessageFormHandler
 {
     protected $httpRequest;
     protected $httpResponse;

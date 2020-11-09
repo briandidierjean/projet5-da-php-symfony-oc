@@ -7,7 +7,7 @@ use \Core\MaxLengthValidator;
 use \Core\NotNullValidator;
 use \Core\PasswordValidator;
 
-class ChangingPasswordFormBuilder extends FormBuilder
+class PasswordChangeFormBuilder extends FormBuilder
 {
     /**
      * Build a password change form

@@ -8,12 +8,21 @@ abstract class UserManager extends Manager
 {
     /**
      * Return a user from the database
-     * 
-     * @param string $email Email address to use as a key
-     * 
+     *
+     * @param mixed $key ID or Email address to use as a key
+     *
      * @return User
      */
-    abstract protected function get($email);
+    abstract public function get($key);
+
+    /**
+     * Take a blog posts or comments list and return a users list
+     * 
+     * @param array $list Blog posts or comments to use as a key
+     * 
+     * @return array
+     */
+    abstract public function getListFrom($list);
 
     /**
      * Add a new user in the database
@@ -45,11 +54,11 @@ abstract class UserManager extends Manager
     /**
      * Check if a user exists
      * 
-     * @param string $email Email address to use as a key
+     * @param mixed $key ID or email address to use as a key
      * 
-     * @return void
+     * @return bool
      */
-    abstract protected function exists($email);
+    abstract protected function exists($key);
 
     /**
      * Save a user in the database
