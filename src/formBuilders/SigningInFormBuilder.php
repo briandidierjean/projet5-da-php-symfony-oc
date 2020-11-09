@@ -58,7 +58,6 @@ class SigningInFormBuilder extends FormBuilder
         )->addField(
             new InputField(
                 [
-                    'id' => 'stay-sign-in',
                     'label' => 'Se souvenir de moi',
                     'type' => 'checkbox',
                     'name' => 'staySignedIn'

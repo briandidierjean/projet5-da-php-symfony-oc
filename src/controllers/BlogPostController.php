@@ -18,17 +18,16 @@ class BlogPostController extends Controller
     public function index()
     {
         $blogPostManager = $this->managers->getManagerOf('BlogPost');
+        $userManager = $this->managers->getManagerOf('User');
 
-        $blogPosts = $blogPostManager->getList(0, 5);
+        $blogPosts = $blogPostManager->getList();
+        $blogPostUsers = $userManager->getListFrom($blogPosts);
 
-        $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../views');
-        $twig = new \Twig\Environment($loader);
-
-        $this->page = $twig->render(
+        $this->page = $this->twig->render(
             'blog-post/index.html.twig',
             [
-                'isSignedIn' => $this->authentication->isSignedIn(),
-                'blogPosts' => $blogPosts
+                'blogPosts' => $blogPosts,
+                'blogPostUsers' => $blogPostUsers
             ]
         );
 
@@ -42,21 +41,36 @@ class BlogPostController extends Controller
      */
     public function show()
     {
+        $this->httpResponse->setSession(
+            'prevURL',
+            'blog-post-'.$this->httpRequest->getGet('id')
+        );
+
         $blogPostManager = $this->managers->getManagerOf('BlogPost');
         $commentManager = $this->managers->getManagerOf('Comment');
+        $userManager = $this->managers->getManagerOf('User');
 
         $blogPost = $blogPostManager->get($this->httpRequest->getGet('id'));
-        $comments = $commentManager->getList($this->httpRequest->getGet('id'), 0, 5);
+        $comments = $commentManager->getList($this->httpRequest->getGet('id'));
+        $blogPostUser = $userManager->get($blogPost->getUserId());
+        $commentUsers = $userManager->getListFrom($comments);
 
-        $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../views');
-        $twig = new \Twig\Environment($loader);
+        $prevBlogPostId = $blogPostManager->getPrev(
+            $blogPost->getUpdateDate()
+        );
+        $nextBlogPostId = $blogPostManager->getNext(
+            $blogPost->getUpdateDate()
+        );
 
-        $this->page = $twig->render(
+        $this->page = $this->twig->render(
             'blog-post/show.html.twig',
             [
-                'isSignedIn' => $this->authentication->isSignedIn(),
                 'blogPost' => $blogPost,
-                'comments' => $comments
+                'comments' => $comments,
+                'blogPostUser' => $blogPostUser,
+                'commentUsers' => $commentUsers,
+                'prevBlogPostId' => $prevBlogPostId,
+                'nextBlogPostId' => $nextBlogPostId
             ]
         );
 
@@ -71,6 +85,7 @@ class BlogPostController extends Controller
     public function add()
     {
         if (!$this->authentication->isSignedIn()) {
+            $this->httpResponse->setSession('prevURL', 'add-blog-post');
             $this->httpResponse->redirect('/sign-in');
         }
 
@@ -107,14 +122,10 @@ class BlogPostController extends Controller
             );
         }
 
-        $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../views');
-        $twig = new \Twig\Environment($loader);
-
-        $this->page = $twig->render(
+        $this->page = $this->twig->render(
             'blog-post/add.html.twig',
             [
-                'form' => $form->createView(),
-                'isSignedIn' => $this->authentication->isSignedIn()
+                'form' => $form->createView()
             ]
         );
 
@@ -129,6 +140,10 @@ class BlogPostController extends Controller
     public function update()
     {
         if (!$this->authentication->isSignedIn()) {
+            $this->httpResponse->setSession(
+                'prevURL',
+                'update-blog-post'.$this->httpRequest->getGet('id')
+            );
             $this->httpResponse->redirect('/sign-in');
         }
 
@@ -179,18 +194,44 @@ class BlogPostController extends Controller
             );
         }
 
-        $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../views');
-        $twig = new \Twig\Environment($loader);
-
-        $this->page = $twig->render(
+        $this->page = $this->twig->render(
             'blog-post/update.html.twig',
             [
                 'form' => $form->createView(),
-                'id' => $this->httpRequest->getGet('id'),
-                'isSignedIn' => $this->authentication->isSignedIn()
+                'id' => $this->httpRequest->getGet('id')
             ]
         );
 
         $this->httpResponse->send($this->page);
+    }
+
+    /**
+     * Delete a blog post
+     *
+     * @return void
+     */
+    public function delete()
+    {
+        if (!$this->authentication->isSignedIn()) {
+            $this->httpResponse->setSession(
+                'prevURL',
+                'delete-blog-post'.$this->httpRequest->getGet('id')
+            );
+            $this->httpResponse->redirect('/sign-in');
+        }
+
+        if (!$this->authentication->isAdmin()) {
+            $this->httpResponse->redirect401();
+        }
+
+        $blogPostManager = $this->managers->getManagerOf('BlogPost');
+
+        if (!$blogPostManager->exists($this->httpRequest->getGet('id'))) {
+            $this->httpResponse->redirect404();
+        }
+
+        $blogPost = $blogPostManager->delete($this->httpRequest->getGet('id'));
+
+        $this->httpResponse->redirect('/admin');
     }
 }

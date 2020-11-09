@@ -62,7 +62,7 @@ class Authentication extends ApplicationComponent
 
         $user = $userManager->get($this->getEmail());
 
-        if ($user->getRole() !== 'administrator') {
+        if ($user->getRole() === 'administrator') {
             return true;
         }
 

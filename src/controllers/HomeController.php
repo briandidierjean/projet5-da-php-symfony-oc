@@ -39,17 +39,13 @@ class HomeController extends Controller
         );
 
         if ($formHandler->process()) {
-            $this->httpResponse->redirect();
+            $this->httpResponse->redirect('/');
         }
-        
-        $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../views');
-        $twig = new \Twig\Environment($loader);
 
-        $this->page = $twig->render(
+        $this->page = $this->twig->render(
             'home/index.html.twig',
             [
-                'form' => $form->createView(),
-                'isSignedIn' => $this->authentication->isSignedIn()
+                'form' => $form->createView()
             ]
         );
 

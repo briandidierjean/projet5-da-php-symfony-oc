@@ -17,7 +17,7 @@ class Mail
         );
 
         $this->receiver = $config['receiver'];
-        $this->header = 'De: '.$config['sendingAddress'];
+        $this->header = 'De: '.$config['senddingAddress'];
         $this->header .= 'Répondre à:'.$sender;
         $this->subject = $subject;
         $this->body = $body;
@@ -26,10 +26,10 @@ class Mail
     /**
      * Send an email
      *
-     * @return null
+     * @return void
      */
     public function send()
     {
-        mail($receiver, $subject, $body, $header);
+        mail($this->receiver, $this->subject, $this->body, $this->header);
     }
 }

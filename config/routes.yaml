@@ -38,6 +38,11 @@
   action: add
   vars:
 
+- url: /delete-blog-post-([0-9]+)
+  controller: blogPost
+  action: delete
+  vars: id
+
 - url: /update-blog-post-([0-9]+)
   controller: blogPost
   action: update
@@ -47,3 +52,18 @@
   controller: comment
   action: add
   vars: id
+
+- url: /delete-comment-([0-9]+)
+  controller: comment
+  action: delete
+  vars: id
+
+- url: /validate-comment-([0-9]+)
+  controller: comment
+  action: validate
+  vars: id
+
+- url: /admin
+  controller: admin
+  action: index
+  vars:

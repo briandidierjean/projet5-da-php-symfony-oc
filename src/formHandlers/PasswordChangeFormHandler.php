@@ -8,7 +8,7 @@ use \Core\Form;
 use \App\Model\Entity\User;
 use \App\Model\Manager\UserManager;
 
-class ChangingPasswordFormHandler
+class PasswordChangeFormHandler
 {
     protected $httpRequest;
     protected $httpResponse;

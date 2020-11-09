@@ -8,20 +8,15 @@ class BlogPostManagerPDO extends BlogPostManager
     /**
      * Return a list of the blog posts
      *
-     * @param int $start First blog post to get
-     * @param int $limit The number of blog post to get
-     *
      * @return array
      */
-    public function getList($start = -1, $limit = -1)
+    public function getList()
     {
-        $request = 'SELECT * FROM blog_posts ORDER BY id DESC';
+        $blogPosts = [];
 
-        if ($start != -1 || $limit != -1) {
-            $request .= ' LIMIT '.(int) $limit.' OFFSET '.(int) $start;
-        }
-
-        $request = $this->dao->query($request);
+        $request = $this->dao->query(
+            'SELECT * FROM blog_posts ORDER BY update_date DESC'
+        );
 
         while ($data = $request->fetch(\PDO::FETCH_ASSOC)) {
             $blogPosts[] = new BlogPost($data);
@@ -52,6 +47,60 @@ class BlogPostManagerPDO extends BlogPostManager
         $blogPost = new BlogPost($request->fetch(\PDO::FETCH_ASSOC));
 
         return $blogPost;
+    }
+
+    /**
+     * Return a previous blog post to a blog post by date from the database
+     * 
+     * @param DateTime $date Date to use as a key
+     * 
+     * @return mixed
+     */
+    public function getPrev($date)
+    {
+        $request = $this->dao->prepare(
+            'SELECT id FROM blog_posts
+            WHERE update_date < :update_date ORDER BY update_date DESC'
+        );
+
+        $request->bindValue(':update_date', $date->format('Y-m-d H:i:s'));
+
+        $request->execute();
+
+        $data = $request->fetch(\PDO::FETCH_ASSOC);
+
+        if (isset($data['id'])) {
+            return $data['id'];
+        }
+
+        return false;
+    }
+
+    /**
+     * Return a next blog post to a blog post by date from the database
+     *
+     * @param DateTime $date Date to use as a key
+     * 
+     * @return mixed
+     */
+    public function getNext($date)
+    {
+        $request = $this->dao->prepare(
+            'SELECT id FROM blog_posts
+            WHERE update_date > :update_date ORDER BY update_date'
+        );
+
+        $request->bindValue(':update_date', $date->format('Y-m-d H:i:s'));
+
+        $request->execute();
+
+        $data = $request->fetch(\PDO::FETCH_ASSOC);
+
+        if (isset($data['id'])) {
+            return $data['id'];
+        }
+
+        return false;
     }
 
     /**
