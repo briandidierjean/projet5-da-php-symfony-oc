@@ -6,13 +6,15 @@ class HTTPRequest extends ApplicationComponent
     /**
      * Return the URL used
      * 
-     * @return string
+     * @return mixed
      */
     public function getURL()
     {
-        if (isset($_SERVER['REQUEST_URI'])) {
+        if (isset($_SERVER['REQUEST_URI']) && !empty($_SERVER['REQUEST_URI'])) {
             return $_SERVER['REQUEST_URI'];
         }
+
+        return false;
     }
     
     /**
@@ -34,7 +36,7 @@ class HTTPRequest extends ApplicationComponent
      */
     public function getGet($key)
     {
-        if (isset($_GET[$key]) && !empty($_GET[$key])) {
+        if (isset($_GET[$key])) {
             return $_GET[$key];
         }
         return null;

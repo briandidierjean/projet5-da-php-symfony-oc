@@ -225,6 +225,7 @@ class BlogPostController extends Controller
         }
 
         $blogPostManager = $this->managers->getManagerOf('BlogPost');
+        $commentManager = $this->managers->getManagerOf('Comment');
 
         if (!$blogPostManager->exists($this->httpRequest->getGet('id'))) {
             $this->httpResponse->redirect404();
