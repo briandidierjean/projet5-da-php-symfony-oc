@@ -65,7 +65,7 @@ class HTTPResponse extends ApplicationComponent
      */
     public function send($page)
     {
-        echo $page;
+        exit($page);
     }
 
     /**
