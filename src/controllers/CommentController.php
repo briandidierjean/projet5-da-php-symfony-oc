@@ -25,12 +25,12 @@ class CommentController extends Controller
             $this->httpResponse->redirect('/sign-in');
         }
 
-        $formData = [];
+        $formData = [
+            'token' => $this->authentication->generateToken()
+        ];
 
         if ($this->httpRequest->getMethod() == 'POST') {
-            $formData = [
-                'content' => $this->httpRequest->getPost('content')
-            ];
+            $formData['content'] = $this->httpRequest->getPost('content');
         }
 
         $formBuilder = new CommentFormBuilder($formData);

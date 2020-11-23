@@ -15,21 +15,20 @@ class CommentManagerPDO extends CommentManager
     public function getList($blogPostId = '')
     {
         $comments = [];
+        $field = '';
+        $args = [];
 
-        if (empty($blogPostId)) {
-            $request= 'SELECT * FROM comments ORDER BY id DESC';
+        if (!empty($blogPostId)) {
+            $field = 'WHERE blog_post_id = :blog_post_id';
 
-            $request = $this->dao->prepare($request);
-        } else {
-            $request= 'SELECT * FROM comments
-            WHERE blog_post_id = :blog_post_id ORDER BY id DESC';
-
-            $request = $this->dao->prepare($request);
-
-            $request->bindValue(':blog_post_id', $blogPostId, \PDO::PARAM_INT);
+            $args = [':blog_post_id' => $blogPostId];
         }
 
-        $request->execute();
+        $request = 'SELECT * FROM comments '.$field.' ORDER BY id DESC';
+
+        $request = $this->dao->prepare($request);
+
+        $request->execute($args);
 
         while ($data = $request->fetch(\PDO::FETCH_ASSOC)) {
             $comments[] = new Comment($data);

@@ -10,11 +10,7 @@ class HTTPRequest extends ApplicationComponent
      */
     public function getURL()
     {
-        if (isset($_SERVER['REQUEST_URI']) && !empty($_SERVER['REQUEST_URI'])) {
-            return $_SERVER['REQUEST_URI'];
-        }
-
-        return false;
+        return $_SERVER['REQUEST_URI'];
     }
     
     /**
@@ -36,10 +32,7 @@ class HTTPRequest extends ApplicationComponent
      */
     public function getGet($key)
     {
-        if (isset($_GET[$key])) {
-            return $_GET[$key];
-        }
-        return null;
+        return isset($_GET[$key]) ? $_GET[$key] : null;
     }
 
     /**
@@ -51,10 +44,7 @@ class HTTPRequest extends ApplicationComponent
      */
     public function getPost($key)
     {
-        if (isset($_POST[$key])) {
-            return $_POST[$key];
-        }
-        return null;
+        return isset($_POST[$key]) ? $_POST[$key] : null;
     }
 
     /**

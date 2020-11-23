@@ -49,7 +49,7 @@ class SigningInFormHandler
                     $staySignedIn = $this->form->getData('staySignedIn');
                     
                     if (!empty($staySignedIn)) {
-                        $this->authentication->staySignedIn(
+                        $this->authentication->saveConnexion(
                             $user->getId(),
                             $user->getEmail()
                         );

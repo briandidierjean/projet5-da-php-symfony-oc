@@ -2,6 +2,7 @@
 namespace App\FormBuilder;
 
 use \Core\FormBuilder;
+use \Core\InputField;
 use \Core\TextareaField;
 use \Core\NotNullValidator;
 use \Core\MaxLengthValidator;
@@ -33,6 +34,13 @@ class CommentFormBuilder extends FormBuilder
                             2000
                         )
                     ]
+                ]
+            )
+        )->addField(
+            new InputField(
+                [
+                    'type' => 'hidden',
+                    'name' => 'token'
                 ]
             )
         );

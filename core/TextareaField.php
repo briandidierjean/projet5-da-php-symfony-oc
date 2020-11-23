@@ -17,14 +17,16 @@ class TextareaField extends Field
         $this->field = '<div class="control-group">
         <div class="form-group floating-label-form-group controls mb-0 pb-2">';
 
+        $this->field .= '<label>'.$this->label.
+        '</label><textarea class="form-control '.$this->class.'
+        " name="'.$this->name.'"';
+
         if (!empty($this->errorMsg)) {
-            $this->field .= '<label>'.$this->label.
-            '</label><textarea class="form-control
-            is-invalid" name="'.$this->name.'"';
-        } else {
-            $this->field .= '<label>'.$this->label.
-            '</label><textarea class="form-control '.$this->class.'
-            " name="'.$this->name.'"';
+            $this->field = preg_replace(
+                '/form-control/',
+                'form-control is-invalid',
+                $this->field
+            );
         }
 
         if (!empty($this->placeholder)) {
@@ -50,7 +52,7 @@ class TextareaField extends Field
         $this->field .= '>';
 
         if (!empty($this->value)) {
-            $$this->field .= htmlspecialchars($this->value);
+            $this->field .= htmlspecialchars($this->value);
         }
 
         $this->field .='</textarea>';
