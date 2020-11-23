@@ -18,9 +18,7 @@ class Application
         $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/../src/views');
         $this->twig = new \Twig\Environment($loader);
         $this->twig->addGlobal('isSignedIn', $this->authentication->isSignedIn());
-        if ($this->authentication->isSignedIn()) {
-            $this->twig->addGlobal('isAdmin', $this->authentication->isAdmin());
-        }
+        $this->twig->addGlobal('isAdmin', $this->authentication->isAdmin());
     }
 
     /**
@@ -66,6 +64,13 @@ class Application
 
         try {
             $matchedRoute = $router->getRoute($this->httpRequest->getURL());
+            if ($matchedRoute->getVars() != null) {
+                foreach ($matchedRoute->getVars() as $var) {
+                    if ($var <= 0) {
+                        throw new \Exception;
+                    }
+                }
+            }
         } catch (\Exception $e) {
             $this->httpResponse->redirect404();
         }

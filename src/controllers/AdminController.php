@@ -14,7 +14,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $this->httpResponse->setSession('prevURL', 'admin');
+        $this->httpResponse->setSession('prevURL', '/admin');
 
         if (!$this->authentication->isSignedIn()) {
             $this->httpResponse->redirect('/sign-in');

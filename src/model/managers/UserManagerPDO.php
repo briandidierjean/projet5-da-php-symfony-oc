@@ -14,15 +14,15 @@ class UserManagerPDO extends UserManager
      */
     public function get($key)
     {
+        $field = 'email';
+
         if (is_int($key)) {
-            $request = $this->dao->prepare(
-                'SELECT * FROM users WHERE id = :key'
-            );
-        } else {
-            $request = $this->dao->prepare(
-                'SELECT * FROM users WHERE email = :key'
-            );
+            $field = 'id';
         }
+
+        $request = $this->dao->prepare(
+            'SELECT * FROM users WHERE '.$field.' = :key'
+        );
 
         $request->bindValue(':key', $key);
 
@@ -33,9 +33,9 @@ class UserManagerPDO extends UserManager
 
     /**
      * Take a blog posts or comments list and return a users list
-     * 
+     *
      * @param array $list Blog posts or comments to use as a key
-     * 
+     *
      * @return array
      */
     public function getListFrom($list)
@@ -133,15 +133,15 @@ class UserManagerPDO extends UserManager
      */
     public function exists($key)
     {
+        $field = 'email';
+
         if (is_int($key)) {
-            $request = $this->dao->prepare(
-                'SELECT COUNT(*) FROM users WHERE id = :key'
-            );
-        } else {
-            $request = $this->dao->prepare(
-                'SELECT COUNT(*) FROM users WHERE email = :key'
-            );
+            $field = 'id';
         }
+
+        $request = $this->dao->prepare(
+            'SELECT COUNT(*) FROM users WHERE '.$field.' = :key'
+        );
         
         $request->bindValue(':key', $key);
 

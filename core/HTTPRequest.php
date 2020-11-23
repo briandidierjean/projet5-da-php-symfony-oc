@@ -6,7 +6,7 @@ class HTTPRequest extends ApplicationComponent
     /**
      * Return the URL used
      * 
-     * @return string
+     * @return mixed
      */
     public function getURL()
     {
@@ -28,7 +28,7 @@ class HTTPRequest extends ApplicationComponent
      * 
      * @param string $key GET key
      * 
-     * @return string
+     * @return mixed
      */
     public function getGet($key)
     {
@@ -40,7 +40,7 @@ class HTTPRequest extends ApplicationComponent
      * 
      * @param string $key POST key
      * 
-     * @return string
+     * @return mixed
      */
     public function getPost($key)
     {

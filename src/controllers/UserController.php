@@ -31,7 +31,7 @@ class UserController extends Controller
             $formData = [
                 'email' => $this->httpRequest->getPost('email'),
                 'password' => $this->httpRequest->getPost('password'),
-                'saveConnexion' => $this->httpRequest->getPost('saveConnexion')
+                'staySignedIn' => $this->httpRequest->getPost('staySignedIn')
             ];
         }
 
@@ -143,7 +143,7 @@ class UserController extends Controller
     public function changePassword()
     {
         if (!$this->authentication->isSignedIn()) {
-            $this->httpResponse->setSession('prevURL', 'change-password');
+            $this->httpResponse->setSession('prevURL', '/change-password');
             $this->httpResponse->redirect('/sign-in');
         }
 

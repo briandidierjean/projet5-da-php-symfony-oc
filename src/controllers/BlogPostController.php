@@ -50,6 +50,10 @@ class BlogPostController extends Controller
         $commentManager = $this->managers->getManagerOf('Comment');
         $userManager = $this->managers->getManagerOf('User');
 
+        if (!$blogPostManager->exists($this->httpRequest->getGet('id'))) {
+            $this->httpResponse->redirect404();
+        }
+        
         $blogPost = $blogPostManager->get($this->httpRequest->getGet('id'));
         $comments = $commentManager->getList($this->httpRequest->getGet('id'));
         $blogPostUser = $userManager->get($blogPost->getUserId());
@@ -93,14 +97,14 @@ class BlogPostController extends Controller
             $this->httpResponse->redirect401();
         }
 
-        $formData = [];
+        $formData = [
+            'token' => $this->authentication->generateToken()
+        ];
 
         if ($this->httpRequest->getMethod() == 'POST') {
-            $formData = [
-                'title' => $this->httpRequest->getPost('title'),
-                'heading' => $this->httpRequest->getPost('heading'),
-                'content' => $this->httpRequest->getPost('content')
-            ];
+            $formData['title'] = $this->httpRequest->getPost('title');
+            $formData['heading'] = $this->httpRequest->getPost('heading');
+            $formData['content'] = $this->httpRequest->getPost('content');
         }
 
         $formBuilder = new BlogPostFormBuilder($formData);
@@ -159,20 +163,17 @@ class BlogPostController extends Controller
 
         $blogPost = $blogPostManager->get($this->httpRequest->getGet('id'));
 
-        $formData = [];
-
         $formData = [
+                'token' => $this->authentication->generateToken(),
                 'title' => $blogPost->getTitle(),
                 'heading' => $blogPost->getHeading(),
                 'content' => $blogPost->getContent()
         ];
 
         if ($this->httpRequest->getMethod() == 'POST') {
-            $formData = [
-                'title' => $this->httpRequest->getPost('title'),
-                'heading' => $this->httpRequest->getPost('heading'),
-                'content' => $this->httpRequest->getPost('content')
-            ];
+            $formData['title'] = $this->httpRequest->getPost('title');
+            $formData['heading'] = $this->httpRequest->getPost('heading');
+            $formData['content'] = $this->httpRequest->getPost('content');
         }
 
         $formBuilder = new BlogPostFormBuilder($formData);
@@ -225,12 +226,13 @@ class BlogPostController extends Controller
         }
 
         $blogPostManager = $this->managers->getManagerOf('BlogPost');
+        $commentManager = $this->managers->getManagerOf('Comment');
 
         if (!$blogPostManager->exists($this->httpRequest->getGet('id'))) {
             $this->httpResponse->redirect404();
         }
 
-        $blogPost = $blogPostManager->delete($this->httpRequest->getGet('id'));
+        $blogPostManager->delete($this->httpRequest->getGet('id'));
 
         $this->httpResponse->redirect('/admin');
     }

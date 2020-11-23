@@ -38,7 +38,7 @@ class PasswordChangeFormHandler
     public function process()
     {
         if ($this->httpRequest->getMethod() == 'POST' && $this->form->isValid()) {
-            $user = $this->manager->get($this->authentication->getEmail());
+            $user = $this->userManager->get($this->authentication->getEmail());
 
             $formerPassword = $this->form->getData('formerPassword');
             $newPassword = $this->form->getData('newPassword');
@@ -48,7 +48,7 @@ class PasswordChangeFormHandler
                 if ($newPassword == $newConfirmedPassword) {
                     $user->setPassword($newPassword);
 
-                    $userManager->save($user);
+                    $this->userManager->save($user);
 
                     return true;
                 }

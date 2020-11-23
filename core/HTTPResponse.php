@@ -25,7 +25,7 @@ class HTTPResponse extends ApplicationComponent
     public function redirect($location)
     {
         header('Location: '.$location);
-        exit;
+        exit();
     }
 
     /**
@@ -35,8 +35,6 @@ class HTTPResponse extends ApplicationComponent
      */
     public function redirect401()
     {
-        $authentication = $this->app->getAuthentication();
-
         $page = $this->app->twig->render('errors/401.html.twig');
 
         $this->setHeader('HTTP/1.1 401 Unauthorized ');
@@ -51,9 +49,7 @@ class HTTPResponse extends ApplicationComponent
      */
     public function redirect404()
     {
-        $authentication = $this->app->getAuthentication();
-
-        $page = $twig->render('errors/404.html.twig');
+        $page = $this->app->twig->render('errors/404.html.twig');
 
         $this->setHeader('HTTP/1.0 404 Not Found');
 
@@ -69,7 +65,7 @@ class HTTPResponse extends ApplicationComponent
      */
     public function send($page)
     {
-        exit($page);
+        echo $page;
     }
 
     /**

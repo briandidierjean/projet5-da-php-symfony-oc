@@ -177,6 +177,14 @@ class BlogPostManagerPDO extends BlogPostManager
     public function delete($id)
     {
         $request = $this->dao->prepare(
+            'DELETE FROM comments WHERE blog_post_id = :blog_post_id'
+        );
+
+        $request->bindValue(':blog_post_id', $id, \PDO::PARAM_INT);
+
+        $request->execute();
+
+        $request = $this->dao->prepare(
             'DELETE FROM blog_posts WHERE id = :id'
         );
 

@@ -38,17 +38,20 @@ class CommentFormHandler
     public function process()
     {
         if ($this->httpRequest->getMethod() == 'POST' && $this->form->isValid()) {
-            $comment  = new Comment(
-                [
-                    'blogPostId' => $this->httpRequest->getGet('id'),
-                    'userId' => $this->authentication->getId(),
-                    'content' => $this->form->getData('content')
-                ]
-            );
-
-            $this->commentManager->save($comment);
-
-            return true;
+            $token = $this->form->getData('token');
+            if ($this->authentication->verifyToken($token)) {
+                $comment  = new Comment(
+                    [
+                        'blogPostId' => $this->httpRequest->getGet('id'),
+                        'userId' => $this->authentication->getId(),
+                        'content' => $this->form->getData('content')
+                    ]
+                );
+    
+                $this->commentManager->save($comment);
+    
+                return true;
+            }
         }
 
         return false;

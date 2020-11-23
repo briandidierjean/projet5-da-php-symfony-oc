@@ -33,16 +33,11 @@ class Authentication extends ApplicationComponent
         }
         if ($this->httpRequest->getCookie('auth')
             && $this->httpRequest->getCookie('id')
-            && $this->httpRequest->getCookie('email')
+            && $this->httpRequest->getCookie('id')
         ) {
-            $this->httpResponse->setSession('auth', true);
-            $this->httpResponse->setSession(
-                'id',
+            $this->setConnexion(
+                $this->httpRequest->getCookie('id'),
                 $this->httpRequest->getCookie('id')
-            );
-            $this->httpResponse->setSession(
-                'email',
-                $this->httpRequest->getCookie('email')
             );
 
             return true;
@@ -53,17 +48,19 @@ class Authentication extends ApplicationComponent
 
     /**
      * Check if a user is administrator
-     * 
+     *
      * @return bool
      */
     public function isAdmin()
     {
-        $userManager = $this->managers->getManagerOf('User');
+        if ($this->isSignedIn()) {
+            $userManager = $this->managers->getManagerOf('User');
 
-        $user = $userManager->get($this->getEmail());
+            $user = $userManager->get($this->getEmail());
 
-        if ($user->getRole() === 'administrator') {
-            return true;
+            if ($user->getRole() === 'administrator') {
+                return true;
+            }
         }
 
         return false;
@@ -76,10 +73,7 @@ class Authentication extends ApplicationComponent
      */
     public function getId()
     {
-        if ($this->httpRequest->getSession('auth')
-            && $this->httpRequest->getSession('id') !== null
-            && $this->httpRequest->getSession('email') !== null
-        ) {
+        if ($this->isSignedIn()) {
             return $this->httpRequest->getSession('id');
         }
     }
@@ -91,12 +85,38 @@ class Authentication extends ApplicationComponent
      */
     public function getEmail()
     {
-        if ($this->httpRequest->getSession('auth')
-            && $this->httpRequest->getSession('id') !== null
-            && $this->httpRequest->getSession('email') !== null
-        ) {
+        if ($this->isSignedIn()) {
             return $this->httpRequest->getSession('email');
         }
+    }
+
+    /**
+     * Genreate a secure token
+     *
+     * @return string
+     */
+    public function generateToken()
+    {
+        $token = md5(bin2hex(openssl_random_pseudo_bytes(6)));
+        $this->httpResponse->setSession('token', $token);
+
+        return $token;
+    }
+
+    /**
+     * Verify if a session token if matching a post token
+     * 
+     * @param string $token Token to verify
+     * 
+     * @return bool
+     */
+    public function verifyToken($token)
+    {
+        if ($this->httpRequest->getSession('token') == $token) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

@@ -38,18 +38,21 @@ class BlogPostFormHandler
     public function addProcess()
     {
         if ($this->httpRequest->getMethod() == 'POST' && $this->form->isValid()) {
-            $blogPost = new BlogPost(
-                [
-                    'userId' => $this->authentication->getId(),
-                    'title' => $this->form->getData('title'),
-                    'heading' => $this->form->getData('heading'),
-                    'content' => $this->form->getData('content')
-                ]
-            );
+            $token = $this->form->getData('token');
+            if ($this->authentication->verifyToken($token)) {
+                $blogPost = new BlogPost(
+                    [
+                        'userId' => $this->authentication->getId(),
+                        'title' => $this->form->getData('title'),
+                        'heading' => $this->form->getData('heading'),
+                        'content' => $this->form->getData('content')
+                    ]
+                );
 
-            $_GET['id'] =  $this->blogPostManager->save($blogPost);
+                $_GET['id'] =  $this->blogPostManager->save($blogPost);
 
-            return true;
+                return true;
+            }
         }
 
         return false;
@@ -63,18 +66,21 @@ class BlogPostFormHandler
     public function updateProcess()
     {
         if ($this->httpRequest->getMethod() == 'POST' && $this->form->isValid()) {
-            $blogPost = $this->blogPostManager->get(
-                $this->httpRequest->getGet('id')
-            );
-       
-            $blogPost->setUserId($this->authentication->getId());
-            $blogPost->setTitle($this->form->getData('title'));
-            $blogPost->setHeading($this->form->getData('heading'));
-            $blogPost->setContent($this->form->getData('content'));
+            $token = $this->form->getData('token');
+            if ($this->authentication->verifyToken($token)) {
+                $blogPost = $this->blogPostManager->get(
+                    $this->httpRequest->getGet('id')
+                );
+        
+                $blogPost->setUserId($this->authentication->getId());
+                $blogPost->setTitle($this->form->getData('title'));
+                $blogPost->setHeading($this->form->getData('heading'));
+                $blogPost->setContent($this->form->getData('content'));
 
-            $this->blogPostManager->save($blogPost);
+                $this->blogPostManager->save($blogPost);
 
-            return true;
+                return true;
+            }
         }
 
         return false;
