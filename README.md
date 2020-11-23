@@ -13,6 +13,6 @@
 
 * Importer le fichier `db.sql` dans votre base de données.
 
-* Copier le contenu du fichier `database-sample.yaml` dans `database.yaml` et entrez vos informations de connexion à la base de données.
+* Copier le contenu du fichier `config/database-sample.yaml` dans `config/database.yaml` et entrez vos informations de connexion à la base de données.
 
-* Copier le contenu du fichier `mail-sample.yaml` dans `mail.yaml` et entrez vos paramètres de contact.
+* Copier le contenu du fichier `config/mail-sample.yaml` dans `config/mail.yaml` et entrez vos paramètres de contact.
