@@ -9,8 +9,6 @@
 
 * À la racine du projet, faite un `composer update`.
 
-* Créez un virtual host dans Apache avec l'URL de votre choix.
-
 * Importer le fichier `db.sql` dans votre base de données.
 
 * Copier le contenu du fichier `config/database-sample.yaml` dans `config/database.yaml` et entrez vos informations de connexion à la base de données.
